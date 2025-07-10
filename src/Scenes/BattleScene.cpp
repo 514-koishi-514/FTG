@@ -5,14 +5,14 @@
 
 #include <QDebug>
 #include "BattleScene.h"
-#include "../Items/Maps/Battlefield.h"
+#include "../Items/Maps/MistyLake.h"
 #include "../Items/Armors/FlamebreakerArmor.h"
 
 BattleScene::BattleScene(QObject *parent) : Scene(parent) {
     // This is useful if you want the scene to have the exact same dimensions as the view
     setSceneRect(0, 0, 1280, 720);
     // 在这里实现各种资源的初始化与加入
-    map = new Battlefield();
+    map = new MistyLake();
     character = new Character(nullptr, "Reimu");
     spareArmor = new FlamebreakerArmor(); // 这里目前是实现了一个一开始就放置在场景中的备用护甲，之后我会进行实际的修改
     addItem(map);

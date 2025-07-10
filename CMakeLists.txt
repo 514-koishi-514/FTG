@@ -41,8 +41,8 @@ add_executable(qt_programming_2024 src/main.cpp
         assets/assets.qrc
 
         src/Items/Maps/Map.h
-        src/Items/Maps/Battlefield.cpp
-        src/Items/Maps/Battlefield.h
+
+
         src/Items/Mountable.cpp
         src/Items/Mountable.h
         src/Items/Armors/FlamebreakerArmor.cpp
@@ -54,6 +54,8 @@ add_executable(qt_programming_2024 src/main.cpp
         src/Items/Characters/Reimu.cpp
         src/Items/Characters/Marisa.h
         src/Items/Characters/Marisa.cpp
+        src/Items/Maps/MistyLake.h
+        src/Items/Maps/MistyLake.cpp
 )
 target_link_libraries(qt_programming_2024
         Qt::Core
