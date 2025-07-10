@@ -19,9 +19,9 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {
     addItem(character);
     addItem(spareArmor);
     map->scaleToFitScene(this);
-    character->setPos(map->getSpawnPos());
+    character->setPos(map->getSpawnPos(character->boundingRect()));
     spareArmor->unmount();
-    spareArmor->setPos(sceneRect().left() + (sceneRect().right() - sceneRect().left()) * 0.75, map->getFloorHeight());
+    spareArmor->setPos(sceneRect().left() + (sceneRect().right() - sceneRect().left()) * 0.75, map->getFloorHeight() - spareArmor->boundingRect().height());
 }
 
 // 这个函数用来处理角色输入事件
@@ -84,7 +84,11 @@ void BattleScene::keyReleaseEvent(QKeyEvent *event) {
         break;
     case Qt::Key_S:
         if (character != nullptr) {
-            character->setGuardDown(false);
+            if (character->isGuardDown()) {
+                character->setGuardDown(false);
+            } else {
+                character->setPickDown(false);
+            }
         }
         break;
     case Qt::Key_J:

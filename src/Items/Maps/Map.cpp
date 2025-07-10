@@ -28,10 +28,10 @@ void Map::scaleToFitScene(QGraphicsScene *scene) {
 }
 
 // 获取生成位置
-QPointF Map::getSpawnPos() {
+QPointF Map::getSpawnPos(const QRectF &itemBoundingRect) {
     auto boundingRect = sceneBoundingRect();
     auto midX = (boundingRect.left() + boundingRect.right()) * 0.5;
-    return {midX, getFloorHeight()};
+    return {midX, getFloorHeight() - itemBoundingRect.height()};
 }
 
 // 获取地板高度（需要重写以支持多个平台）
