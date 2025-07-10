@@ -19,7 +19,7 @@ Character::Character(QGraphicsItem *parent, const QString& name) : Item(parent, 
     //    ellipseItem->setZValue(1);
 
     setTransformOriginPoint(boundingRect().center());  // 变换中心
-    configFilePath = "../../assets/Configs/Character.json"; // 假设配置文件在资源文件中
+    configFilePath = "../../../FTG/assets/Configs/Character.json"; // 假设配置文件在资源文件中
 
     pixmapItem = new QGraphicsPixmapItem(this); // 自动绘制动画
 
