@@ -1,0 +1,9 @@
+{
+  "MistyLake": {
+    "background": ":/Maps/Items/Maps/MistyLake/background/mistyLake.png",
+    "terrain": {
+      "highGrass": ":/Maps/Items/Maps/MistyLake/terrain/highGrass.png",
+      "bridge": ":/Maps/Items/Maps/MistyLake/terrain/bridge.png"
+    }
+  }
+}
