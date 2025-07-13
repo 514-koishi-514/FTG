@@ -23,6 +23,8 @@ public:
 
     virtual void processPicking();
 
+    virtual void processCollision();
+
 protected slots:
 
     // 在每帧更新时计算时间差

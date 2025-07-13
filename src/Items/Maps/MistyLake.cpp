@@ -6,3 +6,8 @@ MistyLake::MistyLake(QGraphicsItem *parent) : Map(parent, ":/Maps/Items/Maps/Mis
 qreal MistyLake::getFloorHeight() {
     return 600.0;
 }
+
+// 获取生成位置,TODO:Player 2
+QPointF MistyLake::getSpawnPos(const QRectF &itemBoundingRect) {
+    return QPointF(472,600);
+}

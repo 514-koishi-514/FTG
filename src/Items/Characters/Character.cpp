@@ -188,8 +188,8 @@ void Character::processInput() {
         if(!guarding)
         {
             // 2.移动速度处理
-            const auto slowSpeed = 0.2;
-            const auto fastSpeed = 0.4;
+            const auto slowSpeed = isOnIce ? 0.4 : 0.2; // 慢速移动速度
+            const auto fastSpeed = isOnIce ? 0.8 : 0.4; // 快速移动速度
             const auto jumpSpeed = -1.4;
 
             // 2.1 竖直速度

@@ -58,6 +58,8 @@ add_executable(qt_programming_2024 src/main.cpp
         src/Items/Maps/MistyLake.cpp
         src/Items/Maps/HighGrass.h
         src/Items/Maps/HighGrass.cpp
+        src/Items/Maps/Bridge.h
+        src/Items/Maps/Bridge.cpp
 )
 target_link_libraries(qt_programming_2024
         Qt::Core

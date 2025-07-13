@@ -22,6 +22,7 @@ void Scene::update() {
 
     processInput();
     processMovement();
+    processCollision();
     processPicking();
 }
 
@@ -39,5 +40,9 @@ void Scene::processMovement() {
 }
 
 void Scene::processPicking() {
+
+}
+
+void Scene::processCollision(){
 
 }

@@ -10,6 +10,8 @@
 #include "Scene.h"
 #include "../Items/Maps/Map.h"
 #include "../Items/Characters/Character.h"
+#include "../Items/Maps/Bridge.h"
+#include "../Items/Maps/HighGrass.h"
 
 class BattleScene : public Scene {
     Q_OBJECT
@@ -22,6 +24,8 @@ public:
     void processMovement() override;
 
     void processPicking() override;
+
+    void processCollision() override;
 
 protected slots:
 
@@ -41,6 +45,9 @@ private:
     Map *map;
     Character *character;
     Armor *spareArmor;
+    Bridge *bridge;
+    HighGrass *highGrassLeft;
+    HighGrass *highGrassRight;
 };
 
 

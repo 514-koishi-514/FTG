@@ -73,6 +73,9 @@ public:
 
     void setAnimationState(AnimationState state);
 
+    // 游戏过程：状态与属性
+    bool isOnIce = false; // 是否在冰上
+
     // 非游戏过程：JSON接口
     bool loadFromJson(const QString &json);
 

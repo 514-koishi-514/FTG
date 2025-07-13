@@ -8,18 +8,32 @@
 #include "../Items/Maps/MistyLake.h"
 #include "../Items/Armors/FlamebreakerArmor.h"
 
-BattleScene::BattleScene(QObject *parent) : Scene(parent) {
+BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个地图
     // This is useful if you want the scene to have the exact same dimensions as the view
     setSceneRect(0, 0, 1280, 720);
     // 在这里实现各种资源的初始化与加入
     map = new MistyLake();
+    bridge = new Bridge();
+    highGrassLeft = new HighGrass();
+    highGrassRight = new HighGrass();
     character = new Character(nullptr, "Reimu");
-    spareArmor = new FlamebreakerArmor(); // 这里目前是实现了一个一开始就放置在场景中的备用护甲，之后我会进行实际的修改
+    spareArmor = new FlamebreakerArmor(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用护甲，之后我会进行实际的修改
+
+    // 将地图、角色和备用护甲添加到场景中
     addItem(map);
+    addItem(bridge);
+    addItem(highGrassLeft);
+    addItem(highGrassRight);
     addItem(character);
     addItem(spareArmor);
+
+    // 设置初始位置
     map->scaleToFitScene(this);
-    character->setPos(map->getSpawnPos(character->boundingRect()));
+    bridge->setPos(QPointF(390, 280));
+    highGrassLeft->setPos(QPointF(232, 442));
+    highGrassRight->setPos(QPointF(1048, 442));
+
+    character->setPos(QPointF(100, 600- character->boundingRect().height()));
     spareArmor->unmount();
     spareArmor->setPos(sceneRect().left() + (sceneRect().right() - sceneRect().left()) * 0.75, map->getFloorHeight() - spareArmor->boundingRect().height());
 }
@@ -116,6 +130,57 @@ void BattleScene::processMovement() {
     Scene::processMovement();
     if (character != nullptr) {
         character->setPos(character->pos() + character->getVelocity() * (double) deltaTime);
+    }
+}
+
+// 碰撞检测
+void BattleScene::processCollision() {
+    Scene::processCollision();
+    if (character != nullptr) {
+        // 检查角色与地图的碰撞
+        if (character->collidesWithItem(map)) {
+            if(character->pos().y() <= 0){
+                character->setPos(character->pos().x(), 0); // 防止角色掉出场景上边界
+                character->setVelocity(QPointF(character->getVelocity().x(), 0)); // 停止角色上升
+            }
+            else if(character->pos().y() >= map->getFloorHeight() - character->boundingRect().height()) {
+                character->setPos(character->pos().x(), map->getFloorHeight() - character->boundingRect().height());
+                character->setVelocity(QPointF(character->getVelocity().x(), 0)); // 停止角色下落
+            }
+
+            if (character->pos().x() < 0) {
+                character->setPos(0, character->pos().y()); // 防止角色掉出场景左边界
+            }
+            else if (character->pos().x() > sceneRect().width() - character->boundingRect().width()) {
+                character->setPos(sceneRect().width() - character->boundingRect().width(), character->pos().y()); // 防止角色掉出场景右边界
+            }
+        }
+
+        // 检查角色与桥的碰撞
+        if (character->collidesWithItem(bridge)) {
+            qDebug() << "角色与桥发生碰撞";
+            if (character->pos().y() + character->boundingRect().height() >= bridge->pos().y() &&
+                    character->pos().y() + character->boundingRect().height() <= bridge->pos().y() + 10)
+                {
+                    qDebug() << "角色站在桥上";
+                    character->setPos(character->pos().x(), bridge->pos().y() - character->boundingRect().height());
+                    character->setVelocity(QPointF(character->getVelocity().x(), 0));
+                }
+            else if (character->pos().y() <= bridge->pos().y() + bridge->boundingRect().height() &&
+                     character->pos().y() >= bridge->pos().y() + bridge->boundingRect().height() - 10)
+            {
+                qDebug() << "角色顶到桥底";
+                character->setPos(character->pos().x(), bridge->pos().y() + bridge->boundingRect().height());
+                character->setVelocity(QPointF(character->getVelocity().x(), 0));
+            }
+                else if (character->pos().x() + character->boundingRect().width() >= bridge->pos().x() &&
+                         character->pos().x() <= bridge->pos().x() + bridge->boundingRect().width())
+                {
+                    qDebug() << "角色侧面碰到桥";
+                    // TODO:可能需要处理角色侧面碰撞的逻辑
+                }
+
+        }
     }
 }
 

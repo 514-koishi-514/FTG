@@ -9,6 +9,8 @@ public:
     explicit MistyLake(QGraphicsItem *parent= nullptr);
 
     qreal getFloorHeight() override;
+
+    QPointF getSpawnPos(const QRectF &itemBoundingRect) override;
 };
 
 
