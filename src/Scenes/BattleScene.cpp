@@ -143,10 +143,6 @@ void BattleScene::processCollision() {
                 character->setPos(character->pos().x(), 0); // 防止角色掉出场景上边界
                 character->setVelocity(QPointF(character->getVelocity().x(), 0)); // 停止角色上升
             }
-            else if(character->pos().y() >= map->getFloorHeight() - character->boundingRect().height()) {
-                character->setPos(character->pos().x(), map->getFloorHeight() - character->boundingRect().height());
-                character->setVelocity(QPointF(character->getVelocity().x(), 0)); // 停止角色下落
-            }
 
             if (character->pos().x() < 0) {
                 character->setPos(0, character->pos().y()); // 防止角色掉出场景左边界
@@ -156,30 +152,47 @@ void BattleScene::processCollision() {
             }
         }
 
+        // 检查角色与地板的碰撞
+        if(character->pos().y() >= map->getFloorHeight() - character->boundingRect().height()) {
+            character->setPos(character->pos().x(), map->getFloorHeight() - character->boundingRect().height());
+        }
+
         // 检查角色与桥的碰撞
         if (character->collidesWithItem(bridge)) {
-            qDebug() << "角色与桥发生碰撞";
             if (character->pos().y() + character->boundingRect().height() >= bridge->pos().y() &&
                     character->pos().y() + character->boundingRect().height() <= bridge->pos().y() + 10)
                 {
-                    qDebug() << "角色站在桥上";
                     character->setPos(character->pos().x(), bridge->pos().y() - character->boundingRect().height());
-                    character->setVelocity(QPointF(character->getVelocity().x(), 0));
                 }
             else if (character->pos().y() <= bridge->pos().y() + bridge->boundingRect().height() &&
                      character->pos().y() >= bridge->pos().y() + bridge->boundingRect().height() - 10)
             {
-                qDebug() << "角色顶到桥底";
                 character->setPos(character->pos().x(), bridge->pos().y() + bridge->boundingRect().height());
-                character->setVelocity(QPointF(character->getVelocity().x(), 0));
             }
-                else if (character->pos().x() + character->boundingRect().width() >= bridge->pos().x() &&
-                         character->pos().x() <= bridge->pos().x() + bridge->boundingRect().width())
-                {
-                    qDebug() << "角色侧面碰到桥";
-                    // TODO:可能需要处理角色侧面碰撞的逻辑
-                }
 
+        }
+
+        // 是否在平台判断
+        if ((character->pos().y() >= map->getFloorHeight() - character->boundingRect().height())
+            ) {
+            if (!character->isOnPlatform) {
+                qDebug() << "角色站在平台上";
+            }
+            character->isOnPlatform = true;
+        }
+        else if(character->collidesWithItem(bridge) &&
+                character->pos().y() >= bridge->pos().y() - character->boundingRect().height() &&
+                character->pos().y() <= bridge->pos().y() + bridge->boundingRect().height()){
+            if (!character->isOnPlatform) {
+                qDebug() << "角色站在桥上";
+            }
+            character->isOnPlatform = true;
+        }
+        else {
+            if (character->isOnPlatform) {
+                qDebug() << "角色离开平台";
+            }
+            character->isOnPlatform = false;
         }
     }
 }
@@ -188,7 +201,7 @@ void BattleScene::processCollision() {
 void BattleScene::processPicking() {
     Scene::processPicking();
     if (character->isPicking()) {
-        auto mountable = findNearestUnmountedMountable(character->pos(), 100.);
+        auto mountable = findNearestUnmountedMountable(character->pos(), 100.0);
         if (mountable != nullptr) {
             spareArmor = dynamic_cast<Armor *>(pickupMountable(character, mountable));
         }

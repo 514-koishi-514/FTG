@@ -194,23 +194,17 @@ void Character::processInput() {
 
             // 2.1 竖直速度
 
-            if(getVelocity().y() != 0){
+            if(!isOnPlatform){
                 jumping = true; // 处于跳跃状态
                 if(currentState != jump && currentState != jumpFront && currentState != jumpBack) {
                     setAnimationState(jump); // 切换到跳跃动画
                 }
-                if (pos().y() >= 453.6) {  // TODO:这里是暂时的底部碰撞处理
-                    velocity.setY(0);
-                    setPos(pos().x(), 453.6); // 重置位置到地面
-                    jumping = false; // 到达地面，跳跃状态结束
-                    setAnimationState(stand); // 切换回站立状态
-                }
-                else{
-                    velocity.setY(getVelocity().y()+0.03); // 模拟重力
-                }
+                velocity.setY(getVelocity().y()+0.03); // 模拟重力
             }
             else{
-                jumping = false;
+                velocity.setY(0);
+                jumping = false; // 到达地面，跳跃状态结束
+                setAnimationState(stand); // 切换回站立状态
             }
 
             if(isJumpDown() && !jumping){
