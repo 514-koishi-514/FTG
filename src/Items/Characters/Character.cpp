@@ -196,7 +196,8 @@ void Character::processInput() {
 
             if(!isOnPlatform){
                 jumping = true; // 处于跳跃状态
-                if(currentState != jump && currentState != jumpFront && currentState != jumpBack) {
+                if(currentState != jump && currentState != jumpFront && currentState != jumpBack) {\
+                    qDebug() << "跳跃动画";
                     setAnimationState(jump); // 切换到跳跃动画
                 }
                 velocity.setY(getVelocity().y()+0.03); // 模拟重力
@@ -204,7 +205,10 @@ void Character::processInput() {
             else{
                 velocity.setY(0);
                 jumping = false; // 到达地面，跳跃状态结束
-                setAnimationState(stand); // 切换回站立状态
+                if(currentState == jump || currentState == jumpFront || currentState == jumpBack){
+                    qDebug() << "跳跃状态结束";
+                    setAnimationState(stand); // 切换回站立状态
+                }
             }
 
             if(isJumpDown() && !jumping){
@@ -276,7 +280,7 @@ void Character::processInput() {
                 // setTransform(QTransform().scale(1, 1));
 
                 if(!isDoubleRight){
-                    if(getVelocity().y() != 0){
+                    if(jumping){
                         setAnimationState(jumpFront);
                     }
                     else {
@@ -285,7 +289,7 @@ void Character::processInput() {
                     velocity.setX(slowSpeed);
                 }
                 else{
-                    if(getVelocity().y() != 0){
+                    if(jumping){
                         setAnimationState(jumpFront);
                     }
                     else {

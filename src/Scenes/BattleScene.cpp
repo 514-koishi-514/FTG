@@ -157,21 +157,6 @@ void BattleScene::processCollision() {
             character->setPos(character->pos().x(), map->getFloorHeight() - character->boundingRect().height());
         }
 
-        // 检查角色与桥的碰撞
-        if (character->collidesWithItem(bridge)) {
-            if (character->pos().y() + character->boundingRect().height() >= bridge->pos().y() &&
-                    character->pos().y() + character->boundingRect().height() <= bridge->pos().y() + 10)
-                {
-                    character->setPos(character->pos().x(), bridge->pos().y() - character->boundingRect().height());
-                }
-            else if (character->pos().y() <= bridge->pos().y() + bridge->boundingRect().height() &&
-                     character->pos().y() >= bridge->pos().y() + bridge->boundingRect().height() - 10)
-            {
-                character->setPos(character->pos().x(), bridge->pos().y() + bridge->boundingRect().height());
-            }
-
-        }
-
         // 是否在平台判断
         if ((character->pos().y() >= map->getFloorHeight() - character->boundingRect().height())
             ) {
@@ -180,13 +165,21 @@ void BattleScene::processCollision() {
             }
             character->isOnPlatform = true;
         }
-        else if(character->collidesWithItem(bridge) &&
-                character->pos().y() >= bridge->pos().y() - character->boundingRect().height() &&
-                character->pos().y() <= bridge->pos().y() + bridge->boundingRect().height()){
-            if (!character->isOnPlatform) {
-                qDebug() << "角色站在桥上";
+        else if(character->collidesWithItem(bridge)) {
+            qreal characterBottom = character->pos().y() + character->boundingRect().height();
+            qreal bridgeTop = bridge->pos().y();
+            if(characterBottom >= bridgeTop - 10 &&
+                characterBottom <= bridgeTop + 10 &&
+                character->getVelocity().y() >= 0) {
+                character->setPos(character->pos().x(), bridgeTop - character->boundingRect().height());
+                character->isOnPlatform = true;
             }
-            character->isOnPlatform = true;
+            else{
+                if (character->isOnPlatform) {
+                    qDebug() << "角色离开桥";
+                }
+                character->isOnPlatform = false;
+            }
         }
         else {
             if (character->isOnPlatform) {
