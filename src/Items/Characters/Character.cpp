@@ -122,6 +122,16 @@ void Character::setVelocity(const QPointF &velocity) {
 // 游戏过程：动作逻辑
 void Character::processInput() {
 
+    if(isOnTheRight)
+    {
+        qreal imgWidth = boundingRect().width();
+        setTransform(QTransform().scale(-1, 1).translate(-imgWidth, 0));
+    }
+    else
+    {
+        setTransform(QTransform().scale(1, 1));
+    }
+
     if(attacking) {
         qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
         if (currentTime - attackStartTime >= attackDuration) {
@@ -252,22 +262,56 @@ void Character::processInput() {
         setTransform(QTransform().scale(-1, 1).translate(-imgWidth, 0));*/
 
                 if(!isDoubleLeft){
-                    if(jumping){
-                        setAnimationState(jumpBack);
+                    if(!isOnTheRight){
+                        if(jumping){
+                            setAnimationState(jumpBack);
+                        }
+                        else {
+                            setAnimationState(walkBack);
+                        }
+                        velocity.setX(-slowSpeed);
                     }
-                    else {
-                        setAnimationState(walkBack);
+                    else{
+                        if(jumping){
+                            setAnimationState(jumpFront);
+                        }
+                        else {
+                            setAnimationState(walkFront);
+                        }
+                        if(!isCollidingWithEachOther)
+                        {
+                            velocity.setX(-slowSpeed);
+                        }
+                        else{
+                            velocity.setX(0); // 如果碰撞，速度为0
+                        }
                     }
-                    velocity.setX(-slowSpeed);
                 }
                 else{
-                    if(jumping){
-                        setAnimationState(jumpBack);
+                    if(!isOnTheRight){
+                        if(jumping){
+                            setAnimationState(jumpBack);
+                        }
+                        else {
+                            setAnimationState(dashBack);
+                        }
+                        velocity.setX(-fastSpeed);
                     }
-                    else {
-                        setAnimationState(dashBack);
+                    else{
+                        if(jumping){
+                            setAnimationState(jumpFront);
+                        }
+                        else {
+                            setAnimationState(dashFront);
+                        }
+                        if(!isCollidingWithEachOther)
+                        {
+                            velocity.setX(-fastSpeed);
+                        }
+                        else{
+                            velocity.setX(0); // 如果碰撞，速度为0
+                        }
                     }
-                    velocity.setX(-fastSpeed);
                 }
             }
 
@@ -280,22 +324,57 @@ void Character::processInput() {
                 // setTransform(QTransform().scale(1, 1));
 
                 if(!isDoubleRight){
-                    if(jumping){
-                        setAnimationState(jumpFront);
+                    if(!isOnTheRight){
+                        if(jumping){
+                            setAnimationState(jumpFront);
+                        }
+                        else {
+                            setAnimationState(walkFront);
+                        }
+                        if(!isCollidingWithEachOther)
+                        {
+                            velocity.setX(slowSpeed);
+                        }
+                        else{
+                            velocity.setX(0); // 如果碰撞，速度为0
+                        }
                     }
-                    else {
-                        setAnimationState(walkFront);
+                    else{
+                        if(jumping){
+                            setAnimationState(jumpBack);
+                        }
+                        else {
+                            setAnimationState(walkBack);
+                        }
+                        velocity.setX(slowSpeed);
                     }
-                    velocity.setX(slowSpeed);
                 }
                 else{
-                    if(jumping){
-                        setAnimationState(jumpFront);
+                    if(!isOnTheRight){
+                        if(jumping){
+                            setAnimationState(jumpFront);
+                        }
+                        else {
+                            setAnimationState(dashFront);
+                        }
+                        if(!isCollidingWithEachOther)
+                        {
+                            velocity.setX(fastSpeed);
+                        }
+                        else{
+                            velocity.setX(0); // 如果碰撞，速度为0
+                        }
                     }
-                    else {
-                        setAnimationState(dashFront);
+                    else{
+                        if(jumping){
+                            setAnimationState(jumpBack);
+                        }
+                        else {
+                            setAnimationState(dashBack);
+                        }
+                        velocity.setX(fastSpeed);
                     }
-                    velocity.setX(fastSpeed);
+
                 }
             }
 

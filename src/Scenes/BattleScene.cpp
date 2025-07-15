@@ -20,14 +20,27 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     character_2p = new Character(nullptr, "Marisa");
     spareArmor = new FlamebreakerArmor(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用护甲，之后我会进行实际的修改
 
+    qDebug() << "初始化";
+
     // 将地图、角色和备用护甲添加到场景中
     addItem(map);
     addItem(bridge);
     addItem(highGrassLeft);
     addItem(highGrassRight);
-    addItem(character_1p);
-    addItem(character_2p);
+    qDebug() << "添加地图、桥和高草到场景中";
+    if(character_1p != nullptr) {
+        addItem(character_1p);
+    }
+    qDebug() << "添加角色1到场景中";
+    if(character_2p != nullptr) {
+        addItem(character_2p);
+    }
+    character_1p->isOnTheRight = false; // 1P角色在左边
+    character_2p->isOnTheRight = true; // 2P角色在右边
+    qDebug() << "添加角色2到场景中";
     addItem(spareArmor);
+
+    qDebug() << "添加地图、角色和备用护甲到场景中";
 
     // 设置初始位置
     map->scaleToFitScene(this);
@@ -35,15 +48,32 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     highGrassLeft->setPos(QPointF(232, 442));
     highGrassRight->setPos(QPointF(1048, 442));
 
-    character_1p->setPos(QPointF(100, 600- character_1p->boundingRect().height()));
-    character_2p->setPos(QPointF(1000, 600 - character_2p->boundingRect().height()));
+    if(character_1p != nullptr){
+        character_1p->setPos(QPointF(100, 600 - character_1p->boundingRect().height()));
+    }
+    if(character_2p != nullptr){
+        character_2p->setPos(QPointF(1000, 600 - character_2p->boundingRect().height()));
+    }
     spareArmor->unmount();
     spareArmor->setPos(sceneRect().left() + (sceneRect().right() - sceneRect().left()) * 0.75, map->getFloorHeight() - spareArmor->boundingRect().height());
+
+    qDebug() << "设置地图、角色和备用护甲的位置";
 }
 
 // 这个函数用来处理角色输入事件
 void BattleScene::processInput() {
     Scene::processInput();
+    if (character_1p != nullptr && character_2p != nullptr)
+    {
+        if(character_1p->pos().x() <= character_2p->pos().x()) {
+            character_1p->isOnTheRight = false; // 1P角色在左边
+            character_2p->isOnTheRight = true; // 2P角色在右边
+        }
+        else {
+            character_1p->isOnTheRight = true; // 1P角色在右边
+            character_2p->isOnTheRight = false; // 2P角色在左边
+        }
+    }
     if (character_1p != nullptr) {
         character_1p->processInput();
     }
@@ -69,10 +99,10 @@ void BattleScene::keyPressEvent(QKeyEvent *event) {
                 character_1p->setGuardDown(true);
             }
             break;
-        case Qt::Key_J:
+        case Qt::Key_F:
             character_1p->setAttackDown(true);
             break;
-        case Qt::Key_K:
+        case Qt::Key_G:
             character_1p->setJumpDown(true);
             break;
         default:
@@ -81,23 +111,23 @@ void BattleScene::keyPressEvent(QKeyEvent *event) {
     }
     if(character_2p != nullptr){
         switch (event->key()) {
-        case Qt::Key_Left:
+        case Qt::Key_H:
             character_2p->setLeftDown(true);
             break;
-        case Qt::Key_Right:
+        case Qt::Key_K:
             character_2p->setRightDown(true);
             break;
-        case Qt::Key_Down:
+        case Qt::Key_J:
             if(findNearestUnmountedMountable(character_2p->pos(), 100.0) != nullptr) {
                 character_2p->setPickDown(true);
             } else {
                 character_2p->setGuardDown(true);
             }
             break;
-        case Qt::Key_1:
+        case Qt::Key_L:
             character_2p->setAttackDown(true);
             break;
-        case Qt::Key_2:
+        case Qt::Key_Semicolon:
             character_2p->setJumpDown(true);
             break;
         default:
@@ -129,12 +159,12 @@ void BattleScene::keyReleaseEvent(QKeyEvent *event) {
                 }
             }
             break;
-        case Qt::Key_J:
+        case Qt::Key_F:
             if (character_1p != nullptr) {
                 character_1p->setAttackDown(false);
             }
             break;
-        case Qt::Key_K:
+        case Qt::Key_G:
             if (character_1p != nullptr) {
                 character_1p->setJumpDown(false);
             }
@@ -145,17 +175,17 @@ void BattleScene::keyReleaseEvent(QKeyEvent *event) {
     }
     if(character_2p != nullptr){
         switch (event->key()) {
-        case Qt::Key_Left:
+        case Qt::Key_H:
             if (character_2p != nullptr) {
                 character_2p->setLeftDown(false);
             }
             break;
-        case Qt::Key_Right:
+        case Qt::Key_K:
             if (character_2p != nullptr) {
                 character_2p->setRightDown(false);
             }
             break;
-        case Qt::Key_Down:
+        case Qt::Key_J:
             if (character_2p != nullptr) {
                 if (character_2p->isGuardDown()) {
                     character_2p->setGuardDown(false);
@@ -164,12 +194,12 @@ void BattleScene::keyReleaseEvent(QKeyEvent *event) {
                 }
             }
             break;
-        case Qt::Key_1:
+        case Qt::Key_L:
             if (character_2p != nullptr) {
                 character_2p->setAttackDown(false);
             }
             break;
-        case Qt::Key_2:
+        case Qt::Key_Semicolon:
             if (character_2p != nullptr) {
                 character_2p->setJumpDown(false);
             }
@@ -258,6 +288,17 @@ void BattleScene::processCollision() {
                 character->isOnPlatform = false;
             }
         }
+
+
+    }
+    // 是否与另一角色碰撞
+    if(character_1p->collidesWithItem(character_2p)){
+        character_1p->isCollidingWithEachOther = true;
+        character_2p->isCollidingWithEachOther = true;
+    }
+    else{
+        character_1p->isCollidingWithEachOther = false;
+        character_2p->isCollidingWithEachOther = false;
     }
 }
 
