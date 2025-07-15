@@ -60,6 +60,18 @@ add_executable(qt_programming_2024 src/main.cpp
         src/Items/Maps/HighGrass.cpp
         src/Items/Maps/Bridge.h
         src/Items/Maps/Bridge.cpp
+        src/Items/Weapons/Melee.h
+        src/Items/Weapons/Melee.cpp
+        src/Items/Weapons/Weapon.h
+        src/Items/Weapons/Weapon.cpp
+        src/Items/Weapons/EnhancedMelee.h
+        src/Items/Weapons/EnhancedMelee.cpp
+        src/Items/Weapons/Throw.h
+        src/Items/Weapons/Throw.cpp
+        src/Items/Weapons/Ranged.h
+        src/Items/Weapons/Ranged.cpp
+        src/Items/Weapons/SpellCard.h
+        src/Items/Weapons/SpellCard.cpp
 )
 target_link_libraries(qt_programming_2024
         Qt::Core

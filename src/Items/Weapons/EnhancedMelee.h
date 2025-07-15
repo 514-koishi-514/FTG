@@ -1,0 +1,4 @@
+#ifndef ENHANCEDMELEE_H
+#define ENHANCEDMELEE_H
+
+#endif // ENHANCEDMELEE_H

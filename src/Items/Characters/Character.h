@@ -126,7 +126,7 @@ private:
     qint64 attackDuration = 500; // 攻击持续时间(ms)
 
     // 战斗相关
-    int hp = 100; // 生命值
+    int hp = 1000; // 生命值
 };
 
 
