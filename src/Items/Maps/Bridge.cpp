@@ -13,3 +13,8 @@ QPointF Bridge::getSpawnPos(const QRectF &itemBoundingRect) {
     qreal y = itemBoundingRect.top() - getFloorHeight();
     return QPointF(x, y);
 }
+
+QLineF Bridge::getCollisionLine() const {
+    // 返回桥的碰撞区域
+    return QLineF(390, 300, 890, 300);
+}

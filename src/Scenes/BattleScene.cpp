@@ -16,7 +16,8 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     bridge = new Bridge();
     highGrassLeft = new HighGrass();
     highGrassRight = new HighGrass();
-    character = new Character(nullptr, "Reimu");
+    character_1p = new Character(nullptr, "Reimu");
+    character_2p = new Character(nullptr, "Marisa");
     spareArmor = new FlamebreakerArmor(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用护甲，之后我会进行实际的修改
 
     // 将地图、角色和备用护甲添加到场景中
@@ -24,7 +25,8 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     addItem(bridge);
     addItem(highGrassLeft);
     addItem(highGrassRight);
-    addItem(character);
+    addItem(character_1p);
+    addItem(character_2p);
     addItem(spareArmor);
 
     // 设置初始位置
@@ -33,7 +35,8 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     highGrassLeft->setPos(QPointF(232, 442));
     highGrassRight->setPos(QPointF(1048, 442));
 
-    character->setPos(QPointF(100, 600- character->boundingRect().height()));
+    character_1p->setPos(QPointF(100, 600- character_1p->boundingRect().height()));
+    character_2p->setPos(QPointF(1000, 600 - character_2p->boundingRect().height()));
     spareArmor->unmount();
     spareArmor->setPos(sceneRect().left() + (sceneRect().right() - sceneRect().left()) * 0.75, map->getFloorHeight() - spareArmor->boundingRect().height());
 }
@@ -41,82 +44,139 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
 // 这个函数用来处理角色输入事件
 void BattleScene::processInput() {
     Scene::processInput();
-    if (character != nullptr) {
-        character->processInput();
+    if (character_1p != nullptr) {
+        character_1p->processInput();
+    }
+    if (character_2p != nullptr) {
+        character_2p->processInput();
     }
 }
 
 // 这个函数用来处理角色的按键事件
 void BattleScene::keyPressEvent(QKeyEvent *event) {
-    switch (event->key()) {
-    case Qt::Key_A:
-        if (character != nullptr) {
-            character->setLeftDown(true);
-        }
-        break;
-    case Qt::Key_D:
-        if (character != nullptr) {
-            character->setRightDown(true);
-        }
-        break;
-    case Qt::Key_S:
-        if (character != nullptr) {
-            if(findNearestUnmountedMountable(character->pos(), 100.) != nullptr) {
-                character->setPickDown(true);
+    if(character_1p != nullptr){
+        switch (event->key()) {
+        case Qt::Key_A:
+            character_1p->setLeftDown(true);
+            break;
+        case Qt::Key_D:
+            character_1p->setRightDown(true);
+            break;
+        case Qt::Key_S:
+            if(findNearestUnmountedMountable(character_1p->pos(), 100.0) != nullptr) {
+                character_1p->setPickDown(true);
             } else {
-                character->setGuardDown(true);
+                character_1p->setGuardDown(true);
             }
+            break;
+        case Qt::Key_J:
+            character_1p->setAttackDown(true);
+            break;
+        case Qt::Key_K:
+            character_1p->setJumpDown(true);
+            break;
+        default:
+            Scene::keyPressEvent(event);
         }
-        break;
-    case Qt::Key_J:
-        if (character != nullptr) {
-            character->setAttackDown(true);
+    }
+    if(character_2p != nullptr){
+        switch (event->key()) {
+        case Qt::Key_Left:
+            character_2p->setLeftDown(true);
+            break;
+        case Qt::Key_Right:
+            character_2p->setRightDown(true);
+            break;
+        case Qt::Key_Down:
+            if(findNearestUnmountedMountable(character_2p->pos(), 100.0) != nullptr) {
+                character_2p->setPickDown(true);
+            } else {
+                character_2p->setGuardDown(true);
+            }
+            break;
+        case Qt::Key_1:
+            character_2p->setAttackDown(true);
+            break;
+        case Qt::Key_2:
+            character_2p->setJumpDown(true);
+            break;
+        default:
+            Scene::keyPressEvent(event);
         }
-        break;
-    case Qt::Key_K:
-        if (character != nullptr) {
-            character->setJumpDown(true);
-        }
-        break;
-    default:
-        Scene::keyPressEvent(event);
     }
 }
 
 // 这个函数用来处理角色的按键释放事件
 void BattleScene::keyReleaseEvent(QKeyEvent *event) {
-    switch (event->key()) {
-    case Qt::Key_A:
-        if (character != nullptr) {
-            character->setLeftDown(false);
-        }
-        break;
-    case Qt::Key_D:
-        if (character != nullptr) {
-            character->setRightDown(false);
-        }
-        break;
-    case Qt::Key_S:
-        if (character != nullptr) {
-            if (character->isGuardDown()) {
-                character->setGuardDown(false);
-            } else {
-                character->setPickDown(false);
+    if(character_1p != nullptr){
+        switch (event->key()) {
+        case Qt::Key_A:
+            if (character_1p != nullptr) {
+                character_1p->setLeftDown(false);
             }
+            break;
+        case Qt::Key_D:
+            if (character_1p != nullptr) {
+                character_1p->setRightDown(false);
+            }
+            break;
+        case Qt::Key_S:
+            if (character_1p != nullptr) {
+                if (character_1p->isGuardDown()) {
+                    character_1p->setGuardDown(false);
+                } else {
+                    character_1p->setPickDown(false);
+                }
+            }
+            break;
+        case Qt::Key_J:
+            if (character_1p != nullptr) {
+                character_1p->setAttackDown(false);
+            }
+            break;
+        case Qt::Key_K:
+            if (character_1p != nullptr) {
+                character_1p->setJumpDown(false);
+            }
+            break;
+        default:
+            Scene::keyReleaseEvent(event);
         }
-        break;
-    case Qt::Key_J:
-        if (character != nullptr) {
-            character->setAttackDown(false);
+    }
+    if(character_2p != nullptr){
+        switch (event->key()) {
+        case Qt::Key_Left:
+            if (character_2p != nullptr) {
+                character_2p->setLeftDown(false);
+            }
+            break;
+        case Qt::Key_Right:
+            if (character_2p != nullptr) {
+                character_2p->setRightDown(false);
+            }
+            break;
+        case Qt::Key_Down:
+            if (character_2p != nullptr) {
+                if (character_2p->isGuardDown()) {
+                    character_2p->setGuardDown(false);
+                } else {
+                    character_2p->setPickDown(false);
+                }
+            }
+            break;
+        case Qt::Key_1:
+            if (character_2p != nullptr) {
+                character_2p->setAttackDown(false);
+            }
+            break;
+        case Qt::Key_2:
+            if (character_2p != nullptr) {
+                character_2p->setJumpDown(false);
+            }
+            break;
+        default:
+            Scene::keyReleaseEvent(event);
         }
-        break;
-    case Qt::Key_K:
-        if (character != nullptr) {
-            character->setJumpDown(false);
-        }
-        break;
-    default:
-        Scene::keyReleaseEvent(event);
     }
 }
 
@@ -128,64 +188,75 @@ void BattleScene::update() {
 // 处理角色的移动逻辑
 void BattleScene::processMovement() {
     Scene::processMovement();
-    if (character != nullptr) {
-        character->setPos(character->pos() + character->getVelocity() * (double) deltaTime);
+    if (character_1p != nullptr) {
+        character_1p->setPos(character_1p->pos() + character_1p->getVelocity() * (double) deltaTime);
+    }
+    if (character_2p != nullptr) {
+        character_2p->setPos(character_2p->pos() + character_2p->getVelocity() * (double) deltaTime);
     }
 }
 
 // 碰撞检测
 void BattleScene::processCollision() {
     Scene::processCollision();
-    if (character != nullptr) {
-        // 检查角色与地图的碰撞
-        if (character->collidesWithItem(map)) {
-            if(character->pos().y() <= 0){
-                character->setPos(character->pos().x(), 0); // 防止角色掉出场景上边界
-                character->setVelocity(QPointF(character->getVelocity().x(), 0)); // 停止角色上升
+    QVector<Character *> characterVec;
+    if (character_1p != nullptr) {
+        characterVec.append(character_1p);
+    }
+    if (character_2p != nullptr) {
+        characterVec.append(character_2p);
+    }
+    for(auto &character : characterVec)
+    {
+        if (character != nullptr) {
+            // 检查角色与地图的碰撞
+            if (character->collidesWithItem(map)) {
+                if(character->pos().y() <= 0){
+                    character->setPos(character->pos().x(), 0); // 防止角色掉出场景上边界
+                    character->setVelocity(QPointF(character->getVelocity().x(), 0)); // 停止角色上升
+                }
+
+                if (character->pos().x() < 0) {
+                    character->setPos(0, character->pos().y()); // 防止角色掉出场景左边界
+                }
+                else if (character->pos().x() > sceneRect().width() - character->boundingRect().width()) {
+                    character->setPos(sceneRect().width() - character->boundingRect().width(), character->pos().y()); // 防止角色掉出场景右边界
+                }
             }
 
-            if (character->pos().x() < 0) {
-                character->setPos(0, character->pos().y()); // 防止角色掉出场景左边界
+            // 检查角色与地板的碰撞
+            if(character->pos().y() >= map->getFloorHeight() - character->boundingRect().height()) {
+                character->setPos(character->pos().x(), map->getFloorHeight() - character->boundingRect().height());
             }
-            else if (character->pos().x() > sceneRect().width() - character->boundingRect().width()) {
-                character->setPos(sceneRect().width() - character->boundingRect().width(), character->pos().y()); // 防止角色掉出场景右边界
-            }
-        }
 
-        // 检查角色与地板的碰撞
-        if(character->pos().y() >= map->getFloorHeight() - character->boundingRect().height()) {
-            character->setPos(character->pos().x(), map->getFloorHeight() - character->boundingRect().height());
-        }
-
-        // 是否在平台判断
-        if ((character->pos().y() >= map->getFloorHeight() - character->boundingRect().height())
-            ) {
-            if (!character->isOnPlatform) {
-                qDebug() << "角色站在平台上";
-            }
-            character->isOnPlatform = true;
-        }
-        else if(character->collidesWithItem(bridge)) {
-            qreal characterBottom = character->pos().y() + character->boundingRect().height();
-            qreal bridgeTop = bridge->pos().y();
-            if(characterBottom >= bridgeTop - 10 &&
-                characterBottom <= bridgeTop + 10 &&
-                character->getVelocity().y() >= 0) {
-                character->setPos(character->pos().x(), bridgeTop - character->boundingRect().height());
+            // 是否在平台判断
+            if ((character->pos().y() >= map->getFloorHeight() - character->boundingRect().height())
+                ) {
+                if (!character->isOnPlatform) {
+                    qDebug() << "角色站在平台上";
+                }
                 character->isOnPlatform = true;
             }
-            else{
+            else if(character->collidesWithItem(bridge)) {
+                qreal characterBottom = character->pos().y() + character->boundingRect().height();
+                if (characterBottom <= bridge->getCollisionLine().y2() + 10 && character->getVelocity().y() >= 0) {
+                    qDebug() << "角色站在桥上";
+                    character->setPos(character->pos().x(), bridge->getCollisionLine().y2() - character->boundingRect().height());
+                    character->isOnPlatform = true;
+                }
+                else{
+                    if (character->isOnPlatform) {
+                        qDebug() << "角色离开桥";
+                    }
+                    character->isOnPlatform = false;
+                }
+            }
+            else {
                 if (character->isOnPlatform) {
-                    qDebug() << "角色离开桥";
+                    qDebug() << "角色离开平台";
                 }
                 character->isOnPlatform = false;
             }
-        }
-        else {
-            if (character->isOnPlatform) {
-                qDebug() << "角色离开平台";
-            }
-            character->isOnPlatform = false;
         }
     }
 }
@@ -193,10 +264,16 @@ void BattleScene::processCollision() {
 // 处理拾取逻辑
 void BattleScene::processPicking() {
     Scene::processPicking();
-    if (character->isPicking()) {
-        auto mountable = findNearestUnmountedMountable(character->pos(), 100.0);
+    if (character_1p->isPicking()) {
+        auto mountable = findNearestUnmountedMountable(character_1p->pos(), 100.0);
         if (mountable != nullptr) {
-            spareArmor = dynamic_cast<Armor *>(pickupMountable(character, mountable));
+            spareArmor = dynamic_cast<Armor *>(pickupMountable(character_1p, mountable));
+        }
+    }
+    if (character_2p->isPicking()) {
+        auto mountable = findNearestUnmountedMountable(character_2p->pos(), 100.0);
+        if (mountable != nullptr) {
+            spareArmor = dynamic_cast<Armor *>(pickupMountable(character_2p, mountable));
         }
     }
 }

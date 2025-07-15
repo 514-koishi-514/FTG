@@ -12,6 +12,9 @@ public:
 
     // 获取桥的生成位置
     QPointF getSpawnPos(const QRectF &itemBoundingRect) override;
+
+    // 获取桥的判定位置
+    QLineF getCollisionLine() const;
 };
 
 #endif // BRIDGE_H
