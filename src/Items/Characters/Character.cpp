@@ -34,13 +34,23 @@ Character::Character(QGraphicsItem *parent, const QString& name) : Item(parent, 
     connect(animationTimer, &QTimer::timeout, [this]() {
         pixmapItem->setPixmap(animationFrames[currentState][currentFrame]);
         if(currentState == attack_1 || currentState == attack_2 || currentState == attack_3 || currentState == attack_4 || currentState == attack_5) {
-            qint64 newInterval = attackDuration / animationFrames[currentState].size(); // 攻击动画帧间隔
+            qint64 newInterval = attackDuration / (animationFrames[currentState].size() - 1); // 攻击动画帧间隔
             animationTimer->setInterval(newInterval);
-            currentFrame = (currentFrame + 1) % animationFrames[currentState].size();
+            if(lastState == guard && isNearHighGrass){
+                qDebug() << "攻击状态近高草丛";
+                currentFrame = animationFrames[currentState].size() - 1; // 攻击状态近高草丛为最后一帧（隐身攻击）;
+            }
+            else{
+                currentFrame = (currentFrame + 1) % animationFrames[currentState].size();
+            }
         }
         else if(currentState == down){
             animationTimer->setInterval(100); // 普通动画帧间隔
             currentFrame = (currentFrame == animationFrames[currentState].size() - 1) ? currentFrame : (currentFrame + 1);
+        }
+        else if(currentState == guard){
+            animationTimer->setInterval(100); // 普通动画帧间隔
+            currentFrame = isNearHighGrass ? 1 : 0; // 防守状态动画帧，近高草为1（隐身），远高草为0（防守）
         }
         else{
             animationTimer->setInterval(100); // 普通动画帧间隔
@@ -137,7 +147,13 @@ void Character::processInput() {
         if (currentTime - attackStartTime >= attackDuration) {
             attacking = false; // 重置攻击状态
             attackLocked = false; // 解锁攻击操作
-            setAnimationState(stand); // 切换回站立状态
+            if(lastState == guard)
+            {
+                setAnimationState(guard); // 如果之前是防守状态，切换回防守状态
+            }
+            else{
+                setAnimationState(stand); // 切换回站立状态
+            }
         }
         lastLeftDown = leftDown;
         lastRightDown = rightDown;
@@ -154,6 +170,7 @@ void Character::processInput() {
         attacking = true; // 设置攻击状态
         attackStartTime = QDateTime::currentMSecsSinceEpoch(); // 记录攻击开始时间
         auto velocity = QPointF(0,0); // 速度两个分量重置为0
+        lastState = currentState; // 记录上一个状态
 
         switch (weaponType) {
         case 1: // 拳头（无武器）
@@ -254,12 +271,6 @@ void Character::processInput() {
                 if(lastRightDown){
                     rightLocked = true; // 锁定右键
                 }
-
-                /*  以下为原设计，现在为了操作简单，我准备设计为根据角色相对位置来决定翻转
-         * 1. 获取图片实际宽度（boundingRect() 返回局部坐标系尺寸）
-        qreal imgWidth = boundingRect().width();
-         2. 水平翻转并修正位置（平移一个图片宽度）
-        setTransform(QTransform().scale(-1, 1).translate(-imgWidth, 0));*/
 
                 if(!isDoubleLeft){
                     if(!isOnTheRight){
@@ -394,9 +405,6 @@ void Character::processInput() {
             if(rightLocked && (!isRightDown() || !isLeftDown())) {
                 rightLocked = false; // 解除右键锁定
             }
-
-
-
         }
 
         setVelocity(velocity);
@@ -441,7 +449,16 @@ Armor *Character::pickupArmor(Armor *newArmor) {
 void Character::setAnimationState(AnimationState state) {
     if(currentState == state) return;
     currentState = state;
-    currentFrame = 0; // 重置帧索引
+    if(state == guard && isNearHighGrass) {
+        currentFrame = 1; // 防守状态近高草丛为1
+    }
+    else if((state == attack_1 || state == attack_2 || state == attack_3 || state == attack_4 || state == attack_5)
+            && isNearHighGrass && lastState == guard) {
+        currentFrame = animationFrames[currentState].size() - 1; // 攻击状态为最后一帧（隐身）
+    }
+    else {
+        currentFrame = 0; // 其他状态重置为0
+    }
     return;
 }
 

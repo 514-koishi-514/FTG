@@ -46,7 +46,7 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     map->scaleToFitScene(this);
     bridge->setPos(QPointF(390, 280));
     highGrassLeft->setPos(QPointF(232, 442));
-    highGrassRight->setPos(QPointF(1048, 442));
+    highGrassRight->setPos(QPointF(792, 442));
 
     if(character_1p != nullptr){
         character_1p->setPos(QPointF(100, 600 - character_1p->boundingRect().height()));
@@ -259,18 +259,16 @@ void BattleScene::processCollision() {
                 character->setPos(character->pos().x(), map->getFloorHeight() - character->boundingRect().height());
             }
 
-            // 是否在平台判断
-            if ((character->pos().y() >= map->getFloorHeight() - character->boundingRect().height())
-                ) {
+            // 是否在地面判断
+            if ((character->pos().y() >= map->getFloorHeight() - character->boundingRect().height())) {
                 if (!character->isOnPlatform) {
-                    qDebug() << "角色站在平台上";
+                    qDebug() << "角色站在地面上";
                 }
                 character->isOnPlatform = true;
             }
             else if(character->collidesWithItem(bridge)) {
                 qreal characterBottom = character->pos().y() + character->boundingRect().height();
                 if (characterBottom <= bridge->getCollisionLine().y2() + 10 && character->getVelocity().y() >= 0) {
-                    qDebug() << "角色站在桥上";
                     character->setPos(character->pos().x(), bridge->getCollisionLine().y2() - character->boundingRect().height());
                     character->isOnPlatform = true;
                 }
@@ -286,6 +284,32 @@ void BattleScene::processCollision() {
                     qDebug() << "角色离开平台";
                 }
                 character->isOnPlatform = false;
+            }
+
+            // 是否在冰面判断（由于图片问题，这里直接使用硬编码）
+            if (character->pos().x() >= 472 && character->pos().x() <= 728 && (character->pos().y() >= map->getFloorHeight() - character->boundingRect().height())) {
+                if (!character->isOnIce) {
+                    qDebug() << "角色站在冰上";
+                }
+                character->isOnIce = true;
+            }
+            else {
+                if (character->isOnIce) {
+                    qDebug() << "角色离开冰面";
+                }
+                character->isOnIce = false;
+            }
+
+            // 是否和草丛碰撞
+            if (character->collidesWithItem(highGrassLeft) || character->collidesWithItem(highGrassRight)) {
+                qDebug() << "角色在高草丛附近";
+                character->isNearHighGrass = true;
+            }
+            else {
+                if (character->isNearHighGrass) {
+                    qDebug() << "角色离开高草丛";
+                }
+                character->isNearHighGrass = false;
             }
         }
 

@@ -220,6 +220,18 @@
         <file>Items/Characters/RoleFrame/Reimu/walkFront/5.png</file>
         <file>Items/Characters/RoleFrame/Reimu/walkFront/6.png</file>
         <file>Items/Characters/RoleFrame/Reimu/walkFront/7.png</file>
+        <file>Items/Characters/RoleFrame/Reimu/guard/1.png</file>
+        <file>Items/Characters/RoleFrame/Marisa/guard/1.png</file>
+        <file>Items/Characters/RoleFrame/Reimu/attack_1/7.png</file>
+        <file>Items/Characters/RoleFrame/Reimu/attack_2/5.png</file>
+        <file>Items/Characters/RoleFrame/Reimu/attack_3/15.png</file>
+        <file>Items/Characters/RoleFrame/Reimu/attack_4/11.png</file>
+        <file>Items/Characters/RoleFrame/Reimu/attack_5/12.png</file>
+        <file>Items/Characters/RoleFrame/Marisa/attack_1/7.png</file>
+        <file>Items/Characters/RoleFrame/Marisa/attack_2/9.png</file>
+        <file>Items/Characters/RoleFrame/Marisa/attack_3/11.png</file>
+        <file>Items/Characters/RoleFrame/Marisa/attack_4/4.png</file>
+        <file>Items/Characters/RoleFrame/Marisa/attack_5/9.png</file>
     </qresource>
     <qresource prefix="/Maps">
         <file>Items/Maps/MistyLake/background/mistyLake.png</file>

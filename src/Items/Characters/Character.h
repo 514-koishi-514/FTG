@@ -67,6 +67,7 @@ public:
         down
     };
     AnimationState currentState = stand; // 当前动画状态
+    AnimationState lastState = stand; // 上一个动画状态
     QMap<AnimationState, QVector<QPixmap>> animationFrames; // 动画帧集合
     int currentFrame = 0; // 当前帧索引
     QTimer *animationTimer; // 动画定时器
@@ -75,6 +76,7 @@ public:
 
     // 游戏过程：状态与属性
     bool isOnIce = false; // 是否在冰上
+    bool isNearHighGrass = false; // 是否在高草丛附近
     bool isOnPlatform = true; // 是否在平台上
     bool isOnTheRight = true; // 是否相对在右面
     bool isCollidingWithEachOther = false; // 是否与其他角色碰撞
@@ -122,6 +124,9 @@ private:
 
     qint64 attackStartTime{}; // 攻击开始时间;
     qint64 attackDuration = 500; // 攻击持续时间(ms)
+
+    // 战斗相关
+    int hp = 100; // 生命值
 };
 
 
