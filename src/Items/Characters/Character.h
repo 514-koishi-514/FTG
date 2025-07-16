@@ -12,6 +12,7 @@
 #include "../HeadEquipments/HeadEquipment.h"
 #include "../Armors/Armor.h"
 #include "../LegEquipments/LegEquipment.h"
+#include "../Weapons/Weapon.h"
 
 class Character : public Item {
 public:
@@ -93,6 +94,7 @@ protected:
     HeadEquipment *headEquipment{};
     LegEquipment *legEquipment{};
     Armor *armor{};
+    Weapon *weapon{};
     // 运动系统protected
     QPointF velocity{};
 

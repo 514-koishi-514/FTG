@@ -6,15 +6,15 @@
 
 class Weapon : public Item, public Mountable{
 public:
-    explicit Weapon(QGraphicsItem *parent, const QString &pixmapPath, int weaponID);
+    explicit Weapon(QGraphicsItem *parent, const QString &pixmapPath);
 
     void mountToParent() override;
 
     void unmount() override;
 
-    int weaponID; // 武器ID
+    int weaponID = 0; // 武器ID
 
-    int damage; // 武器伤害值
+    int damage = 0; // 武器伤害值
 };
 
 #endif // WEAPON_H

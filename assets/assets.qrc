@@ -238,4 +238,11 @@
         <file>Items/Maps/MistyLake/terrain/bridge.png</file>
         <file>Items/Maps/MistyLake/terrain/highGrass.png</file>
     </qresource>
+    <qresource prefix="/Weapons">
+        <file>Items/Weapons/1.png</file>
+        <file>Items/Weapons/2.png</file>
+        <file>Items/Weapons/3.png</file>
+        <file>Items/Weapons/4.png</file>
+        <file>Items/Weapons/5.png</file>
+    </qresource>
 </RCC>
