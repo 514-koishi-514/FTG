@@ -52,8 +52,10 @@ public:
     void processInput();
 
     Armor* pickupArmor(Armor* newArmor);
+    Weapon* pickupWeapon(Weapon* newWeapon);
 
     // 游戏过程：动画与渲染
+
     enum ProfileType {
         A,B,C
     };
@@ -82,6 +84,9 @@ public:
     bool isOnTheRight = true; // 是否相对在右面
     bool isCollidingWithEachOther = false; // 是否与其他角色碰撞
 
+    const QRectF collisionRect = QRectF(35, 15, 50, 105); // 碰撞矩形
+    QPainterPath shape() const override;
+
     // 非游戏过程：JSON接口
     bool loadFromJson(const QString &json);
 
@@ -90,7 +95,6 @@ public:
 
 protected:
     // 装备系统
-    int weaponType = 5; // 武器类型，TODO:武器类型4是否可以连击？
     HeadEquipment *headEquipment{};
     LegEquipment *legEquipment{};
     Armor *armor{};
@@ -128,7 +132,7 @@ private:
     qint64 attackDuration = 500; // 攻击持续时间(ms)
 
     // 战斗相关
-    int hp = 1000; // 生命值
+    int hp = 100; // 生命值
 };
 
 

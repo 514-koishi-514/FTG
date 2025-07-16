@@ -18,7 +18,6 @@ public:
         if (pixmapItem != nullptr) {
             return this->pixmapItem->boundingRect();
         }
-        // 空的矩形使得空的可见物不可选、不可碰撞
         return {};
     }
 

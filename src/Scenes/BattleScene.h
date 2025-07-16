@@ -46,6 +46,7 @@ private:
     Character *character_1p;
     Character *character_2p;
     Armor *spareArmor;
+    Weapon *spareWeapon;
     Bridge *bridge;
     HighGrass *highGrassLeft;
     HighGrass *highGrassRight;

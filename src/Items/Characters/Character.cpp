@@ -11,6 +11,8 @@
 #include "../HeadEquipments/CapOfTheHero.h"
 #include "../Armors/OldShirt.h"
 #include "../LegEquipments/WellWornTrousers.h"
+#include "../Weapons/Melee.h"
+
 
 Character::Character(QGraphicsItem *parent, const QString& name) : Item(parent, ""), name(name) {
     //    ellipseItem = new QGraphicsEllipseItem(-5, -5, 10, 10, this);
@@ -62,9 +64,17 @@ Character::Character(QGraphicsItem *parent, const QString& name) : Item(parent, 
     headEquipment = new CapOfTheHero(this);
     legEquipment = new WellWornTrousers(this);
     armor = new OldShirt(this);
+    weapon = new Melee(this);
     headEquipment->mountToParent();
     legEquipment->mountToParent();
     armor->mountToParent();
+    weapon->mountToParent();
+}
+
+QPainterPath Character::shape() const {
+    QPainterPath path;
+    path.addRect(collisionRect); // 使用碰撞矩形作为形状
+    return path;
 }
 
 Character::~Character() {
@@ -172,7 +182,7 @@ void Character::processInput() {
         auto velocity = QPointF(0,0); // 速度两个分量重置为0
         lastState = currentState; // 记录上一个状态
 
-        switch (weaponType) {
+        switch (weapon->weaponID) {
         case 1: // 拳头（无武器）
             attackDuration = 500;
             setAnimationState(attack_1);
@@ -443,6 +453,22 @@ Armor *Character::pickupArmor(Armor *newArmor) {
     newArmor->mountToParent();
     armor = newArmor;
     return oldArmor;
+}
+
+// 游戏过程：武器的拾取与丢弃
+Weapon *Character::pickupWeapon(Weapon *newWeapon){
+    auto oldWeapon = weapon;
+    // 移除旧武器
+    if (oldWeapon != nullptr) {
+        oldWeapon->unmount();
+        oldWeapon->setPos(newWeapon->pos());
+        oldWeapon->setParentItem(parentItem()); // 直接移到Scene中
+    }
+    // 装备新武器
+    newWeapon->setParentItem(this);
+    newWeapon->mountToParent();
+    weapon = newWeapon;
+    return oldWeapon;
 }
 
 // 游戏过程：动画渲染

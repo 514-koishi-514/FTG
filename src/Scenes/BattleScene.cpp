@@ -7,6 +7,7 @@
 #include "BattleScene.h"
 #include "../Items/Maps/MistyLake.h"
 #include "../Items/Armors/FlamebreakerArmor.h"
+#include "../Items/Weapons/EnhancedMelee.h"
 
 BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个地图
     // This is useful if you want the scene to have the exact same dimensions as the view
@@ -19,6 +20,7 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     character_1p = new Character(nullptr, "Reimu");
     character_2p = new Character(nullptr, "Marisa");
     spareArmor = new FlamebreakerArmor(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用护甲，之后我会进行实际的修改
+    spareWeapon = new EnhancedMelee(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用武器，之后我会进行实际的修改
 
     qDebug() << "初始化";
 
@@ -39,6 +41,7 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     character_2p->isOnTheRight = true; // 2P角色在右边
     qDebug() << "添加角色2到场景中";
     addItem(spareArmor);
+    addItem(spareWeapon);
 
     qDebug() << "添加地图、角色和备用护甲到场景中";
 
@@ -54,6 +57,8 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     if(character_2p != nullptr){
         character_2p->setPos(QPointF(1000, 600 - character_2p->boundingRect().height()));
     }
+
+    // TODO:以下两个都需要改
     spareArmor->unmount();
     spareArmor->setPos(sceneRect().left() + (sceneRect().right() - sceneRect().left()) * 0.75, map->getFloorHeight() - spareArmor->boundingRect().height());
 
@@ -301,9 +306,21 @@ void BattleScene::processCollision() {
             }
 
             // 是否和草丛碰撞
-            if (character->collidesWithItem(highGrassLeft) || character->collidesWithItem(highGrassRight)) {
-                qDebug() << "角色在高草丛附近";
+            if (character->collidesWithItem(highGrassLeft) &&
+                (character->pos().x() + character->collisionRect.left()) >= highGrassLeft->pos().x() &&
+                (character->pos().x() + character->collisionRect.right()) <= highGrassLeft->pos().x() + highGrassLeft->boundingRect().width()) {
+                qDebug() << "角色在左侧高草丛附近";
                 character->isNearHighGrass = true;
+            }
+            else if(character->collidesWithItem(highGrassRight) &&
+                    (character->pos().x() + character->collisionRect.left()) >= highGrassRight->pos().x() &&
+                    (character->pos().x() + character->collisionRect.right()) <= highGrassRight->pos().x() + highGrassRight->boundingRect().width()) {
+                qDebug() << "角色在右侧高草丛附近";
+                character->isNearHighGrass = true;
+            }
+            else if(character->isNearHighGrass) {
+                qDebug() << "角色离开高草丛";
+                character->isNearHighGrass = false;
             }
             else {
                 if (character->isNearHighGrass) {
