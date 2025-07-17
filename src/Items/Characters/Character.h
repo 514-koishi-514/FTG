@@ -89,10 +89,16 @@ public:
 
     void setImageOpacity(qreal opacity);
 
+    // 游戏过程：战斗系统
+
+    int getHp() const;
+
+    void changeHp(int delta);
+
     // 非游戏过程：JSON接口
     bool loadFromJson(const QString &json);
 
-    // 辅助函数：QString转换AnimationState
+    // 辅助函数：QString转换AnimeationState
     AnimationState stringToAnimationState(const QString &qstr) const;
 
 protected:

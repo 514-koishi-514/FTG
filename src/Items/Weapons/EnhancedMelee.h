@@ -5,7 +5,7 @@
 
 class EnhancedMelee : public Weapon { // 相当于要求中的小刀
 public:
-    explicit EnhancedMelee(QGraphicsItem *parent = nullptr);
+    explicit EnhancedMelee(QGraphicsItem *parent = nullptr, const QString &pixmapPath);
 };
 
 #endif // ENHANCEDMELEE_H

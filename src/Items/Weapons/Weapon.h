@@ -13,8 +13,6 @@ public:
     void unmount() override;
 
     int weaponID = 0; // 武器ID
-
-    int damage = 0; // 武器伤害值
 };
 
 #endif // WEAPON_H

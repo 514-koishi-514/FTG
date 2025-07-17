@@ -348,7 +348,6 @@ void BattleScene::processPicking() {
         if (mountable != nullptr) {
             spareArmor = dynamic_cast<Armor *>(pickupMountable(character_1p, mountable));
             spareWeapon = dynamic_cast<Weapon *>(pickupMountable(character_1p, mountable));
-            qDebug() << spareWeapon->weaponID;
         }
     }
     if (character_2p->isPicking()) {
