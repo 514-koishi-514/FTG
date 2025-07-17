@@ -52,16 +52,14 @@
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_1/3.png",
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_1/4.png",
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_1/5.png",
-        ":/Characters/Items/Characters/RoleFrame/Reimu/attack_1/6.png",
-        ":/Characters/Items/Characters/RoleFrame/Reimu/attack_1/7.png"
+        ":/Characters/Items/Characters/RoleFrame/Reimu/attack_1/6.png"
       ],
       "attack_2": [
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_2/0.png",
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_2/1.png",
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_2/2.png",
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_2/3.png",
-        ":/Characters/Items/Characters/RoleFrame/Reimu/attack_2/4.png",
-        ":/Characters/Items/Characters/RoleFrame/Reimu/attack_2/5.png"
+        ":/Characters/Items/Characters/RoleFrame/Reimu/attack_2/4.png"
       ],
       "attack_3": [
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_3/0.png",
@@ -78,8 +76,7 @@
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_3/11.png",
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_3/12.png",
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_3/13.png",
-        ":/Characters/Items/Characters/RoleFrame/Reimu/attack_3/14.png",
-        ":/Characters/Items/Characters/RoleFrame/Reimu/attack_3/15.png"
+        ":/Characters/Items/Characters/RoleFrame/Reimu/attack_3/14.png"
       ],
       "attack_4": [
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_4/0.png",
@@ -92,8 +89,7 @@
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_4/7.png",
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_4/8.png",
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_4/9.png",
-        ":/Characters/Items/Characters/RoleFrame/Reimu/attack_4/10.png",
-        ":/Characters/Items/Characters/RoleFrame/Reimu/attack_4/11.png"
+        ":/Characters/Items/Characters/RoleFrame/Reimu/attack_4/10.png"
       ],
       "attack_5": [
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_5/0.png",
@@ -107,8 +103,7 @@
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_5/8.png",
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_5/9.png",
         ":/Characters/Items/Characters/RoleFrame/Reimu/attack_5/10.png",
-        ":/Characters/Items/Characters/RoleFrame/Reimu/attack_5/11.png",
-        ":/Characters/Items/Characters/RoleFrame/Reimu/attack_5/12.png"
+        ":/Characters/Items/Characters/RoleFrame/Reimu/attack_5/11.png"
       ],
       "jump": [
         ":/Characters/Items/Characters/RoleFrame/Reimu/jump/0.png"
@@ -120,8 +115,7 @@
         ":/Characters/Items/Characters/RoleFrame/Reimu/jumpBack/0.png"
       ],
       "guard": [
-        ":/Characters/Items/Characters/RoleFrame/Reimu/guard/0.png",
-        ":/Characters/Items/Characters/RoleFrame/Reimu/guard/1.png"
+        ":/Characters/Items/Characters/RoleFrame/Reimu/guard/0.png"
       ],
       "hit": [
         ":/Characters/Items/Characters/RoleFrame/Reimu/hit/0.png"
@@ -215,8 +209,7 @@
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_1/3.png",
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_1/4.png",
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_1/5.png",
-        ":/Characters/Items/Characters/RoleFrame/Marisa/attack_1/6.png",
-        ":/Characters/Items/Characters/RoleFrame/Marisa/attack_1/7.png"
+        ":/Characters/Items/Characters/RoleFrame/Marisa/attack_1/6.png"
       ],
       "attack_2": [
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_2/0.png",
@@ -227,8 +220,7 @@
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_2/5.png",
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_2/6.png",
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_2/7.png",
-        ":/Characters/Items/Characters/RoleFrame/Marisa/attack_2/8.png",
-        ":/Characters/Items/Characters/RoleFrame/Marisa/attack_2/9.png"
+        ":/Characters/Items/Characters/RoleFrame/Marisa/attack_2/8.png"
       ],
       "attack_3": [
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_3/0.png",
@@ -241,15 +233,13 @@
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_3/7.png",
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_3/8.png",
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_3/9.png",
-        ":/Characters/Items/Characters/RoleFrame/Marisa/attack_3/10.png",
-        ":/Characters/Items/Characters/RoleFrame/Marisa/attack_3/11.png"
+        ":/Characters/Items/Characters/RoleFrame/Marisa/attack_3/10.png"
       ],
       "attack_4": [
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_4/0.png",
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_4/1.png",
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_4/2.png",
-        ":/Characters/Items/Characters/RoleFrame/Marisa/attack_4/3.png",
-        ":/Characters/Items/Characters/RoleFrame/Marisa/attack_4/4.png"
+        ":/Characters/Items/Characters/RoleFrame/Marisa/attack_4/3.png"
       ],
       "attack_5": [
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_5/0.png",
@@ -260,8 +250,7 @@
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_5/5.png",
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_5/6.png",
         ":/Characters/Items/Characters/RoleFrame/Marisa/attack_5/7.png",
-        ":/Characters/Items/Characters/RoleFrame/Marisa/attack_5/8.png",
-        ":/Characters/Items/Characters/RoleFrame/Marisa/attack_5/9.png"
+        ":/Characters/Items/Characters/RoleFrame/Marisa/attack_5/8.png"
       ],
       "jump": [
         ":/Characters/Items/Characters/RoleFrame/Marisa/jump/0.png"
@@ -273,8 +262,7 @@
         ":/Characters/Items/Characters/RoleFrame/Marisa/jumpBack/0.png"
       ],
       "guard": [
-        ":/Characters/Items/Characters/RoleFrame/Marisa/guard/0.png",
-        ":/Characters/Items/Characters/RoleFrame/Marisa/guard/1.png"
+        ":/Characters/Items/Characters/RoleFrame/Marisa/guard/0.png"
       ],
       "hit": [
         ":/Characters/Items/Characters/RoleFrame/Marisa/hit/0.png"

@@ -87,6 +87,8 @@ public:
     const QRectF collisionRect = QRectF(35, 15, 50, 105); // 碰撞矩形
     QPainterPath shape() const override;
 
+    void setImageOpacity(qreal opacity);
+
     // 非游戏过程：JSON接口
     bool loadFromJson(const QString &json);
 

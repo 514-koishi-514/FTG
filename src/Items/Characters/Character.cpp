@@ -7,6 +7,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QTimer>
+#include <QDebug>
 #include "Character.h"
 #include "../HeadEquipments/CapOfTheHero.h"
 #include "../Armors/OldShirt.h"
@@ -38,13 +39,8 @@ Character::Character(QGraphicsItem *parent, const QString& name) : Item(parent, 
         if(currentState == attack_1 || currentState == attack_2 || currentState == attack_3 || currentState == attack_4 || currentState == attack_5) {
             qint64 newInterval = attackDuration / (animationFrames[currentState].size() - 1); // 攻击动画帧间隔
             animationTimer->setInterval(newInterval);
-            if(lastState == guard && isNearHighGrass){
-                qDebug() << "攻击状态近高草丛";
-                currentFrame = animationFrames[currentState].size() - 1; // 攻击状态近高草丛为最后一帧（隐身攻击）;
-            }
-            else{
-                currentFrame = (currentFrame + 1) % animationFrames[currentState].size();
-            }
+            currentFrame = (currentFrame + 1) % animationFrames[currentState].size();
+
         }
         else if(currentState == down){
             animationTimer->setInterval(100); // 普通动画帧间隔
@@ -52,7 +48,7 @@ Character::Character(QGraphicsItem *parent, const QString& name) : Item(parent, 
         }
         else if(currentState == guard){
             animationTimer->setInterval(100); // 普通动画帧间隔
-            currentFrame = isNearHighGrass ? 1 : 0; // 防守状态动画帧，近高草为1（隐身），远高草为0（防守）
+            currentFrame = (currentFrame + 1) % animationFrames[currentState].size();
         }
         else{
             animationTimer->setInterval(100); // 普通动画帧间隔
@@ -427,6 +423,13 @@ void Character::processInput() {
         }
     }
 
+    // 是否隐身判断
+    if((guarding && isNearHighGrass) || (attacking && isNearHighGrass && lastState == guard)){
+        setImageOpacity(0.0);
+    }
+    else{
+        setImageOpacity(1.0);
+    }
 
     lastLeftDown = leftDown;
     lastRightDown = rightDown;
@@ -437,6 +440,24 @@ void Character::processInput() {
 
 bool Character::isPicking() const { // 发生拾取动作时后进行判断，TODO:和拾取动作处理进行耦合
     return picking;
+}
+
+void Character::setImageOpacity(qreal opacity) {
+    if (pixmapItem) {
+        pixmapItem->setOpacity(opacity);
+    }
+    if (headEquipment) {
+        headEquipment->setOpacity(opacity);
+    }
+    if (legEquipment) {
+        legEquipment->setOpacity(opacity);
+    }
+    if (armor) {
+        armor->setOpacity(opacity);
+    }
+    if (weapon) {
+        weapon->setOpacity(opacity);
+    }
 }
 
 // 游戏过程：护甲的拾取与丢弃
@@ -468,6 +489,7 @@ Weapon *Character::pickupWeapon(Weapon *newWeapon){
     newWeapon->setParentItem(this);
     newWeapon->mountToParent();
     weapon = newWeapon;
+
     return oldWeapon;
 }
 
@@ -475,16 +497,7 @@ Weapon *Character::pickupWeapon(Weapon *newWeapon){
 void Character::setAnimationState(AnimationState state) {
     if(currentState == state) return;
     currentState = state;
-    if(state == guard && isNearHighGrass) {
-        currentFrame = 1; // 防守状态近高草丛为1
-    }
-    else if((state == attack_1 || state == attack_2 || state == attack_3 || state == attack_4 || state == attack_5)
-            && isNearHighGrass && lastState == guard) {
-        currentFrame = animationFrames[currentState].size() - 1; // 攻击状态为最后一帧（隐身）
-    }
-    else {
-        currentFrame = 0; // 其他状态重置为0
-    }
+    currentFrame = 0; // 重置当前帧索引
     return;
 }
 

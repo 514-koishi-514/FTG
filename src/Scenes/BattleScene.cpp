@@ -62,6 +62,9 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     spareArmor->unmount();
     spareArmor->setPos(sceneRect().left() + (sceneRect().right() - sceneRect().left()) * 0.75, map->getFloorHeight() - spareArmor->boundingRect().height());
 
+    spareWeapon->unmount();
+    spareWeapon->setPos(640, map->getFloorHeight() - spareWeapon->boundingRect().height());
+    qDebug() << "空武器的位置" << spareWeapon->pos();
     qDebug() << "设置地图、角色和备用护甲的位置";
 }
 
@@ -320,12 +323,6 @@ void BattleScene::processCollision() {
             }
             else if(character->isNearHighGrass) {
                 qDebug() << "角色离开高草丛";
-                character->isNearHighGrass = false;
-            }
-            else {
-                if (character->isNearHighGrass) {
-                    qDebug() << "角色离开高草丛";
-                }
                 character->isNearHighGrass = false;
             }
         }
