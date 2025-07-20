@@ -5,7 +5,7 @@
 
 class Fist : public MeleeItem {
 public:
-    explicit Fist(QGraphicsItem *parent, const QString &pixmapPath);
+    explicit Fist(QGraphicsItem *parent = nullptr);
 };
 
 #endif // FIST_H

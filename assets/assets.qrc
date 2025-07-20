@@ -233,4 +233,5 @@
         <file>Items/Weapons/4.png</file>
         <file>Items/Weapons/5.png</file>
     </qresource>
+    <qresource prefix="/AttackItems"/>
 </RCC>

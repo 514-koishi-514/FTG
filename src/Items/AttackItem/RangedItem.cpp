@@ -1,4 +1,5 @@
 #include "RangedItem.h"
+#include "../Maps/Bridge.h"
 
 RangedItem::RangedItem(QGraphicsItem *parent, const QString &pixmapPath)
     : Item(parent, pixmapPath) {
@@ -12,12 +13,25 @@ void RangedItem::causeDamage(Character *target) {
     }
 }
 
-Item* RangedItem::collisionWith() {
-    QList<QGraphicsItem *> collidingItems = this->collidingItems();
-    for (QGraphicsItem *item : collidingItems) {
-        if (Character *character = dynamic_cast<Character *>(item)) {
-            return character;
+void RangedItem::toDamageOrVanish() {
+    // 判断是否碰到人物（造成伤害并消失），碰到桥（直接消失）
+    QList<QGraphicsItem*> collidingItems = this->collidingItems();
+    for (QGraphicsItem* item : collidingItems) {
+        if (Character* character = dynamic_cast<Character*>(item)) {
+            causeDamage(character);
+            this->deleteLater();
+            return;
+        }
+        if (Bridge* bridge = dynamic_cast<Bridge*>(item)) {
+            // 如果碰到桥，直接消失
+            this->deleteLater();
+            return;
         }
     }
-    return nullptr; // 如果没有碰撞到任何角色，返回nullptr
+
+    // 判断是否碰到边界如地板、左右墙壁（直接消失）
+    if (this->pos().y() >= 600 - this->boundingRect().height() || this->pos().x() <= 0 || this->pos().x() >= 1280 - this->boundingRect().width()) {
+        this->deleteLater();
+        return;
+    }
 }
