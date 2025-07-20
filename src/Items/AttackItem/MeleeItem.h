@@ -11,6 +11,8 @@ public:
     void causeDamage(Character *target);
 
     int damage = 0;
+
+    Item* collisionWith();
 };
 
 #endif // MELEEITEM_H
