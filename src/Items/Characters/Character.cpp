@@ -138,6 +138,7 @@ void Character::setVelocity(const QPointF &velocity) {
 // 游戏过程：动作逻辑
 void Character::processInput() {
 
+    // 镜像判断
     if(isOnTheRight)
     {
         qreal imgWidth = boundingRect().width();
@@ -457,6 +458,23 @@ void Character::setImageOpacity(qreal opacity) {
     }
     if (weapon) {
         weapon->setOpacity(opacity);
+    }
+}
+
+// 游戏过程：战斗系统
+int Character::getHp() const {
+    return hp;
+}
+
+void Character::changeHp(int delta) {
+    hp += delta;
+    if (hp <= 0) {
+        hp = 0;
+        setAnimationState(down); // 死亡状态
+        // TODO:游戏的停止
+    }
+    else if (hp > 100) {
+        hp = 100; // 限制最大生命值
     }
 }
 

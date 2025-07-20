@@ -232,6 +232,13 @@ void BattleScene::processMovement() {
     if (character_2p != nullptr) {
         character_2p->setPos(character_2p->pos() + character_2p->getVelocity() * (double) deltaTime);
     }
+
+    for(auto e : rangedItems) {
+        if(e != nullptr) {
+            e->setPos(e->pos() + e->getVelocity() * (double) deltaTime);
+            e->toDamageOrVanish(); // 检测是否碰撞并处理
+        }
+    }
 }
 
 // 碰撞检测

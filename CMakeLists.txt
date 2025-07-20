@@ -78,31 +78,31 @@ add_executable(qt_programming_2024 src/main.cpp
         src/Items/BattleSystemWiget/HpBar.cpp
 
 
-        src/Items/AttackItem/Fist.h
-        src/Items/AttackItem/Fist.cpp
-        src/Items/AttackItem/Stick.h
-        src/Items/AttackItem/Stick.cpp
-        src/Items/AttackItem/Ball.h
-        src/Items/AttackItem/Ball.cpp
-        src/Items/AttackItem/Charm.h
-        src/Items/AttackItem/EnhancedCharm.h
-        src/Items/AttackItem/Charm.cpp
-        src/Items/AttackItem/EnhancedCharm.cpp
-        src/Items/AttackItem/MeleeItem.h
-        src/Items/AttackItem/MeleeItem.cpp
-        src/Items/AttackItem/MeleeItem.h
-        src/Items/AttackItem/RangedItem.h
-        src/Items/AttackItem/RangedItem.cpp
-        src/Items/AttackItem/Fist.h
-        src/Items/AttackItem/Fist.cpp
-        src/Items/AttackItem/Stick.h
-        src/Items/AttackItem/Stick.cpp
-        src/Items/AttackItem/Ball.h
-        src/Items/AttackItem/Ball.cpp
-        src/Items/AttackItem/Charm.h
-        src/Items/AttackItem/Charm.cpp
-        src/Items/AttackItem/EnhancedCharm.h
-        src/Items/AttackItem/EnhancedCharm.cpp
+        src/Items/AttackItems/Fist.h
+        src/Items/AttackItems/Fist.cpp
+        src/Items/AttackItems/Stick.h
+        src/Items/AttackItems/Stick.cpp
+        src/Items/AttackItems/Ball.h
+        src/Items/AttackItems/Ball.cpp
+        src/Items/AttackItems/Charm.h
+        src/Items/AttackItems/EnhancedCharm.h
+        src/Items/AttackItems/Charm.cpp
+        src/Items/AttackItems/EnhancedCharm.cpp
+        src/Items/AttackItems/MeleeItem.h
+        src/Items/AttackItems/MeleeItem.cpp
+        src/Items/AttackItems/MeleeItem.h
+        src/Items/AttackItems/RangedItem.h
+        src/Items/AttackItems/RangedItem.cpp
+        src/Items/AttackItems/Fist.h
+        src/Items/AttackItems/Fist.cpp
+        src/Items/AttackItems/Stick.h
+        src/Items/AttackItems/Stick.cpp
+        src/Items/AttackItems/Ball.h
+        src/Items/AttackItems/Ball.cpp
+        src/Items/AttackItems/Charm.h
+        src/Items/AttackItems/Charm.cpp
+        src/Items/AttackItems/EnhancedCharm.h
+        src/Items/AttackItems/EnhancedCharm.cpp
 )
 target_link_libraries(qt_programming_2024
         Qt::Core

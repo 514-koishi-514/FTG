@@ -8,9 +8,13 @@ class RangedItem : public Item {
 public:
     explicit RangedItem(QGraphicsItem *parent, const QString &pixmapPath);
 
+    QPointF getVelocity() const;
+
     void causeDamage(Character *target);
 
     void toDamageOrVanish(); // 判断是否碰到人物（造成伤害并消失），或者碰到边界如地板、左右墙壁、桥（消失）
+
+    QString fromCharacterName;
 
 protected:
     int damage = 0; // 默认伤害值为0，可以在子类中设置具体的伤害值

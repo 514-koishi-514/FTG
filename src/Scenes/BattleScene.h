@@ -12,6 +12,7 @@
 #include "../Items/Characters/Character.h"
 #include "../Items/Maps/Bridge.h"
 #include "../Items/Maps/HighGrass.h"
+#include "../Items/AttackItems/RangedItem.h"
 
 class BattleScene : public Scene {
     Q_OBJECT
@@ -50,6 +51,8 @@ private:
     Bridge *bridge;
     HighGrass *highGrassLeft;
     HighGrass *highGrassRight;
+
+    QVector<RangedItem *> rangedItems; // 存储屏幕中的子弹
 };
 
 

@@ -8,7 +8,6 @@ public:
     explicit Throw(QGraphicsItem *parent = nullptr);
 
     int ammoCapacity = 0; // 弹药容量
-    int throwSpeed = 0; // 投掷距离
 };
 
 #endif // THROW_H

@@ -13,6 +13,10 @@ void RangedItem::causeDamage(Character *target) {
     }
 }
 
+QPointF RangedItem::getVelocity() const {
+    return velocity;
+}
+
 void RangedItem::toDamageOrVanish() {
     // 判断是否碰到人物（造成伤害并消失），碰到桥（直接消失）
     QList<QGraphicsItem*> collidingItems = this->collidingItems();
