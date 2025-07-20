@@ -233,5 +233,12 @@
         <file>Items/Weapons/4.png</file>
         <file>Items/Weapons/5.png</file>
     </qresource>
-    <qresource prefix="/AttackItems"/>
+    <qresource prefix="/AttackItems">
+        <file>Items/AttackItems/Reimu/3.png</file>
+        <file>Items/AttackItems/Reimu/4.png</file>
+        <file>Items/AttackItems/Reimu/5.png</file>
+        <file>Items/AttackItems/Marisa/3.png</file>
+        <file>Items/AttackItems/Marisa/4.png</file>
+        <file>Items/AttackItems/Marisa/5.png</file>
+    </qresource>
 </RCC>
