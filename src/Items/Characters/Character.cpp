@@ -153,6 +153,26 @@ void Character::processInput() {
     if(attacking) {
         qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
         if (currentTime - attackStartTime >= attackDuration) {
+            // 这里设计为一定时间的前摇，如果攻击动作结束，发射子弹
+            if (weapon->weaponID >= 3 && weapon->weaponID <= 5) {
+                // 计算发射位置（角色前方，避免与自身重叠）
+                QPointF firePos = this->pos();
+                if (isOnTheRight) {
+                    firePos.setX(firePos.x() - 1);
+                } else {
+                    firePos.setX(firePos.x() + boundingRect().width() + 1);
+                }
+                firePos.setY(firePos.y() + boundingRect().height()/3);
+
+                qDebug() << "Character发射子弹：weaponID=" << weapon->weaponID
+                         << "，firePos=" << firePos
+                         << "，isRight=" << isOnTheRight
+                         << "，角色名=" << name; // 确认信号触发且参数有效
+
+                // 发射信号，通知场景创建子弹
+                emit fireBullet(weapon, firePos, isOnTheRight, name, playerID);
+            }
+
             attacking = false; // 重置攻击状态
             attackLocked = false; // 解锁攻击操作
             if(lastState == guard)
@@ -206,26 +226,6 @@ void Character::processInput() {
         }
 
         setVelocity(velocity); // 重置速度为0
-
-        // Debugging!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        if (weapon->weaponID >= 3 && weapon->weaponID <= 5) {
-            // 计算发射位置（角色前方，避免与自身重叠）
-            QPointF firePos = this->pos();
-            if (isOnTheRight) {
-                firePos.setX(firePos.x() - 1);
-            } else {
-                firePos.setX(firePos.x() + boundingRect().width() + 1);
-            }
-            firePos.setY(firePos.y() + boundingRect().height()/3);
-
-            qDebug() << "Character发射子弹：weaponID=" << weapon->weaponID
-                     << "，firePos=" << firePos
-                     << "，isRight=" << isOnTheRight
-                     << "，角色名=" << name; // 确认信号触发且参数有效
-
-            // 发射信号，通知场景创建子弹
-            emit fireBullet(weapon, firePos, isOnTheRight, name, playerID);
-        }
     }
     else{
         auto velocity = QPointF(0,0); // 速度两个分量重置为0
