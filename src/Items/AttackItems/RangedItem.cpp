@@ -30,10 +30,11 @@ void RangedItem::toDamageOrVanish() {
     QList<QGraphicsItem*> collidingItems = this->collidingItems();
     for (QGraphicsItem* item : std::as_const(collidingItems)) {
         if (Character* character = dynamic_cast<Character*>(item)) {
-            qDebug() << "子弹击中目标，调用deleteLater()";
+            qDebug() << "子弹碰到角色，造成伤害并调用deleteLater()";
             emit requestRemoval(this);
             causeDamage(character);
-            this->deleteLater();
+            qDebug() << "子弹造成伤害，伤害值：" << damage << ", 角色名：" << character->getName() << ", 当前血量：" << character->getHp();
+            delete this;
             return;
         }
         if (Bridge* bridge = dynamic_cast<Bridge*>(item)) {
@@ -41,6 +42,7 @@ void RangedItem::toDamageOrVanish() {
             qDebug() << "子弹碰到桥，调用deleteLater()";
             emit requestRemoval(this);
             this->deleteLater();
+            delete this;
             return;
         }
     }
@@ -49,7 +51,7 @@ void RangedItem::toDamageOrVanish() {
     if (this->pos().y() >= 600 - this->boundingRect().height() || this->pos().x() <= 0 || this->pos().x() >= 1280 - this->boundingRect().width()) {
         qDebug() << "子弹超出边界，调用deleteLater()";
         emit requestRemoval(this);
-        this->deleteLater();
+        delete this;
         return;
     }
     qDebug() << "子弹未销毁，继续存在";

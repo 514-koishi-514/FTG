@@ -23,8 +23,8 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     bridge = new Bridge();
     highGrassLeft = new HighGrass();
     highGrassRight = new HighGrass();
-    character_1p = new Character(nullptr, "Reimu");
-    character_2p = new Character(nullptr, "Marisa");
+    character_1p = new Character(nullptr, "Reimu", 1);
+    character_2p = new Character(nullptr, "Marisa", 2);
     spareArmor = new FlamebreakerArmor(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用护甲，之后我会进行实际的修改
     spareWeapon = new Ranged(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用武器，之后我会进行实际的修改
 
@@ -243,6 +243,7 @@ void BattleScene::processMovement() {
     }
 
     // 更新所有子弹位置
+
     for (auto it = bullets.begin(); it != bullets.end();) {
         RangedItem* bullet = *it;
         qDebug() << "处理子弹：" << bullet << "，容器索引=" << (it - bullets.begin()); // 确认子弹指针有效
@@ -265,12 +266,13 @@ void BattleScene::processMovement() {
 
         // 若子弹已被删除（toDamageOrVanish中调用了deleteLater），从容器移除
         if (bullet->scene() == nullptr) { // 已从场景中移除
-            it = bullets.erase(it);
             qDebug() << "子弹已销毁，从容器移除";
         } else {
             it++;
         }
     }
+
+
 }
 
 
@@ -413,7 +415,7 @@ Mountable *BattleScene::pickupMountable(Character *character, Mountable *mountab
     return nullptr;
 }
 
-void BattleScene::onBulletFired(Weapon* weapon, const QPointF& firePos, bool isRight, const QString &fromCharacterName) {
+void BattleScene::onBulletFired(Weapon* weapon, const QPointF& firePos, bool isRight, const QString &fromCharacterName, const int &fromPlayerID) {
     RangedItem* bullet = nullptr;
 
     qDebug() << "收到子弹信号：weaponID=" << weapon->weaponID
@@ -423,14 +425,17 @@ void BattleScene::onBulletFired(Weapon* weapon, const QPointF& firePos, bool isR
     switch (weapon->weaponID) {
     case 3:
         bullet = new Ball(nullptr, ":/AttackItems/Items/AttackItems/" + fromCharacterName + "/3.png");
+        bullet->fromCharacterID = fromPlayerID; // 设置发射者ID
         qDebug() << "创建了一个Ball子弹";
         break;
     case 4:
         bullet = new Charm(nullptr, ":/AttackItems/Items/AttackItems/" + fromCharacterName + "/4.png");
+        bullet->fromCharacterID = fromPlayerID; // 设置发射者ID
         qDebug() << "创建了一个Charm子弹";
         break;
     case 5:
         bullet = new EnhancedCharm(nullptr, ":/AttackItems/Items/AttackItems/" + fromCharacterName + "/5.png");
+        bullet->fromCharacterID = fromPlayerID; // 设置发射者ID
         qDebug() << "创建了一个EnhancedCharm子弹";
         break;
     default:

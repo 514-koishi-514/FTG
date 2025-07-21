@@ -13,9 +13,10 @@
 #include "../Armors/OldShirt.h"
 #include "../LegEquipments/WellWornTrousers.h"
 #include "../Weapons/Melee.h"
+#include "../Weapons/Ranged.h"
 
 
-Character::Character(QGraphicsItem *parent, const QString& name) : Item(parent, ""), name(name) {
+Character::Character(QGraphicsItem *parent, const QString& name, const int &playerID) : Item(parent, ""), name(name), playerID(playerID) {
     //    ellipseItem = new QGraphicsEllipseItem(-5, -5, 10, 10, this);
     //    // Optionally, set some properties of the ellipse
     //    ellipseItem->setBrush(Qt::green);          // Fill color
@@ -60,7 +61,7 @@ Character::Character(QGraphicsItem *parent, const QString& name) : Item(parent, 
     headEquipment = new CapOfTheHero(this);
     legEquipment = new WellWornTrousers(this);
     armor = new OldShirt(this);
-    weapon = new Melee(this);
+    weapon = new Ranged(this);
     headEquipment->mountToParent();
     legEquipment->mountToParent();
     armor->mountToParent();
@@ -206,13 +207,14 @@ void Character::processInput() {
 
         setVelocity(velocity); // 重置速度为0
 
-        if (weapon->weaponID >= 3 && weapon->weaponID <= 5) { // 假设Weapon类有isRanged()方法判断是否远程
+        // Debugging!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        if (weapon->weaponID >= 3 && weapon->weaponID <= 5) {
             // 计算发射位置（角色前方，避免与自身重叠）
             QPointF firePos = this->pos();
             if (isOnTheRight) {
-                firePos.setX(firePos.x() - boundingRect().width()/2);
+                firePos.setX(firePos.x() - 1);
             } else {
-                firePos.setX(firePos.x() + boundingRect().width()/2);
+                firePos.setX(firePos.x() + boundingRect().width() + 1);
             }
             firePos.setY(firePos.y() + boundingRect().height()/3);
 
@@ -222,7 +224,7 @@ void Character::processInput() {
                      << "，角色名=" << name; // 确认信号触发且参数有效
 
             // 发射信号，通知场景创建子弹
-            emit fireBullet(weapon, firePos, isOnTheRight, name);
+            emit fireBullet(weapon, firePos, isOnTheRight, name, playerID);
         }
     }
     else{
@@ -253,7 +255,7 @@ void Character::processInput() {
                     qDebug() << "跳跃动画";
                     setAnimationState(jump); // 切换到跳跃动画
                 }
-                velocity.setY(getVelocity().y()+0.03); // 模拟重力
+                velocity.setY(getVelocity().y() + 0.03); // 模拟重力
             }
             else{
                 velocity.setY(0);
@@ -483,6 +485,10 @@ void Character::setImageOpacity(qreal opacity) {
 // 游戏过程：战斗系统
 int Character::getHp() const {
     return hp;
+}
+
+QString Character::getName() const {
+    return name;
 }
 
 void Character::changeHp(int delta) {

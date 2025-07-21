@@ -18,7 +18,7 @@ class Character : public Item {
     Q_OBJECT
 
 public:
-    explicit Character(QGraphicsItem *parent, const QString& name);
+    explicit Character(QGraphicsItem *parent, const QString& name, const int &playerID);
     ~Character();
 
     // 游戏过程：输入控制
@@ -94,6 +94,7 @@ public:
     // 游戏过程：战斗系统
 
     int getHp() const;
+    QString getName() const;
 
     void changeHp(int delta);
 
@@ -104,6 +105,7 @@ public:
     AnimationState stringToAnimationState(const QString &qstr) const;
 
 protected:
+    int playerID; // 玩家ID，1或2
     // 装备系统
     HeadEquipment *headEquipment{};
     LegEquipment *legEquipment{};
@@ -146,7 +148,7 @@ private:
 
 signals:
     // 发射信号：武器类型、发射位置、角色朝向
-    void fireBullet(Weapon* weapon, const QPointF& firePos, bool isRight, const QString &fromCharacterName = QString());
+    void fireBullet(Weapon* weapon, const QPointF& firePos, bool isRight, const QString &fromCharacterName = QString(), const int &playerID = 1);
 };
 
 

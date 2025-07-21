@@ -7,6 +7,7 @@
 #define BATTLESCENE_H
 
 #include <QKeyEvent>
+#include <QPointer>
 #include "Scene.h"
 #include "../Items/Maps/Map.h"
 #include "../Items/Characters/Character.h"
@@ -22,6 +23,7 @@ public:
 
     void processInput() override;
 
+    // 处理移动逻辑
     void processMovement() override;
 
     void processPicking() override;
@@ -52,10 +54,10 @@ private:
     HighGrass *highGrassLeft;
     HighGrass *highGrassRight;
 
-    QVector<RangedItem *> bullets; // 存储屏幕中的子弹
+    QVector<RangedItem *> bullets;
 
 private slots:
-    void onBulletFired(Weapon* weapon, const QPointF& firePos, bool isRight, const QString &fromCharacterName = QString());
+    void onBulletFired(Weapon* weapon, const QPointF& firePos, bool isRight, const QString &fromCharacterName = QString(), const int &fromPlayerID = 1);
     void removeBulletFromContainer(RangedItem* bullet);
 };
 

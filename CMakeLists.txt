@@ -50,10 +50,10 @@ add_executable(qt_programming_2024 src/main.cpp
 
 
         src/Items/Maps/Map.cpp
-        src/Items/Characters/Reimu.h
-        src/Items/Characters/Reimu.cpp
-        src/Items/Characters/Marisa.h
-        src/Items/Characters/Marisa.cpp
+
+
+
+
         src/Items/Maps/MistyLake.h
         src/Items/Maps/MistyLake.cpp
         src/Items/Maps/HighGrass.h
