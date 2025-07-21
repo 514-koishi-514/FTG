@@ -5,6 +5,7 @@
 #include "../Characters/Character.h"
 
 class RangedItem : public Item {
+    Q_OBJECT
 public:
     explicit RangedItem(QGraphicsItem *parent, const QString &pixmapPath);
 
@@ -27,6 +28,9 @@ protected:
 
 private:
     QPixmap pixmap; // 用于存储子弹的图片
+
+signals:
+    void requestRemoval(RangedItem* self);
 };
 
 

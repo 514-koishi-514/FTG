@@ -447,9 +447,22 @@ void BattleScene::onBulletFired(Weapon* weapon, const QPointF& firePos, bool isR
         bulletVel.setX(isRight ? -bulletVel.x() : bulletVel.x()); // 右侧角色朝左发射，速度为负
         bullet->setVelocity(bulletVel);
 
-        // 将子弹添加到场景和容器中
+        connect(bullet, &RangedItem::requestRemoval, this, &BattleScene::removeBulletFromContainer);
+
         addItem(bullet);
         bullets.push_back(bullet);
         qDebug() << "子弹添加到场景，容器大小=" << bullets.size();
+    }
+}
+
+void BattleScene::removeBulletFromContainer(RangedItem* bullet) {
+    // 查找子弹在容器中的位置
+    auto it = std::find(bullets.begin(), bullets.end(), bullet);
+    if (it != bullets.end()) {
+        // 立即从容器中移除
+        bullets.erase(it);
+        qDebug() << "子弹已从容器移除，当前容器大小=" << bullets.size();
+    } else {
+        qDebug() << "警告：容器中未找到该子弹";
     }
 }
