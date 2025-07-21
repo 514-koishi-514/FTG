@@ -13,6 +13,8 @@ public:
     void unmount() override;
 
     int weaponID = 0; // 武器ID
+
+    int ammoCapacity = 0; // 弹药容量
 };
 
 #endif // WEAPON_H

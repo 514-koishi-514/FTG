@@ -417,24 +417,22 @@ void BattleScene::onBulletFired(Weapon* weapon, const QPointF& firePos, bool isR
     switch (weapon->weaponID) {
     case 3:
         bullet = new Ball(nullptr, ":/AttackItems/Items/AttackItems/" + fromCharacterName + "/3.png");
-        bullet->fromCharacterID = fromPlayerID; // 设置发射者ID
         qDebug() << "创建了一个Ball子弹";
         break;
     case 4:
         bullet = new Charm(nullptr, ":/AttackItems/Items/AttackItems/" + fromCharacterName + "/4.png");
         bullet->fromCharacterID = fromPlayerID; // 设置发射者ID
-        qDebug() << "创建了一个Charm子弹";
         break;
     case 5:
         bullet = new EnhancedCharm(nullptr, ":/AttackItems/Items/AttackItems/" + fromCharacterName + "/5.png");
         bullet->fromCharacterID = fromPlayerID; // 设置发射者ID
-        qDebug() << "创建了一个EnhancedCharm子弹";
         break;
     default:
         return; // 非远程武器不处理
     }
 
     if (bullet) {
+        bullet->fromCharacterID = fromPlayerID; // 设置发射者ID
         // 设置子弹初始位置
         bullet->setPos(firePos);
         qDebug() << "子弹初始位置：" << firePos;

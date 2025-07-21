@@ -14,6 +14,7 @@
 #include "../LegEquipments/WellWornTrousers.h"
 #include "../Weapons/Melee.h"
 #include "../Weapons/Ranged.h"
+#include "../Weapons/Throw.h"
 
 
 Character::Character(QGraphicsItem *parent, const QString& name, const int &playerID) : Item(parent, ""), name(name), playerID(playerID) {
@@ -158,9 +159,9 @@ void Character::processInput() {
                 // 计算发射位置（角色前方，避免与自身重叠）
                 QPointF firePos = this->pos();
                 if (isOnTheRight) {
-                    firePos.setX(firePos.x() - 1);
+                    firePos.setX(firePos.x());
                 } else {
-                    firePos.setX(firePos.x() + boundingRect().width() + 1);
+                    firePos.setX(firePos.x() + boundingRect().width());
                 }
                 firePos.setY(firePos.y() + boundingRect().height()/3);
 
@@ -171,6 +172,14 @@ void Character::processInput() {
 
                 // 发射信号，通知场景创建子弹
                 emit fireBullet(weapon, firePos, isOnTheRight, name, playerID);
+                weapon->ammoCapacity--; // 减少弹药数量
+                qDebug() << "武器弹药剩余：" << weapon->ammoCapacity;
+                if (weapon->ammoCapacity <= 0) {
+                    qDebug() << "武器弹药用尽，自动切换武器为Melee";
+                    delete weapon; // 删除当前武器
+                    weapon = new Melee(this); // 自动切换为近战武器
+                    weapon->mountToParent(); // 挂载新武器
+                }
             }
 
             attacking = false; // 重置攻击状态

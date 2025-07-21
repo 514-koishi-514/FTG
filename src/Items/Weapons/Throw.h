@@ -6,8 +6,6 @@
 class Throw : public Weapon { // 相当于要求中的实心球
 public:
     explicit Throw(QGraphicsItem *parent = nullptr);
-
-    int ammoCapacity = 0; // 弹药容量
 };
 
 #endif // THROW_H

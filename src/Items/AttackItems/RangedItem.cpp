@@ -50,5 +50,4 @@ void RangedItem::toDamageOrVanish() {
         isToRemove = true; // 设置为需要删除
         return;
     }
-    qDebug() << "子弹未销毁，继续存在";
 }
