@@ -21,6 +21,8 @@ public:
 
     int fromCharacterID;
 
+    bool isToRemove = false; // 是否需要删除，默认不删除
+
 protected:
     int damage = 0; // 默认伤害值为0，可以在子类中设置具体的伤害值
 
@@ -28,9 +30,6 @@ protected:
 
 private:
     QPixmap pixmap; // 用于存储子弹的图片
-
-signals:
-    void requestRemoval(RangedItem* self);
 };
 
 

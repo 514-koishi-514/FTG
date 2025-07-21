@@ -28,28 +28,25 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     spareArmor = new FlamebreakerArmor(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用护甲，之后我会进行实际的修改
     spareWeapon = new EnhancedMelee(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用武器，之后我会进行实际的修改
 
-    qDebug() << "初始化";
-
     // 将地图、角色和备用护甲添加到场景中
     addItem(map);
     addItem(bridge);
     addItem(highGrassLeft);
     addItem(highGrassRight);
-    qDebug() << "添加地图、桥和高草到场景中";
+
     if(character_1p != nullptr) {
         addItem(character_1p);
     }
-    qDebug() << "添加角色1到场景中";
+
     if(character_2p != nullptr) {
         addItem(character_2p);
     }
     character_1p->isOnTheRight = false; // 1P角色在左边
     character_2p->isOnTheRight = true; // 2P角色在右边
-    qDebug() << "添加角色2到场景中";
+
     addItem(spareArmor);
     addItem(spareWeapon);
 
-    qDebug() << "添加地图、角色和备用护甲到场景中";
 
     // 设置初始位置
     map->scaleToFitScene(this);
@@ -71,7 +68,6 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     spareWeapon->unmount();
     spareWeapon->setPos(640, map->getFloorHeight() - spareWeapon->boundingRect().height());
     qDebug() << "空武器的位置" << spareWeapon->pos();
-    qDebug() << "设置地图、角色和备用护甲的位置";
 
     connect(character_1p, &Character::fireBullet, this, &BattleScene::onBulletFired);
     connect(character_2p, &Character::fireBullet, this, &BattleScene::onBulletFired);
@@ -246,17 +242,9 @@ void BattleScene::processMovement() {
     for (auto it = bullets.begin(); it != bullets.end(); it ++) {
         if(it == nullptr)
         {
-            qDebug() << "发现空指针子弹，跳过处理";
             continue; // 跳过空指针
         }
         RangedItem* bullet = *it;
-        qDebug() << "处理子弹：" << bullet << "，容器索引=" << (it - bullets.begin()); // 确认子弹指针有效
-
-        if (!bullet) {
-            qDebug() << "发现空指针子弹，从容器移除";
-            it = bullets.erase(it);
-            continue;
-        }
 
         // 更新子弹位置（基于速度和时间差）
         bullet->setPos(bullet->pos() + bullet->getVelocity() * (double)deltaTime);
@@ -265,15 +253,18 @@ void BattleScene::processMovement() {
 
         // 处理子弹碰撞和消失
         bullet->toDamageOrVanish();
-        qDebug() << "调用toDamageOrVanish后，子弹是否在场景中：" << (bullet->scene() != nullptr);
-
-        // 若子弹已被删除（toDamageOrVanish中调用），从容器移除
-        if (bullet->scene() == nullptr) { // 已从场景中移除
-            qDebug() << "子弹已销毁，从容器移除";
-        }
     }
 
-
+    // 移除需要删除的子弹
+    for (auto it = bullets.begin(); it != bullets.end();) {
+        RangedItem* bullet = *it;
+        if (bullet->isToRemove) {
+            delete bullet; // 删除子弹对象
+            it = bullets.erase(it); // 从容器中移除
+        } else {
+            ++it; // 继续下一个子弹
+        }
+    }
 }
 
 
@@ -453,22 +444,8 @@ void BattleScene::onBulletFired(Weapon* weapon, const QPointF& firePos, bool isR
         bulletVel.setX(isRight ? -bulletVel.x() : bulletVel.x()); // 右侧角色朝左发射，速度为负
         bullet->setVelocity(bulletVel);
 
-        connect(bullet, &RangedItem::requestRemoval, this, &BattleScene::removeBulletFromContainer);
-
         addItem(bullet);
         bullets.push_back(bullet);
         qDebug() << "子弹添加到场景，容器大小=" << bullets.size();
-    }
-}
-
-void BattleScene::removeBulletFromContainer(RangedItem* bullet) {
-    // 查找子弹在容器中的位置
-    auto it = std::find(bullets.begin(), bullets.end(), bullet);
-    if (it != bullets.end()) {
-        // 立即从容器中移除
-        bullets.erase(it);
-        qDebug() << "子弹已从容器移除，当前容器大小=" << bullets.size();
-    } else {
-        qDebug() << "警告：容器中未找到该子弹";
     }
 }

@@ -58,7 +58,6 @@ private:
 
 private slots:
     void onBulletFired(Weapon* weapon, const QPointF& firePos, bool isRight, const QString &fromCharacterName = QString(), const int &fromPlayerID = 1);
-    void removeBulletFromContainer(RangedItem* bullet);
 };
 
 
