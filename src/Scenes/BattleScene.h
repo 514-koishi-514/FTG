@@ -52,7 +52,10 @@ private:
     HighGrass *highGrassLeft;
     HighGrass *highGrassRight;
 
-    QVector<RangedItem *> rangedItems; // 存储屏幕中的子弹
+    QVector<RangedItem *> bullets; // 存储屏幕中的子弹
+
+private slots:
+    void onBulletFired(Weapon* weapon, const QPointF& firePos, bool isRight, const QString &fromCharacterName = QString());
 };
 
 

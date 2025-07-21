@@ -10,6 +10,10 @@ public:
 
     QPointF getVelocity() const;
 
+    void setVelocity(const QPointF &newVelocity);
+
+    virtual void changeVelocity();
+
     void causeDamage(Character *target);
 
     void toDamageOrVanish(); // 判断是否碰到人物（造成伤害并消失），或者碰到边界如地板、左右墙壁、桥（消失）

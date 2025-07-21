@@ -8,6 +8,12 @@
 #include "../Items/Maps/MistyLake.h"
 #include "../Items/Armors/FlamebreakerArmor.h"
 #include "../Items/Weapons/EnhancedMelee.h"
+#include "../Items/Weapons/Throw.h"
+#include "../Items/Weapons/Ranged.h"
+#include "../Items/Weapons/SpellCard.h"
+#include "../Items/AttackItems/Ball.h"
+#include "../Items/AttackItems/Charm.h"
+#include "../Items/AttackItems/EnhancedCharm.h"
 
 BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个地图
     // This is useful if you want the scene to have the exact same dimensions as the view
@@ -20,7 +26,7 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     character_1p = new Character(nullptr, "Reimu");
     character_2p = new Character(nullptr, "Marisa");
     spareArmor = new FlamebreakerArmor(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用护甲，之后我会进行实际的修改
-    spareWeapon = new EnhancedMelee(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用武器，之后我会进行实际的修改
+    spareWeapon = new Ranged(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用武器，之后我会进行实际的修改
 
     qDebug() << "初始化";
 
@@ -66,6 +72,9 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     spareWeapon->setPos(640, map->getFloorHeight() - spareWeapon->boundingRect().height());
     qDebug() << "空武器的位置" << spareWeapon->pos();
     qDebug() << "设置地图、角色和备用护甲的位置";
+
+    connect(character_1p, &Character::fireBullet, this, &BattleScene::onBulletFired);
+    connect(character_2p, &Character::fireBullet, this, &BattleScene::onBulletFired);
 }
 
 // 这个函数用来处理角色输入事件
@@ -223,7 +232,7 @@ void BattleScene::update() {
     Scene::update();
 }
 
-// 处理角色的移动逻辑
+// 处理移动逻辑
 void BattleScene::processMovement() {
     Scene::processMovement();
     if (character_1p != nullptr) {
@@ -233,13 +242,31 @@ void BattleScene::processMovement() {
         character_2p->setPos(character_2p->pos() + character_2p->getVelocity() * (double) deltaTime);
     }
 
-    for(auto e : rangedItems) {
-        if(e != nullptr) {
-            e->setPos(e->pos() + e->getVelocity() * (double) deltaTime);
-            e->toDamageOrVanish(); // 检测是否碰撞并处理
+    // 更新所有子弹位置
+    for (auto it = bullets.begin(); it != bullets.end();) {
+        RangedItem* bullet = *it;
+        if (!bullet) {
+            it = bullets.erase(it);
+            continue;
+        }
+
+        // 更新子弹位置（基于速度和时间差）
+        bullet->setPos(bullet->pos() + bullet->getVelocity() * (double)deltaTime);
+        // 处理子弹物理效果（如重力，以Ball为例）
+        bullet->changeVelocity();
+
+        // 处理子弹碰撞和消失
+        bullet->toDamageOrVanish();
+
+        // 若子弹已被删除（toDamageOrVanish中调用了deleteLater），从容器移除
+        if (bullet->scene() == nullptr) { // 已从场景中移除
+            it = bullets.erase(it);
+        } else {
+            ++it;
         }
     }
 }
+
 
 // 碰撞检测
 void BattleScene::processCollision() {
@@ -396,4 +423,37 @@ Mountable *BattleScene::pickupMountable(Character *character, Mountable *mountab
         return character->pickupWeapon(weapon);
     }
     return nullptr;
+}
+
+void BattleScene::onBulletFired(Weapon* weapon, const QPointF& firePos, bool isRight, const QString &fromCharacterName) {
+    RangedItem* bullet = nullptr;
+
+    // 根据武器类型创建对应子弹
+    switch (weapon->weaponID) {
+    case 3:
+        bullet = new Ball(nullptr, ":/AttackItems/Items/AttackItems/" + fromCharacterName + "/3.png");
+        break;
+    case 4:
+        bullet = new Charm(nullptr, ":/AttackItems/Items/AttackItems/" + fromCharacterName + "/4.png");
+        break;
+    case 5:
+        bullet = new EnhancedCharm(nullptr, ":/AttackItems/Items/AttackItems/" + fromCharacterName + "/5.png");
+        break;
+    default:
+        return; // 非远程武器不处理
+    }
+
+    if (bullet) {
+        // 设置子弹初始位置
+        bullet->setPos(firePos);
+
+        // 根据角色朝向设置子弹速度方向
+        QPointF bulletVel = bullet->getVelocity();
+        bulletVel.setX(isRight ? -bulletVel.x() : bulletVel.x()); // 右侧角色朝左发射，速度为负
+        bullet->setVelocity(bulletVel);
+
+        // 将子弹添加到场景和容器中
+        addItem(bullet);
+        bullets.push_back(bullet);
+    }
 }

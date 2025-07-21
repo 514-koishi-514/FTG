@@ -15,6 +15,8 @@
 #include "../Weapons/Weapon.h"
 
 class Character : public Item {
+    Q_OBJECT
+
 public:
     explicit Character(QGraphicsItem *parent, const QString& name);
     ~Character();
@@ -141,6 +143,10 @@ private:
 
     // 战斗相关
     int hp = 100; // 生命值
+
+signals:
+    // 发射信号：武器类型、发射位置、角色朝向
+    void fireBullet(Weapon* weapon, const QPointF& firePos, bool isRight, const QString &fromCharacterName = QString());
 };
 
 

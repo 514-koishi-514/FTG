@@ -205,6 +205,20 @@ void Character::processInput() {
         }
 
         setVelocity(velocity); // 重置速度为0
+
+        if (weapon->weaponID >= 3 && weapon->weaponID <= 5) { // 假设Weapon类有isRanged()方法判断是否远程
+            // 计算发射位置（角色前方，避免与自身重叠）
+            QPointF firePos = this->pos();
+            if (isOnTheRight) {
+                firePos.setX(firePos.x() - boundingRect().width()/2);
+            } else {
+                firePos.setX(firePos.x() + boundingRect().width()/2);
+            }
+            firePos.setY(firePos.y() + boundingRect().height()/3);
+
+            // 发射信号，通知场景创建子弹
+            emit fireBullet(weapon, firePos, isOnTheRight, name);
+        }
     }
     else{
         auto velocity = QPointF(0,0); // 速度两个分量重置为0
