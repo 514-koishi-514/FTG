@@ -243,8 +243,7 @@ void BattleScene::processMovement() {
     }
 
     // 更新所有子弹位置
-
-    for (auto it = bullets.begin(); it != bullets.end();) {
+    for (auto it = bullets.begin(); it != bullets.end(); it++) {
         RangedItem* bullet = *it;
         qDebug() << "处理子弹：" << bullet << "，容器索引=" << (it - bullets.begin()); // 确认子弹指针有效
 
@@ -258,17 +257,14 @@ void BattleScene::processMovement() {
         bullet->setPos(bullet->pos() + bullet->getVelocity() * (double)deltaTime);
         // 处理子弹物理效果（如重力，以Ball为例）
         bullet->changeVelocity();
-        qDebug() << "调用changeVelocity后，新速度：(" << bullet->getVelocity().x() << "," << bullet->getVelocity().y() << ")";
 
         // 处理子弹碰撞和消失
         bullet->toDamageOrVanish();
         qDebug() << "调用toDamageOrVanish后，子弹是否在场景中：" << (bullet->scene() != nullptr);
 
-        // 若子弹已被删除（toDamageOrVanish中调用了deleteLater），从容器移除
+        // 若子弹已被删除（toDamageOrVanish中调用），从容器移除
         if (bullet->scene() == nullptr) { // 已从场景中移除
             qDebug() << "子弹已销毁，从容器移除";
-        } else {
-            it++;
         }
     }
 
