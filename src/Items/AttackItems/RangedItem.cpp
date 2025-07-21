@@ -31,7 +31,6 @@ void RangedItem::toDamageOrVanish() {
     for (QGraphicsItem* item : std::as_const(collidingItems)) {
         if (Character* character = dynamic_cast<Character*>(item)) {
             qDebug() << "子弹碰到角色，造成伤害并调用delete";
-            emit requestRemoval(this);
             causeDamage(character);
             qDebug() << "子弹造成伤害，伤害值：" << damage << ", 角色名：" << character->getName() << ", 当前血量：" << character->getHp();
             delete this;
@@ -40,7 +39,6 @@ void RangedItem::toDamageOrVanish() {
         if (Bridge* bridge = dynamic_cast<Bridge*>(item)) {
             // 如果碰到桥，直接消失
             qDebug() << "子弹碰到桥，调用delete";
-            emit requestRemoval(this);
             delete this;
             return;
         }
@@ -49,7 +47,6 @@ void RangedItem::toDamageOrVanish() {
     // 判断是否碰到边界如地板、左右墙壁（直接消失）
     if (this->pos().y() >= 600 - this->boundingRect().height() || this->pos().x() <= 0 || this->pos().x() >= 1280 - this->boundingRect().width()) {
         qDebug() << "子弹超出边界，调用delete";
-        emit requestRemoval(this);
         delete this;
         return;
     }
