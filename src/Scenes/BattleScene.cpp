@@ -26,7 +26,7 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     character_1p = new Character(nullptr, "Reimu", 1);
     character_2p = new Character(nullptr, "Marisa", 2);
     spareArmor = new FlamebreakerArmor(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用护甲，之后我会进行实际的修改
-    spareWeapon = new Throw(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用武器，之后我会进行实际的修改
+    spareWeapon = new EnhancedMelee(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用武器，之后我会进行实际的修改
 
     qDebug() << "初始化";
 
@@ -243,7 +243,12 @@ void BattleScene::processMovement() {
     }
 
     // 更新所有子弹位置
-    for (auto it = bullets.begin(); it != bullets.end(); it++) {
+    for (auto it = bullets.begin(); it != bullets.end(); it ++) {
+        if(it == nullptr)
+        {
+            qDebug() << "发现空指针子弹，跳过处理";
+            continue; // 跳过空指针
+        }
         RangedItem* bullet = *it;
         qDebug() << "处理子弹：" << bullet << "，容器索引=" << (it - bullets.begin()); // 确认子弹指针有效
 
