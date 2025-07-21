@@ -216,6 +216,11 @@ void Character::processInput() {
             }
             firePos.setY(firePos.y() + boundingRect().height()/3);
 
+            qDebug() << "Character发射子弹：weaponID=" << weapon->weaponID
+                     << "，firePos=" << firePos
+                     << "，isRight=" << isOnTheRight
+                     << "，角色名=" << name; // 确认信号触发且参数有效
+
             // 发射信号，通知场景创建子弹
             emit fireBullet(weapon, firePos, isOnTheRight, name);
         }

@@ -245,7 +245,10 @@ void BattleScene::processMovement() {
     // 更新所有子弹位置
     for (auto it = bullets.begin(); it != bullets.end();) {
         RangedItem* bullet = *it;
+        qDebug() << "处理子弹：" << bullet << "，容器索引=" << (it - bullets.begin()); // 确认子弹指针有效
+
         if (!bullet) {
+            qDebug() << "发现空指针子弹，从容器移除";
             it = bullets.erase(it);
             continue;
         }
@@ -254,15 +257,18 @@ void BattleScene::processMovement() {
         bullet->setPos(bullet->pos() + bullet->getVelocity() * (double)deltaTime);
         // 处理子弹物理效果（如重力，以Ball为例）
         bullet->changeVelocity();
+        qDebug() << "调用changeVelocity后，新速度：(" << bullet->getVelocity().x() << "," << bullet->getVelocity().y() << ")";
 
         // 处理子弹碰撞和消失
         bullet->toDamageOrVanish();
+        qDebug() << "调用toDamageOrVanish后，子弹是否在场景中：" << (bullet->scene() != nullptr);
 
         // 若子弹已被删除（toDamageOrVanish中调用了deleteLater），从容器移除
         if (bullet->scene() == nullptr) { // 已从场景中移除
             it = bullets.erase(it);
+            qDebug() << "子弹已销毁，从容器移除";
         } else {
-            ++it;
+            it++;
         }
     }
 }
@@ -303,9 +309,6 @@ void BattleScene::processCollision() {
 
             // 是否在地面判断
             if ((character->pos().y() >= map->getFloorHeight() - character->boundingRect().height())) {
-                if (!character->isOnPlatform) {
-                    qDebug() << "角色站在地面上";
-                }
                 character->isOnPlatform = true;
             }
             else if(character->collidesWithItem(bridge)) {
@@ -315,30 +318,18 @@ void BattleScene::processCollision() {
                     character->isOnPlatform = true;
                 }
                 else{
-                    if (character->isOnPlatform) {
-                        qDebug() << "角色离开桥";
-                    }
                     character->isOnPlatform = false;
                 }
             }
             else {
-                if (character->isOnPlatform) {
-                    qDebug() << "角色离开平台";
-                }
                 character->isOnPlatform = false;
             }
 
             // 是否在冰面判断（由于图片问题，这里直接使用硬编码）
             if (character->pos().x() >= 472 && character->pos().x() <= 728 && (character->pos().y() >= map->getFloorHeight() - character->boundingRect().height())) {
-                if (!character->isOnIce) {
-                    qDebug() << "角色站在冰上";
-                }
                 character->isOnIce = true;
             }
             else {
-                if (character->isOnIce) {
-                    qDebug() << "角色离开冰面";
-                }
                 character->isOnIce = false;
             }
 
@@ -346,17 +337,14 @@ void BattleScene::processCollision() {
             if (character->collidesWithItem(highGrassLeft) &&
                 (character->pos().x() + character->collisionRect.left()) >= highGrassLeft->pos().x() &&
                 (character->pos().x() + character->collisionRect.right()) <= highGrassLeft->pos().x() + highGrassLeft->boundingRect().width()) {
-                qDebug() << "角色在左侧高草丛附近";
                 character->isNearHighGrass = true;
             }
             else if(character->collidesWithItem(highGrassRight) &&
                     (character->pos().x() + character->collisionRect.left()) >= highGrassRight->pos().x() &&
                     (character->pos().x() + character->collisionRect.right()) <= highGrassRight->pos().x() + highGrassRight->boundingRect().width()) {
-                qDebug() << "角色在右侧高草丛附近";
                 character->isNearHighGrass = true;
             }
             else if(character->isNearHighGrass) {
-                qDebug() << "角色离开高草丛";
                 character->isNearHighGrass = false;
             }
         }
@@ -428,16 +416,22 @@ Mountable *BattleScene::pickupMountable(Character *character, Mountable *mountab
 void BattleScene::onBulletFired(Weapon* weapon, const QPointF& firePos, bool isRight, const QString &fromCharacterName) {
     RangedItem* bullet = nullptr;
 
+    qDebug() << "收到子弹信号：weaponID=" << weapon->weaponID
+             << "，发射者=" << fromCharacterName; // 确认信号正确传递
+
     // 根据武器类型创建对应子弹
     switch (weapon->weaponID) {
     case 3:
         bullet = new Ball(nullptr, ":/AttackItems/Items/AttackItems/" + fromCharacterName + "/3.png");
+        qDebug() << "创建了一个Ball子弹";
         break;
     case 4:
         bullet = new Charm(nullptr, ":/AttackItems/Items/AttackItems/" + fromCharacterName + "/4.png");
+        qDebug() << "创建了一个Charm子弹";
         break;
     case 5:
         bullet = new EnhancedCharm(nullptr, ":/AttackItems/Items/AttackItems/" + fromCharacterName + "/5.png");
+        qDebug() << "创建了一个EnhancedCharm子弹";
         break;
     default:
         return; // 非远程武器不处理
@@ -446,6 +440,7 @@ void BattleScene::onBulletFired(Weapon* weapon, const QPointF& firePos, bool isR
     if (bullet) {
         // 设置子弹初始位置
         bullet->setPos(firePos);
+        qDebug() << "子弹初始位置：" << firePos;
 
         // 根据角色朝向设置子弹速度方向
         QPointF bulletVel = bullet->getVelocity();
@@ -455,5 +450,6 @@ void BattleScene::onBulletFired(Weapon* weapon, const QPointF& firePos, bool isR
         // 将子弹添加到场景和容器中
         addItem(bullet);
         bullets.push_back(bullet);
+        qDebug() << "子弹添加到场景，容器大小=" << bullets.size();
     }
 }

@@ -28,8 +28,9 @@ void RangedItem::changeVelocity() {
 void RangedItem::toDamageOrVanish() {
     // 判断是否碰到人物（造成伤害并消失），碰到桥（直接消失）
     QList<QGraphicsItem*> collidingItems = this->collidingItems();
-    for (QGraphicsItem* item : collidingItems) {
+    for (QGraphicsItem* item : std::as_const(collidingItems)) {
         if (Character* character = dynamic_cast<Character*>(item)) {
+            qDebug() << "子弹击中目标，调用deleteLater()";
             causeDamage(character);
             this->deleteLater();
             return;
@@ -43,7 +44,9 @@ void RangedItem::toDamageOrVanish() {
 
     // 判断是否碰到边界如地板、左右墙壁（直接消失）
     if (this->pos().y() >= 600 - this->boundingRect().height() || this->pos().x() <= 0 || this->pos().x() >= 1280 - this->boundingRect().width()) {
+        qDebug() << "子弹超出边界，调用deleteLater()";
         this->deleteLater();
         return;
     }
+    qDebug() << "子弹未销毁，继续存在";
 }
