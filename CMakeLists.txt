@@ -103,6 +103,10 @@ add_executable(qt_programming_2024 src/main.cpp
         src/Items/AttackItems/Charm.cpp
         src/Items/AttackItems/EnhancedCharm.h
         src/Items/AttackItems/EnhancedCharm.cpp
+        src/Items/SystemWidgets/HpBar.h
+        src/Items/SystemWidgets/HpBar.cpp
+
+
 )
 target_link_libraries(qt_programming_2024
         Qt::Core

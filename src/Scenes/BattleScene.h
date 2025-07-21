@@ -14,6 +14,7 @@
 #include "../Items/Maps/Bridge.h"
 #include "../Items/Maps/HighGrass.h"
 #include "../Items/AttackItems/RangedItem.h"
+#include "../Items/SystemWidgets/HpBar.h"
 
 class BattleScene : public Scene {
     Q_OBJECT
@@ -54,7 +55,11 @@ private:
     HighGrass *highGrassLeft;
     HighGrass *highGrassRight;
 
+    HpBar *hpBar_1p;
+    HpBar *hpBar_2p;
+
     QVector<RangedItem *> bullets;
+
 
 private slots:
     void onBulletFired(Weapon* weapon, const QPointF& firePos, bool isRight, const QString &fromCharacterName = QString(), const int &fromPlayerID = 1);

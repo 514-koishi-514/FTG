@@ -71,6 +71,14 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
 
     connect(character_1p, &Character::fireBullet, this, &BattleScene::onBulletFired);
     connect(character_2p, &Character::fireBullet, this, &BattleScene::onBulletFired);
+
+    // 创建血条
+    hpBar_1p = new HpBar(character_1p->getMaxHp(), nullptr);
+    hpBar_1p->setPos(150, 50); // 设置1P血条位置
+    addItem(hpBar_1p);
+    hpBar_2p = new HpBar(character_2p->getMaxHp(), nullptr);
+    hpBar_2p->setPos(1030, 50); // 设置2P血条位置
+    addItem(hpBar_2p);
 }
 
 // 这个函数用来处理角色输入事件
@@ -92,6 +100,14 @@ void BattleScene::processInput() {
     }
     if (character_2p != nullptr) {
         character_2p->processInput();
+    }
+
+    // 更新血条
+    if (hpBar_1p != nullptr && character_1p != nullptr) {
+        hpBar_1p->setHp(character_1p->getHp());
+    }
+    if (hpBar_2p != nullptr && character_2p != nullptr) {
+        hpBar_2p->setHp(character_2p->getHp());
     }
 }
 

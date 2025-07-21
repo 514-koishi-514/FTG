@@ -496,8 +496,16 @@ int Character::getHp() const {
     return hp;
 }
 
+int Character::getMaxHp() const {
+    return maxHp;
+}
+
 QString Character::getName() const {
     return name;
+}
+
+QPixmap Character::getFacePixmap() const {
+    return facePixmap;
 }
 
 void Character::changeHp(int delta) {

@@ -94,6 +94,9 @@ public:
     // 游戏过程：战斗系统
 
     int getHp() const;
+
+    int getMaxHp() const;
+
     QString getName() const;
 
     void changeHp(int delta);
@@ -103,6 +106,9 @@ public:
 
     // 辅助函数：QString转换AnimeationState
     AnimationState stringToAnimationState(const QString &qstr) const;
+
+    // 非游戏过程：获取角色立绘
+    QPixmap getFacePixmap() const;
 
 protected:
     int playerID; // 玩家ID，1或2
@@ -145,6 +151,7 @@ private:
 
     // 战斗相关
     int hp = 100; // 生命值
+    int maxHp = 100; // 最大生命值
 
 signals:
     // 发射信号：武器类型、发射位置、角色朝向
