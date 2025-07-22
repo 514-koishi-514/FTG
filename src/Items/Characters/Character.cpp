@@ -535,6 +535,12 @@ void Character::changeHp(int delta) {
 
 void Character::changeArmorHp(int delta){
     armor->changeArmorValue(delta);
+
+    if (armor->armorType == Heavy && armor->armorValue <= 0) {
+        delete armor;
+        armor = new DefaultArmor(this);
+        armor->mountToParent();
+    }
 }
 
 void Character::takeMeleeDamage(int damage) {
@@ -560,14 +566,21 @@ Armor *Character::pickupArmor(Armor *newArmor) {
     // 移除旧护甲
     if (oldArmor != nullptr) {
         oldArmor->unmount();
-        oldArmor->setPos(newArmor->pos());
-        oldArmor->setParentItem(parentItem()); // 直接移到Scene中
+
+        // 如果是DefaultArmor，直接delete，不生成掉落物
+        if (oldArmor->armorType == Default) {
+            delete oldArmor;
+        } else {
+            oldArmor->setPos(newArmor->pos());
+            oldArmor->setParentItem(parentItem());
+        }
     }
     // 装备新护甲
     newArmor->setParentItem(this);
     newArmor->mountToParent();
     armor = newArmor;
-    return oldArmor;
+    // 如果是DefaultArmor被直接delete，这里返回nullptr
+    return (oldArmor && oldArmor->armorType != Default) ? oldArmor : nullptr;
 }
 
 // 游戏过程：武器的拾取与丢弃
