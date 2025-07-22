@@ -102,7 +102,7 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
 
     dropTimer = new QTimer(this);
     connect(dropTimer, &QTimer::timeout, this, &BattleScene::spawnRandomDrop);
-    dropTimer->start(5000); // 每30秒
+    dropTimer->start(10000); // 每30秒
 }
 
 // 这个函数用来处理角色输入事件
@@ -437,7 +437,30 @@ void BattleScene::processCollision() {
         character_1p->isCollidingWithEachOther = false;
         character_2p->isCollidingWithEachOther = false;
     }
+
+    // 掉落道具判断
+    for (auto item : floatingMountables) {
+        item->setVelocity(QPointF(0, item->getVelocity().y() + 0.03));
+        if (item->pos().y() >= map->getFloorHeight() - item->boundingRect().height()) {
+            item->setPos(item->pos().x(), map->getFloorHeight() - item->boundingRect().height());
+            item->setVelocity(QPointF(0, 0)); // 停止下落
+            onGroundMountables.push_back(item);
+            floatingMountables.removeOne(item); // 从浮动列表中移除
+        }
+        else if(item->collidesWithItem(bridge)) {
+            qreal characterBottom = item->pos().y() + item->boundingRect().height();
+            if (characterBottom <= bridge->getCollisionLine().y2() + 10 && item->getVelocity().y() >= 0) {
+                item->setVelocity(QPointF(0, 0)); // 停止下落
+                onGroundMountables.push_back(item);
+                floatingMountables.removeOne(item); // 从浮动列表中移除
+            }
+        }
+        else {
+            item->setPos(item->pos() + item->getVelocity() * (double) deltaTime);
+        }
+    }
 }
+
 
 // 处理拾取逻辑
 void BattleScene::processPicking() {

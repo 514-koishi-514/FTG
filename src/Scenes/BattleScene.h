@@ -82,6 +82,7 @@ private:
 
     QTimer* dropTimer = nullptr;
     QVector<Item*> floatingMountables; // 当前场景中所有自由掉落装备
+    QVector<Item*> onGroundMountables; // 当前场景中所有已放置装备
     void spawnRandomDrop();
 
     void showGameOverScreen();

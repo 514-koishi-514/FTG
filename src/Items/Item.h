@@ -27,7 +27,18 @@ public:
         // 具体由子类实现
     }
 
+    QPointF getVelocity() const {
+        return velocity;
+    }
+
+    QPointF setVelocity(const QPointF &newVelocity) {
+        velocity = newVelocity;
+        return velocity;
+    }
+
 protected:
+    QPointF velocity{};
+
     QGraphicsPixmapItem *pixmapItem{};
 };
 

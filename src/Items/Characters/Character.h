@@ -43,10 +43,7 @@ public:
     void setGuardDown(bool guardDown);
 
     // 游戏过程：状态与属性设置
-    [[nodiscard]] const QPointF &getVelocity() const;
     [[nodiscard]] bool isPicking() const;
-
-    void setVelocity(const QPointF &velocity);
 
     // 游戏过程：动作逻辑
     void processInput();

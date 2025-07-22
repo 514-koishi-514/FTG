@@ -122,15 +122,6 @@ void Character::setGuardDown(bool guardDown) {
     Character::guardDown = guardDown;
 }
 
-// 游戏过程：状态与属性设置
-const QPointF &Character::getVelocity() const {
-    return velocity;
-}
-
-void Character::setVelocity(const QPointF &velocity) {
-    Character::velocity = velocity;
-}
-
 // 游戏过程：动作逻辑
 void Character::processInput() {
 
