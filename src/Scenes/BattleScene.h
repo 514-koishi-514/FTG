@@ -8,6 +8,10 @@
 
 #include <QKeyEvent>
 #include <QPointer>
+#include <QGraphicsProxyWidget>
+#include <QPushButton>
+#include <QLabel>
+#include <QApplication>
 #include "Scene.h"
 #include "../Items/Maps/Map.h"
 #include "../Items/Characters/Character.h"
@@ -67,6 +71,18 @@ private:
     AmmoBar *ammoBar_2p;
 
     QVector<RangedItem *> bullets;
+
+    bool gameOver = false;
+    QString winnerName;
+    QGraphicsProxyWidget* winnerLabelProxy = nullptr;
+    QGraphicsProxyWidget* restartButtonProxy = nullptr;
+    QLabel* winnerLabel = nullptr;
+    QPushButton* restartButton = nullptr;
+    QList<QTimer*> allTimers; // 用于保存所有需要停止的timer指针
+
+    void showGameOverScreen();
+    void restartGame();
+    void stopAllTimers(); // 停止所有游戏相关timer
 
 
 private slots:

@@ -103,6 +103,7 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
 
 // 这个函数用来处理角色输入事件
 void BattleScene::processInput() {
+    if (gameOver) return;
     Scene::processInput();
     if (character_1p != nullptr && character_2p != nullptr)
     {
@@ -148,6 +149,25 @@ void BattleScene::processInput() {
     if (ammoBar_2p != nullptr && character_2p != nullptr) {
         ammoBar_2p->setMaxQuantity(character_2p->getMaxAmmoQuantity());
         ammoBar_2p->setQuantity(character_2p->getAmmoQuantity());
+    }
+
+    // 检查游戏是否结束
+    if (!gameOver) {
+        if (character_1p && character_1p->getHp() <= 0) {
+            character_1p->setAnimationState(Character::down);
+            character_2p->setAnimationState(Character::stand);
+            winnerName = character_2p ? character_2p->getName() : "???";
+            gameOver = true;
+            showGameOverScreen();
+            stopAllTimers();
+        } else if (character_2p && character_2p->getHp() <= 0) {
+            character_2p->setAnimationState(Character::down);
+            character_1p->setAnimationState(Character::stand);
+            winnerName = character_1p ? character_1p->getName() : "???";
+            gameOver = true;
+            showGameOverScreen();
+            stopAllTimers();
+        }
     }
 
 }
@@ -503,4 +523,45 @@ void BattleScene::onBulletFired(Weapon* weapon, const QPointF& firePos, bool isR
         bullets.push_back(bullet);
         qDebug() << "子弹添加到场景，容器大小=" << bullets.size();
     }
+}
+
+void BattleScene::showGameOverScreen() {
+    if (!winnerLabel) {
+        winnerLabel = new QLabel;
+        winnerLabel->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+        winnerLabel->setStyleSheet("font-size: 32px; color: red; background: rgba(255,255,255,0.8);");
+        winnerLabelProxy = addWidget(winnerLabel);
+        winnerLabelProxy->setZValue(10);
+        winnerLabelProxy->setPos(0, 0);
+        winnerLabelProxy->resize(sceneRect().width(), 60);
+    }
+    winnerLabel->setText(QString("%1 获胜！").arg(winnerName));
+    winnerLabelProxy->show();
+
+    if (!restartButton) {
+        restartButton = new QPushButton("退出");
+        restartButtonProxy = addWidget(restartButton);
+        restartButtonProxy->setZValue(10);
+        restartButtonProxy->setPos(sceneRect().width()/2-60, sceneRect().height()/2);
+        restartButtonProxy->resize(120, 40);
+        connect(restartButton, &QPushButton::clicked, this, &BattleScene::restartGame);
+    }
+    restartButtonProxy->show();
+}
+
+// 停止所有定时器（如有多个定时器都可以放进 allTimers）
+void BattleScene::stopAllTimers() {
+    for (QTimer* timer : allTimers) {
+        if (timer) timer->stop();
+    }
+    // 如有其它要停止的东西，也可以加在这里
+}
+
+// 重启游戏
+void BattleScene::restartGame() {
+    if (winnerLabelProxy) winnerLabelProxy->hide();
+    if (restartButtonProxy) restartButtonProxy->hide();
+    // 推荐 emit 一个信号让主窗口重启场景
+    // emit requestRestart();
+    qApp->exit(0); // 或换成你的重启方式
 }

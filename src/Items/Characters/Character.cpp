@@ -525,8 +525,6 @@ void Character::changeHp(int delta) {
     hp += delta;
     if (hp <= 0) {
         hp = 0;
-        setAnimationState(down); // 死亡状态
-        // TODO:游戏的停止
     }
     else if (hp > 100) {
         hp = 100; // 限制最大生命值
