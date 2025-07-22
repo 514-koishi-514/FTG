@@ -27,3 +27,10 @@ void Armor::unmount() {
         pixmapItem->setPos(0, 0);
     }
 }
+
+void Armor::changeArmorValue(int delta) {
+    armorValue += delta;
+    if (armorValue < 0) {
+        armorValue = 0;
+    }
+}

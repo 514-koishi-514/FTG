@@ -95,6 +95,14 @@ public:
 
     int getMaxHp() const;
 
+    int getArmor() const;
+
+    int getMaxArmor() const;
+
+    int getAmmoQuantity() const;
+
+    int getMaxAmmoQuantity() const;
+
     QString getName() const;
 
     void changeHp(int delta);

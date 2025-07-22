@@ -16,6 +16,8 @@ public:
 
     int ammoCapacity = 0; // 弹药容量
 
+    int maxAmmoCapacity = 0; // 最大弹药数
+
     int damage = 0; // 武器伤害值
 };
 

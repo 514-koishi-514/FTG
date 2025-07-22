@@ -26,7 +26,7 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     highGrassRight = new HighGrass();
     character_1p = new Character(nullptr, "Reimu", 1);
     character_2p = new Character(nullptr, "Marisa", 2);
-    spareArmor = new HeavyArmor(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用护甲，之后我会进行实际的修改
+    spareArmor = new class HeavyArmor(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用护甲，之后我会进行实际的修改
     spareWeapon = new EnhancedMelee(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用武器，之后我会进行实际的修改
 
     // 将地图、角色和备用护甲添加到场景中
@@ -83,6 +83,22 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     hpBar_2p = new HpBar(character_2p->getMaxHp(), nullptr);
     hpBar_2p->setPos(1030, 50); // 设置2P血条位置
     addItem(hpBar_2p);
+
+    // 创建护甲条
+    armorBar_1p = new ArmorBar(character_1p->getMaxArmor(), nullptr);
+    armorBar_1p->setPos(150, 80); // 设置1P护甲条位置
+    addItem(armorBar_1p);
+    armorBar_2p = new ArmorBar(character_2p->getMaxArmor(), nullptr);
+    armorBar_2p->setPos(1030, 80); // 设置2P护甲条位置
+    addItem(armorBar_2p);
+
+    // 创建子弹条
+    ammoBar_1p = new AmmoBar(character_1p->getMaxAmmoQuantity(), nullptr);
+    ammoBar_1p->setPos(150, 110); // 设置1P子弹条位置
+    addItem(ammoBar_1p);
+    ammoBar_2p = new AmmoBar(character_2p->getMaxAmmoQuantity(), nullptr);
+    ammoBar_2p->setPos(1030, 110); // 设置2P子弹条位置
+    addItem(ammoBar_2p);
 }
 
 // 这个函数用来处理角色输入事件
@@ -113,6 +129,27 @@ void BattleScene::processInput() {
     if (hpBar_2p != nullptr && character_2p != nullptr) {
         hpBar_2p->setHp(character_2p->getHp());
     }
+
+    // 更新护甲条
+    if (armorBar_1p != nullptr && character_1p != nullptr) {
+        armorBar_1p->setMaxHp(character_1p->getMaxArmor());
+        armorBar_1p->setHp(character_1p->getArmor());
+    }
+    if (armorBar_2p != nullptr && character_2p != nullptr) {
+        armorBar_2p->setMaxHp(character_2p->getMaxArmor());
+        armorBar_2p->setHp(character_2p->getArmor());
+    }
+
+    // 更新子弹条
+    if (ammoBar_1p != nullptr && character_1p != nullptr) {
+        ammoBar_1p->setMaxQuantity(character_1p->getMaxAmmoQuantity());
+        ammoBar_1p->setQuantity(character_1p->getAmmoQuantity());
+    }
+    if (ammoBar_2p != nullptr && character_2p != nullptr) {
+        ammoBar_2p->setMaxQuantity(character_2p->getMaxAmmoQuantity());
+        ammoBar_2p->setQuantity(character_2p->getAmmoQuantity());
+    }
+
 }
 
 // 这个函数用来处理角色的按键事件

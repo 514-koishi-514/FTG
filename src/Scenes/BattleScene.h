@@ -15,6 +15,8 @@
 #include "../Items/Maps/HighGrass.h"
 #include "../Items/AttackItems/RangedItem.h"
 #include "../Items/SystemWidgets/HpBar.h"
+#include "../Items/SystemWidgets/ArmorBar.h"
+#include "../Items/SystemWidgets/AmmoBar.h"
 
 class BattleScene : public Scene {
     Q_OBJECT
@@ -57,6 +59,12 @@ private:
 
     HpBar *hpBar_1p;
     HpBar *hpBar_2p;
+
+    ArmorBar *armorBar_1p;
+    ArmorBar *armorBar_2p;
+
+    AmmoBar *ammoBar_1p;
+    AmmoBar *ammoBar_2p;
 
     QVector<RangedItem *> bullets;
 

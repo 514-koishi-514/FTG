@@ -9,6 +9,13 @@
 #include "../Item.h"
 #include "../Mountable.h"
 
+enum ArmorType {
+    DefaultArmor,
+    LightArmor,
+    HeavyArmor,
+    NoArmor
+};
+
 class Armor : public Item, public Mountable {
 public:
     explicit Armor(QGraphicsItem *parent, const QString &pixmapPath);
@@ -18,6 +25,10 @@ public:
     void unmount() override;
 
     int armorValue = 0;
+
+    int maxArmorValue = 0;
+
+    void changeArmorValue(int delta);
 };
 
 

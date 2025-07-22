@@ -57,11 +57,6 @@ add_executable(qt_programming_2024 src/main.cpp
         src/Items/Weapons/Ranged.cpp
         src/Items/Weapons/SpellCard.h
         src/Items/Weapons/SpellCard.cpp
-        src/Items/BattleSystemWiget/Face.h
-        src/Items/BattleSystemWiget/Face.cpp
-        src/Items/BattleSystemWiget/HpBar.h
-        src/Items/BattleSystemWiget/HpBar.cpp
-
 
 
 
@@ -91,6 +86,12 @@ add_executable(qt_programming_2024 src/main.cpp
         src/Items/Armors/LightArmor.cpp
         src/Items/Armors/HeavyArmor.h
         src/Items/Armors/HeavyArmor.cpp
+        src/Items/SystemWidgets/ArmorBar.h
+        src/Items/SystemWidgets/ArmorBar.cpp
+        src/Items/SystemWidgets/HpBar.cpp
+        src/Items/SystemWidgets/ArmorBar.cpp
+        src/Items/SystemWidgets/AmmoBar.h
+        src/Items/SystemWidgets/AmmoBar.cpp
 
 
 )

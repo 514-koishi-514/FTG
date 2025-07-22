@@ -57,7 +57,7 @@ Character::Character(QGraphicsItem *parent, const QString& name, const int &play
     });
     animationTimer->start(100); // 每100毫秒更新一次动画帧
 
-    armor = new DefaultArmor(this);
+    armor = new class DefaultArmor(this);
     weapon = new Ranged(this);
     armor->mountToParent();
     weapon->mountToParent();
@@ -491,6 +491,22 @@ int Character::getHp() const {
 
 int Character::getMaxHp() const {
     return maxHp;
+}
+
+int Character::getArmor() const {
+    return armor ? armor->armorValue : 0; // 如果没有护甲，返回0
+}
+
+int Character::getMaxArmor() const {
+    return armor ? armor->maxArmorValue : 0; // 如果没有护甲，返回0
+}
+
+int Character::getAmmoQuantity() const {
+    return weapon ? weapon->ammoCapacity : 0; // 如果没有武器，返回0
+}
+
+int Character::getMaxAmmoQuantity() const {
+    return weapon ? weapon->maxAmmoCapacity : 0; // 如果没有武器，返回0
 }
 
 QString Character::getName() const {
