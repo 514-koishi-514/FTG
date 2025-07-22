@@ -472,13 +472,20 @@ void BattleScene::processPicking() {
             spareArmor = dynamic_cast<Armor *>(pickupMountable(character_1p, mountable));
             spareWeapon = dynamic_cast<Weapon *>(pickupMountable(character_1p, mountable));
         }
-
+        Props *props = findNearestProps(character_1p->pos(), 100.0);
+        if (props != nullptr) {
+            pickupProp(character_1p, props);
+        }
     }
     if (character_2p->isPicking()) {
         auto mountable = findNearestUnmountedMountable(character_2p->pos(), 100.0);
         if (mountable != nullptr) {
             spareArmor = dynamic_cast<Armor *>(pickupMountable(character_2p, mountable));
             spareWeapon = dynamic_cast<Weapon *>(pickupMountable(character_2p, mountable));
+        }
+        auto props = findNearestProps(character_1p->pos(), 100.0);
+        if (props != nullptr) {
+            pickupProp(character_1p, props);
         }
     }
 }
