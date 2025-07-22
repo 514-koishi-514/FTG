@@ -28,6 +28,8 @@ public:
 
     int maxArmorValue = 0;
 
+    ArmorType armorType = NoArmor;
+
     void changeArmorValue(int delta);
 };
 

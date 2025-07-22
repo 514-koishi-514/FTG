@@ -530,7 +530,13 @@ void Character::changeHp(int delta) {
 }
 
 void Character::takeMeleeDamage(int damage) {
+    if (armor->armorType == LightArmor){
+        qDebug() << "护甲";
+        changeHp(-damage/2); // 受到伤害
+    }
+    else {
         changeHp(-damage); // 受到伤害
+    }
 }
 
 void Character::causeDamage(int damage, Character *target) {

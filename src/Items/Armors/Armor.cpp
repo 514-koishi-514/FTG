@@ -34,3 +34,4 @@ void Armor::changeArmorValue(int delta) {
         armorValue = 0;
     }
 }
+
