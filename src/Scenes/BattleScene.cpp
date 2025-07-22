@@ -346,8 +346,6 @@ void BattleScene::processMovement() {
             ++it; // 继续下一个子弹
         }
     }
-
-    // 掉落出啊
 }
 
 
