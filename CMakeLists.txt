@@ -97,6 +97,12 @@ add_executable(qt_programming_2024 src/main.cpp
         src/Items/AttackItems/EnhancedCharm.cpp
         src/Items/SystemWidgets/HpBar.h
         src/Items/SystemWidgets/HpBar.cpp
+        src/Items/Armors/DefaultArmor.h
+        src/Items/Armors/DefaultArmor.cpp
+        src/Items/Armors/LightArmor.h
+        src/Items/Armors/LightArmor.cpp
+        src/Items/Armors/HeavyArmor.h
+        src/Items/Armors/HeavyArmor.cpp
 
 
 )

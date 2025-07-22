@@ -6,7 +6,8 @@
 #include <QDebug>
 #include "BattleScene.h"
 #include "../Items/Maps/MistyLake.h"
-#include "../Items/Armors/FlamebreakerArmor.h"
+#include "../Items/Armors/LightArmor.h"
+#include "../Items/Armors/HeavyArmor.h"
 #include "../Items/Weapons/EnhancedMelee.h"
 #include "../Items/Weapons/Throw.h"
 #include "../Items/Weapons/Ranged.h"
@@ -25,7 +26,7 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     highGrassRight = new HighGrass();
     character_1p = new Character(nullptr, "Reimu", 1);
     character_2p = new Character(nullptr, "Marisa", 2);
-    spareArmor = new FlamebreakerArmor(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用护甲，之后我会进行实际的修改
+    spareArmor = new HeavyArmor(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用护甲，之后我会进行实际的修改
     spareWeapon = new EnhancedMelee(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用武器，之后我会进行实际的修改
 
     // 将地图、角色和备用护甲添加到场景中

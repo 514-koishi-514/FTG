@@ -5,7 +5,9 @@
 
 #include "Map.h"
 
-Map::Map(QGraphicsItem *parent, const QString &pixmapPath) : Item(parent, pixmapPath) {}
+Map::Map(QGraphicsItem *parent, const QString &pixmapPath) : Item(parent, pixmapPath) {
+    setZValue(-10);
+}
 
 void Map::scaleToFitScene(QGraphicsScene *scene) {
     // 计算缩放因子以使项目适合整个场景

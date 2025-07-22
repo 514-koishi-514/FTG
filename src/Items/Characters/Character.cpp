@@ -10,7 +10,7 @@
 #include <QDebug>
 #include "Character.h"
 #include "../HeadEquipments/CapOfTheHero.h"
-#include "../Armors/OldShirt.h"
+#include "../Armors/DefaultArmor.h"
 #include "../LegEquipments/WellWornTrousers.h"
 #include "../Weapons/Melee.h"
 #include "../Weapons/Ranged.h"
@@ -61,7 +61,7 @@ Character::Character(QGraphicsItem *parent, const QString& name, const int &play
 
     headEquipment = new CapOfTheHero(this);
     legEquipment = new WellWornTrousers(this);
-    armor = new OldShirt(this);
+    armor = new DefaultArmor(this);
     weapon = new Ranged(this);
     headEquipment->mountToParent();
     legEquipment->mountToParent();

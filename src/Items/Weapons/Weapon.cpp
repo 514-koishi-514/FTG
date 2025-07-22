@@ -2,6 +2,7 @@
 
 Weapon::Weapon(QGraphicsItem *parent, const QString &pixmapPath)
     : Item(parent, pixmapPath) {
+    setZValue(1);
 }
 
 void Weapon::mountToParent() {
