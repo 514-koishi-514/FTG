@@ -2,4 +2,5 @@
 
 LightArmor::LightArmor(QGraphicsItem *parent) : Armor(parent,
                                                        ":/Items/Armors/LightArmor/LightArmor.png") {
+    armorValue = 50;
 }

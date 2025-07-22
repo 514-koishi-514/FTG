@@ -16,6 +16,8 @@ public:
     void mountToParent() override;
 
     void unmount() override;
+
+    int armorValue = 0;
 };
 
 
