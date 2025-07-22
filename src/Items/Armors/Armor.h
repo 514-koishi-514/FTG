@@ -10,10 +10,10 @@
 #include "../Mountable.h"
 
 enum ArmorType {
-    DefaultArmor,
-    LightArmor,
-    HeavyArmor,
-    NoArmor
+    Default,
+    Light,
+    Heavy,
+    No
 };
 
 class Armor : public Item, public Mountable {
@@ -28,7 +28,7 @@ public:
 
     int maxArmorValue = 0;
 
-    ArmorType armorType = NoArmor;
+    ArmorType armorType = No;
 
     void changeArmorValue(int delta);
 };

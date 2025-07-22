@@ -5,5 +5,5 @@ HeavyArmor::HeavyArmor(QGraphicsItem *parent) : Armor(parent,
     // 重型护甲的构造函数
     armorValue = 100; // 设置重型护甲值
     maxArmorValue = 100; // 设置重型护甲的最大值
-    armorType = HeavyArmor; // 设置护甲类型为重型护甲
+    armorType = Heavy; // 设置护甲类型为重型护甲
 }

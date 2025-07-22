@@ -95,6 +95,8 @@ public:
 
     int getMaxHp() const;
 
+    ArmorType getArmorType() const;
+
     int getArmor() const;
 
     int getMaxArmor() const;
@@ -106,6 +108,8 @@ public:
     QString getName() const;
 
     void changeHp(int delta);
+
+    void changeArmorHp(int delta);
 
     void causeDamage(int damage, Character *target = nullptr);
 

@@ -501,6 +501,10 @@ int Character::getMaxArmor() const {
     return armor ? armor->maxArmorValue : 0; // 如果没有护甲，返回0
 }
 
+ArmorType Character::getArmorType() const {
+    return armor ? armor->armorType : No; // 如果没有护甲，返回无护甲类型
+}
+
 int Character::getAmmoQuantity() const {
     return weapon ? weapon->ammoCapacity : 0; // 如果没有武器，返回0
 }
@@ -529,8 +533,12 @@ void Character::changeHp(int delta) {
     }
 }
 
+void Character::changeArmorHp(int delta){
+    armor->changeArmorValue(delta);
+}
+
 void Character::takeMeleeDamage(int damage) {
-    if (armor->armorType == LightArmor){
+    if (armor->armorType == Light){
         qDebug() << "护甲";
         changeHp(-damage/2); // 受到伤害
     }

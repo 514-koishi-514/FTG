@@ -8,8 +8,16 @@ RangedItem::RangedItem(QGraphicsItem *parent, const QString &pixmapPath)
 
 void RangedItem::causeDamage(Character *target) {
     if (target) {
-        target->changeHp(-damage);
-        return;
+        if(target->getArmorType() == Heavy)
+        {
+            target->changeHp(-damage / 2); // 角色承担一半
+            target->changeArmorHp(-damage / 2); // 重甲承担一半护甲伤害
+            return;
+        }
+        else{
+            target->changeHp(-damage);
+            return;
+        }
     }
 }
 
