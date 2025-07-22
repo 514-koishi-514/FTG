@@ -72,6 +72,9 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     connect(character_1p, &Character::fireBullet, this, &BattleScene::onBulletFired);
     connect(character_2p, &Character::fireBullet, this, &BattleScene::onBulletFired);
 
+    connect(character_1p, &Character::dealMeleeDamage, character_2p, &Character::takeMeleeDamage);
+    connect(character_2p, &Character::dealMeleeDamage, character_1p, &Character::takeMeleeDamage);
+
     // 创建血条
     hpBar_1p = new HpBar(character_1p->getMaxHp(), nullptr);
     hpBar_1p->setPos(150, 50); // 设置1P血条位置

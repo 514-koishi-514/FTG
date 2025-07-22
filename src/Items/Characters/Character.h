@@ -101,6 +101,8 @@ public:
 
     void changeHp(int delta);
 
+    void causeDamage(int damage, Character *target = nullptr);
+
     // 非游戏过程：JSON接口
     bool loadFromJson(const QString &json);
 
@@ -156,6 +158,11 @@ private:
 signals:
     // 发射信号：武器类型、发射位置、角色朝向
     void fireBullet(Weapon* weapon, const QPointF& firePos, bool isRight, const QString &fromCharacterName = QString(), const int &playerID = 1);
+
+    void dealMeleeDamage(int damage);
+
+public slots:
+    void takeMeleeDamage(int damage);
 };
 
 

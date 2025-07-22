@@ -154,7 +154,7 @@ void Character::processInput() {
     if(attacking) {
         qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
         if (currentTime - attackStartTime >= attackDuration) {
-            // 这里设计为一定时间的前摇，如果攻击动作结束，发射子弹
+            // 远程武器设计为一定时间的前摇，如果攻击动作结束，发射子弹
             if (weapon->weaponID >= 3 && weapon->weaponID <= 5) {
                 // 计算发射位置（角色前方，避免与自身重叠）
                 QPointF firePos = this->pos();
@@ -235,6 +235,11 @@ void Character::processInput() {
         }
 
         setVelocity(velocity); // 重置速度为0
+
+        // 近战武器设计为一定的后摇
+        if (weapon->weaponID <= 2 && isCollidingWithEachOther) { // 近战武器
+            emit dealMeleeDamage(weapon->damage);
+        }
     }
     else{
         auto velocity = QPointF(0,0); // 速度两个分量重置为0
@@ -517,6 +522,17 @@ void Character::changeHp(int delta) {
     }
     else if (hp > 100) {
         hp = 100; // 限制最大生命值
+    }
+}
+
+void Character::takeMeleeDamage(int damage) {
+        changeHp(-damage); // 受到伤害
+}
+
+void Character::causeDamage(int damage, Character *target) {
+    if (target) {
+        target->changeHp(-damage); // 对目标造成伤害
+        qDebug() << "对" << target->getName() << "造成了" << damage << "点伤害";
     }
 }
 

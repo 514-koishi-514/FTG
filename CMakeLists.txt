@@ -51,9 +51,6 @@ add_executable(qt_programming_2024 src/main.cpp
 
         src/Items/Maps/Map.cpp
 
-
-
-
         src/Items/Maps/MistyLake.h
         src/Items/Maps/MistyLake.cpp
         src/Items/Maps/HighGrass.h
@@ -78,25 +75,20 @@ add_executable(qt_programming_2024 src/main.cpp
         src/Items/BattleSystemWiget/HpBar.cpp
 
 
-        src/Items/AttackItems/Fist.h
-        src/Items/AttackItems/Fist.cpp
-        src/Items/AttackItems/Stick.h
-        src/Items/AttackItems/Stick.cpp
+
+
+
+
         src/Items/AttackItems/Ball.h
         src/Items/AttackItems/Ball.cpp
         src/Items/AttackItems/Charm.h
         src/Items/AttackItems/EnhancedCharm.h
         src/Items/AttackItems/Charm.cpp
         src/Items/AttackItems/EnhancedCharm.cpp
-        src/Items/AttackItems/MeleeItem.h
-        src/Items/AttackItems/MeleeItem.cpp
-        src/Items/AttackItems/MeleeItem.h
+
+
         src/Items/AttackItems/RangedItem.h
         src/Items/AttackItems/RangedItem.cpp
-        src/Items/AttackItems/Fist.h
-        src/Items/AttackItems/Fist.cpp
-        src/Items/AttackItems/Stick.h
-        src/Items/AttackItems/Stick.cpp
         src/Items/AttackItems/Ball.h
         src/Items/AttackItems/Ball.cpp
         src/Items/AttackItems/Charm.h

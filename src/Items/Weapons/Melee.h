@@ -2,13 +2,10 @@
 #define MELEE_H
 
 #include "Weapon.h"
-#include "../AttackItems/Fist.h"
 
 class Melee : public Weapon { // 相当于要求中的拳头
 public:
     explicit Melee(QGraphicsItem *parent = nullptr);
-
-    Fist fist;
 };
 
 #endif // MELEE_H

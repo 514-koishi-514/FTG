@@ -15,6 +15,8 @@ public:
     int weaponID = 0; // 武器ID
 
     int ammoCapacity = 0; // 弹药容量
+
+    int damage = 0; // 武器伤害值
 };
 
 #endif // WEAPON_H
