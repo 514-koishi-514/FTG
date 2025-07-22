@@ -99,6 +99,10 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     ammoBar_2p = new AmmoBar(character_2p->getMaxAmmoQuantity(), nullptr);
     ammoBar_2p->setPos(1030, 110); // 设置2P子弹条位置
     addItem(ammoBar_2p);
+
+    dropTimer = new QTimer(this);
+    connect(dropTimer, &QTimer::timeout, this, &BattleScene::spawnRandomDrop);
+    dropTimer->start(5000); // 每30秒
 }
 
 // 这个函数用来处理角色输入事件
@@ -342,6 +346,8 @@ void BattleScene::processMovement() {
             ++it; // 继续下一个子弹
         }
     }
+
+    // 掉落出啊
 }
 
 
@@ -524,6 +530,31 @@ void BattleScene::onBulletFired(Weapon* weapon, const QPointF& firePos, bool isR
         qDebug() << "子弹添加到场景，容器大小=" << bullets.size();
     }
 }
+
+
+void BattleScene::spawnRandomDrop(){
+    int type = rand() % 6;
+    Item* drop = nullptr;
+    switch(type) {
+    case 0: drop = new EnhancedMelee(); break;
+    case 1: drop = new Throw(); break;
+    case 2: drop = new Ranged(); break;
+    case 3: drop = new SpellCard(); break;
+    case 4: drop = new LightArmor(); break;
+    case 5: drop = new HeavyArmor(); break;
+    }
+    // 2. 随机X坐标，y=0
+    QRectF area = sceneRect();
+    qreal x = area.left() + rand() % (int)(area.width() - drop->boundingRect().width());
+    drop->setPos(x, 0);
+
+    addItem(drop);
+    floatingMountables.append(drop);
+}
+
+
+
+// 游戏结束
 
 void BattleScene::showGameOverScreen() {
     if (!winnerLabel) {

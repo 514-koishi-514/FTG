@@ -80,6 +80,10 @@ private:
     QPushButton* restartButton = nullptr;
     QList<QTimer*> allTimers; // 用于保存所有需要停止的timer指针
 
+    QTimer* dropTimer = nullptr;
+    QVector<Item*> floatingMountables; // 当前场景中所有自由掉落装备
+    void spawnRandomDrop();
+
     void showGameOverScreen();
     void restartGame();
     void stopAllTimers(); // 停止所有游戏相关timer
