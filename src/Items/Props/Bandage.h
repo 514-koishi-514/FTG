@@ -5,7 +5,7 @@
 
 class Bandage : public Props {
 public:
-    explicit Bandage(QGraphicsItem *parent);
+    explicit Bandage(QGraphicsItem *parent = nullptr);
 };
 
 #endif // BANDAGE_H

@@ -15,6 +15,9 @@
 #include "../Items/AttackItems/Ball.h"
 #include "../Items/AttackItems/Charm.h"
 #include "../Items/AttackItems/EnhancedCharm.h"
+#include "../Items/Props/Bandage.h"
+#include "../Items/Props/Medkit.h"
+#include "../Items/Props/Adrenaline.h"
 
 BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个地图
     // This is useful if you want the scene to have the exact same dimensions as the view
@@ -469,6 +472,7 @@ void BattleScene::processPicking() {
             spareArmor = dynamic_cast<Armor *>(pickupMountable(character_1p, mountable));
             spareWeapon = dynamic_cast<Weapon *>(pickupMountable(character_1p, mountable));
         }
+
     }
     if (character_2p->isPicking()) {
         auto mountable = findNearestUnmountedMountable(character_2p->pos(), 100.0);
@@ -499,6 +503,23 @@ Mountable *BattleScene::findNearestUnmountedMountable(const QPointF &pos, qreal 
     return nearest;
 }
 
+Props *BattleScene::findNearestProps(const QPointF &pos, qreal distance_threshold) {
+    Props *nearest = nullptr;
+    qreal minDistance = distance_threshold;
+
+    for (QGraphicsItem *item: items()) {
+        if (auto props = dynamic_cast<Props *>(item)) {
+            qreal distance = QLineF(pos, item->pos()).length();
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearest = props;
+            }
+        }
+    }
+
+    return nearest;
+}
+
 // 拾取指定的Mountable对象
 Mountable *BattleScene::pickupMountable(Character *character, Mountable *mountable) {
     // Limitation: currently only supports armor
@@ -509,6 +530,12 @@ Mountable *BattleScene::pickupMountable(Character *character, Mountable *mountab
         return character->pickupWeapon(weapon);
     }
     return nullptr;
+}
+
+void *BattleScene::pickupProp(Character *character, Props *props) {
+    if (props != nullptr && character != nullptr) {
+        character->pickupProps(props);
+    }
 }
 
 void BattleScene::onBulletFired(Weapon* weapon, const QPointF& firePos, bool isRight, const QString &fromCharacterName, const int &fromPlayerID) {
@@ -554,7 +581,7 @@ void BattleScene::onBulletFired(Weapon* weapon, const QPointF& firePos, bool isR
 
 
 void BattleScene::spawnRandomDrop(){
-    int type = rand() % 6;
+    int type = rand() % 9;
     Item* drop = nullptr;
     switch(type) {
     case 0: drop = new EnhancedMelee(); break;
@@ -563,6 +590,10 @@ void BattleScene::spawnRandomDrop(){
     case 3: drop = new SpellCard(); break;
     case 4: drop = new LightArmor(); break;
     case 5: drop = new HeavyArmor(); break;
+    case 6: drop = new Bandage(); break;
+    case 7: drop = new Medkit(); break;
+    case 8: drop = new Adrenaline(); break;
+    default: return; // 如果类型不在范围内则不生成
     }
     // 2. 随机X坐标，y=0
     QRectF area = sceneRect();

@@ -2,6 +2,6 @@
 
 Medkit::Medkit(QGraphicsItem *parent)
     : Props(parent, ":/Items/Props/Medkit.png") {
-    cureOnce = 50; // 每次使用治疗50点生命值
+    cureOnce = 100; // 每次使用回复满（100不会超额回复）
     cureTimes = 1; // 使用次数为1次
 }

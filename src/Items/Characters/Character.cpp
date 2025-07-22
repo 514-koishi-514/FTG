@@ -11,8 +11,6 @@
 #include "Character.h"
 #include "../Armors/DefaultArmor.h"
 #include "../Weapons/Melee.h"
-#include "../Weapons/Ranged.h"
-#include "../Weapons/Throw.h"
 
 
 Character::Character(QGraphicsItem *parent, const QString& name, const int &playerID) : Item(parent, ""), name(name), playerID(playerID) {
@@ -58,7 +56,7 @@ Character::Character(QGraphicsItem *parent, const QString& name, const int &play
     animationTimer->start(100); // 每100毫秒更新一次动画帧
 
     armor = new class DefaultArmor(this);
-    weapon = new Ranged(this);
+    weapon = new Melee(this);
     armor->mountToParent();
     weapon->mountToParent();
 }
@@ -542,6 +540,17 @@ void Character::takeMeleeDamage(int damage) {
     }
 }
 
+void Character::onHealTimerTimeout(){
+    if (remainingHealTimes > 0) {
+        changeHp(currentHealAmount);
+        remainingHealTimes--;
+        qDebug() << "持续回血+" << currentHealAmount << "，剩余次数：" << remainingHealTimes;
+    } else {
+        healingTimer->stop();
+        qDebug() << "持续回血结束";
+    }
+}
+
 void Character::causeDamage(int damage, Character *target) {
     if (target) {
         target->changeHp(-damage); // 对目标造成伤害
@@ -587,6 +596,27 @@ Weapon *Character::pickupWeapon(Weapon *newWeapon){
     weapon = newWeapon;
 
     return oldWeapon;
+}
+
+// 游戏过程：回血装备
+void Character::pickupProps(Props *newProps) {
+    // 处理道具的拾取逻辑
+    if (newProps->cureOnce > 0 && newProps->isLastingEffect) {
+        currentHealAmount = newProps->cureOnce;
+        remainingHealTimes = newProps->cureTimes;
+        qDebug() << "拾取道具，当前回血量：" << currentHealAmount << "，剩余次数：" << remainingHealTimes;
+
+        // 启动持续回血定时器
+        healingTimer = new QTimer(this);
+        connect(healingTimer, &QTimer::timeout, this, &Character::onHealTimerTimeout);
+        healingTimer->start(1000); // 每秒触发一次
+    }
+    else if (newProps->cureOnce > 0 && !newProps->isLastingEffect) {
+        changeHp(newProps->cureOnce);
+        qDebug() << "拾取道具，立即回血：" << newProps->cureOnce;
+    }
+
+    delete newProps;
 }
 
 // 游戏过程：动画渲染

@@ -11,6 +11,7 @@
 #include <QJsonObject>
 #include "../Armors/Armor.h"
 #include "../Weapons/Weapon.h"
+#include "../Props/Props.h"
 
 class Character : public Item {
     Q_OBJECT
@@ -50,6 +51,7 @@ public:
 
     Armor* pickupArmor(Armor* newArmor);
     Weapon* pickupWeapon(Weapon* newWeapon);
+    void pickupProps(Props *newProps);
 
     // 游戏过程：动画与渲染
 
@@ -110,6 +112,9 @@ public:
 
     void causeDamage(int damage, Character *target = nullptr);
 
+    int remainingHealTimes = 0;
+    int currentHealAmount = 0;
+
     // 非游戏过程：JSON接口
     bool loadFromJson(const QString &json);
 
@@ -156,6 +161,8 @@ private:
     qint64 attackStartTime{}; // 攻击开始时间;
     qint64 attackDuration = 500; // 攻击持续时间(ms)
 
+    QTimer* healingTimer; // 治疗定时器
+
     // 战斗相关
     int hp = 100; // 生命值
     int maxHp = 100; // 最大生命值
@@ -168,6 +175,8 @@ signals:
 
 public slots:
     void takeMeleeDamage(int damage);
+
+    void onHealTimerTimeout();
 };
 
 

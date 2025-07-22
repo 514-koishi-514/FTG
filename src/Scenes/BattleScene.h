@@ -50,7 +50,11 @@ private:
 
     Mountable *findNearestUnmountedMountable(const QPointF &pos, qreal distance_threshold = std::numeric_limits<qreal>::max());
 
+    Props *findNearestProps(const QPointF &pos, qreal distance_threshold  = std::numeric_limits<qreal>::max() );
+
     static Mountable * pickupMountable(Character *character, Mountable *mountable);
+
+    static void * pickupProp(Character *character, Props *props);
 
     Map *map;
     Character *character_1p;

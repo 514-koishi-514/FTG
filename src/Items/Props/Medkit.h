@@ -5,7 +5,7 @@
 
 class Medkit : public Props {
 public:
-    explicit Medkit(QGraphicsItem *parent);
+    explicit Medkit(QGraphicsItem *parent = nullptr);
 };
 
 #endif // MEDKIT_H

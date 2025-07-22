@@ -5,7 +5,7 @@
 
 class Adrenaline : public Props {
 public:
-    explicit Adrenaline(QGraphicsItem *parent);
+    explicit Adrenaline(QGraphicsItem *parent = nullptr);
 };
 
 #endif // ADRENALINE_H

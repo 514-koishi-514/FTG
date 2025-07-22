@@ -3,6 +3,12 @@
 
 #include "../Item.h"
 
+enum class PropsType {
+    BandageHeal,
+    MedkitHeal,
+    AdrenalineHeal
+};
+
 class Props : public Item {
     Q_OBJECT
 public:
@@ -11,6 +17,8 @@ public:
     int cureOnce = 0;
 
     int cureTimes = 0;
+
+    bool isLastingEffect = false;
 
 signals:
     void cure(int cureOnce, int cureTimes);
