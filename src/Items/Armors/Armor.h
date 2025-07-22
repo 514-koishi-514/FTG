@@ -12,8 +12,7 @@
 enum ArmorType {
     Default,
     Light,
-    Heavy,
-    No
+    Heavy
 };
 
 class Armor : public Item, public Mountable {
@@ -28,7 +27,7 @@ public:
 
     int maxArmorValue = 0;
 
-    ArmorType armorType = No;
+    ArmorType armorType = Default;
 
     void changeArmorValue(int delta);
 };

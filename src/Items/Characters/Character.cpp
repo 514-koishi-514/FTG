@@ -502,7 +502,7 @@ int Character::getMaxArmor() const {
 }
 
 ArmorType Character::getArmorType() const {
-    return armor ? armor->armorType : No; // 如果没有护甲，返回无护甲类型
+    return armor ? armor->armorType : Default;
 }
 
 int Character::getAmmoQuantity() const {
