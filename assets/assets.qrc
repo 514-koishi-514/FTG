@@ -1,13 +1,11 @@
 <RCC>
     <qresource prefix="/">
-        <file>Items/Armors/FlamebreakerArmor/BotW_Flamebreaker_Armor_Icon.png</file>
-        <file>Items/Armors/OldShirt/BotW_Old_Shirt_Icon.png</file>
-        <file>Items/HeadEquipments/CapOfTheHero/BotW_Cap_of_the_Hero_Icon.png</file>
-        <file>Items/LegEquipments/WellWornTrousers/BotW_Well-Worn_Trousers_Icon.png</file>
-        <file>Items/Maps/Battlefield/g9tOqth.png</file>
         <file>Items/Armors/DefaultArmor/DefaultArmor.png</file>
         <file>Items/Armors/LightArmor/LightArmor.png</file>
         <file>Items/Armors/HeavyArmor/HeavyArmor.png</file>
+        <file>Items/Props/Adrenaline.png</file>
+        <file>Items/Props/Bandage.png</file>
+        <file>Items/Props/Medkit.png</file>
     </qresource>
     <qresource prefix="/Characters">
         <file>Items/Characters/Portrait/Marisa/Marisa_A_0.png</file>

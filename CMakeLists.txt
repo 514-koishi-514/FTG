@@ -92,6 +92,14 @@ add_executable(qt_programming_2024 src/main.cpp
         src/Items/SystemWidgets/ArmorBar.cpp
         src/Items/SystemWidgets/AmmoBar.h
         src/Items/SystemWidgets/AmmoBar.cpp
+        src/Items/Props/Props.h
+        src/Items/Props/Props.cpp
+        src/Items/Props/Bandage.h
+        src/Items/Props/Bandage.cpp
+        src/Items/Props/Medkit.h
+        src/Items/Props/Medkit.cpp
+        src/Items/Props/Adrenaline.h
+        src/Items/Props/Adrenaline.cpp
 
 
 )
