@@ -27,7 +27,3 @@ void Armor::unmount() {
         pixmapItem->setPos(0, 0);
     }
 }
-
-int Armor::getArmorValue() const {
-    return armorValue;
-}

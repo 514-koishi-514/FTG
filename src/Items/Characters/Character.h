@@ -9,9 +9,7 @@
 #include <QGraphicsEllipseItem>
 #include <QFile>
 #include <QJsonObject>
-#include "../HeadEquipments/HeadEquipment.h"
 #include "../Armors/Armor.h"
-#include "../LegEquipments/LegEquipment.h"
 #include "../Weapons/Weapon.h"
 
 class Character : public Item {
@@ -115,8 +113,6 @@ public:
 protected:
     int playerID; // 玩家ID，1或2
     // 装备系统
-    HeadEquipment *headEquipment{};
-    LegEquipment *legEquipment{};
     Armor *armor{};
     Weapon *weapon{};
     // 运动系统protected

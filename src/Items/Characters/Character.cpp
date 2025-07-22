@@ -9,9 +9,7 @@
 #include <QTimer>
 #include <QDebug>
 #include "Character.h"
-#include "../HeadEquipments/CapOfTheHero.h"
 #include "../Armors/DefaultArmor.h"
-#include "../LegEquipments/WellWornTrousers.h"
 #include "../Weapons/Melee.h"
 #include "../Weapons/Ranged.h"
 #include "../Weapons/Throw.h"
@@ -59,12 +57,8 @@ Character::Character(QGraphicsItem *parent, const QString& name, const int &play
     });
     animationTimer->start(100); // 每100毫秒更新一次动画帧
 
-    headEquipment = new CapOfTheHero(this);
-    legEquipment = new WellWornTrousers(this);
     armor = new DefaultArmor(this);
     weapon = new Ranged(this);
-    headEquipment->mountToParent();
-    legEquipment->mountToParent();
     armor->mountToParent();
     weapon->mountToParent();
 }
@@ -481,12 +475,6 @@ bool Character::isPicking() const { // 发生拾取动作时后进行判断，TO
 void Character::setImageOpacity(qreal opacity) {
     if (pixmapItem) {
         pixmapItem->setOpacity(opacity);
-    }
-    if (headEquipment) {
-        headEquipment->setOpacity(opacity);
-    }
-    if (legEquipment) {
-        legEquipment->setOpacity(opacity);
     }
     if (armor) {
         armor->setOpacity(opacity);

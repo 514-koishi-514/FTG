@@ -24,8 +24,6 @@ add_executable(qt_programming_2024 src/main.cpp
 
         src/Items/Armors/Armor.cpp
         src/Items/Armors/Armor.h
-        src/Items/Armors/OldShirt.cpp
-        src/Items/Armors/OldShirt.h
         src/Scenes/Scene.cpp
         src/Scenes/Scene.h
         src/Scenes/BattleScene.cpp
@@ -37,8 +35,6 @@ add_executable(qt_programming_2024 src/main.cpp
 
         src/Items/Mountable.cpp
         src/Items/Mountable.h
-        src/Items/Armors/FlamebreakerArmor.cpp
-        src/Items/Armors/FlamebreakerArmor.h
 
 
         src/Items/Maps/Map.cpp
