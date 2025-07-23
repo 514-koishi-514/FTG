@@ -464,7 +464,7 @@ void Character::setImageOpacity(qreal opacity) {
         pixmapItem->setOpacity(opacity);
     }
     if (armor) {
-        armor->setOpacity(opacity);
+        armor->setOpacity(0.5 * opacity); // 护甲透明度为0.3倍角色透明度;
     }
     if (weapon) {
         weapon->setOpacity(opacity);

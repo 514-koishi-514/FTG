@@ -89,6 +89,23 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     ammoBar_2p->setPos(1030, 110); // 设置2P子弹条位置
     addItem(ammoBar_2p);
 
+    // 创建肾上腺素文本
+    adrenalineText_1p = new QGraphicsTextItem();
+    adrenalineText_1p->setDefaultTextColor(Qt::red);
+    adrenalineText_1p->setFont(QFont("微软雅黑", 10));
+    adrenalineText_1p->setPlainText("正在处于肾上腺素治疗");
+    adrenalineText_1p->setVisible(false);
+    adrenalineText_1p->setPos(ammoBar_1p->pos() + QPointF(0, ammoBar_1p->boundingRect().height() + 12));
+    addItem(adrenalineText_1p);
+
+    adrenalineText_2p = new QGraphicsTextItem();
+    adrenalineText_2p->setDefaultTextColor(Qt::red);
+    adrenalineText_2p->setFont(QFont("微软雅黑", 10));
+    adrenalineText_2p->setPlainText("正在处于肾上腺素治疗");
+    adrenalineText_2p->setVisible(false);
+    adrenalineText_2p->setPos(ammoBar_2p->pos() + QPointF(0, ammoBar_2p->boundingRect().height() + 12));
+    addItem(adrenalineText_2p);
+
     dropTimer = new QTimer(this);
     connect(dropTimer, &QTimer::timeout, this, &BattleScene::spawnRandomDrop);
     allTimers.append(dropTimer); // 将定时器添加到所有定时器列表中
@@ -143,6 +160,18 @@ void BattleScene::processInput() {
     if (ammoBar_2p != nullptr && character_2p != nullptr) {
         ammoBar_2p->setMaxQuantity(character_2p->getMaxAmmoQuantity());
         ammoBar_2p->setQuantity(character_2p->getAmmoQuantity());
+    }
+
+    // 更新肾上腺素文本
+    if (character_1p->isAdrenaline) {
+        adrenalineText_1p->setVisible(true);
+    } else {
+        adrenalineText_1p->setVisible(false);
+    }
+    if (character_2p->isAdrenaline) {
+        adrenalineText_2p->setVisible(true);
+    } else {
+        adrenalineText_2p->setVisible(false);
     }
 
     // 检查游戏是否结束

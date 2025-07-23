@@ -72,6 +72,9 @@ private:
     AmmoBar *ammoBar_1p;
     AmmoBar *ammoBar_2p;
 
+    QGraphicsTextItem* adrenalineText_1p;
+    QGraphicsTextItem* adrenalineText_2p;
+
     QVector<RangedItem *> bullets;
 
     bool gameOver = false;
