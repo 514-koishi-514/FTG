@@ -105,6 +105,7 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
 
     dropTimer = new QTimer(this);
     connect(dropTimer, &QTimer::timeout, this, &BattleScene::spawnRandomDrop);
+    allTimers.append(dropTimer); // 将定时器添加到所有定时器列表中
     dropTimer->start(10000); // 每30秒
 }
 
@@ -588,7 +589,7 @@ void BattleScene::onBulletFired(Weapon* weapon, const QPointF& firePos, bool isR
 
 
 void BattleScene::spawnRandomDrop(){
-    int type = rand() % 9;
+    int type = rand() % 6;
     Item* drop = nullptr;
     switch(type) {
     case 0: drop = new EnhancedMelee(); break;
@@ -597,9 +598,9 @@ void BattleScene::spawnRandomDrop(){
     case 3: drop = new SpellCard(); break;
     case 4: drop = new LightArmor(); break;
     case 5: drop = new HeavyArmor(); break;
-    case 6: drop = new Bandage(); break;
-    case 7: drop = new Medkit(); break;
-    case 8: drop = new Adrenaline(); break;
+//    case 6: drop = new Bandage(); break;
+//    case 7: drop = new Medkit(); break;
+//   case 8: drop = new Adrenaline(); break;
     default: return; // 如果类型不在范围内则不生成
     }
     // 2. 随机X坐标，y=0

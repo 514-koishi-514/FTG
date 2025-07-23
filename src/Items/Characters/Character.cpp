@@ -221,7 +221,7 @@ void Character::processInput() {
 
         // 近战武器设计为一定的后摇
         if (weapon->weaponID <= 2 && isCollidingWithEachOther) { // 近战武器
-            emit dealMeleeDamage(weapon->damage);
+            emit dealMeleeDamage(weapon->damage, this->weapon->weaponID);
         }
     }
     else{
@@ -530,8 +530,12 @@ void Character::changeArmorHp(int delta){
     }
 }
 
-void Character::takeMeleeDamage(int damage) {
-    if (armor->armorType == Light){
+void Character::takeMeleeDamage(int damage, int attackWeaponID) {
+    if(armor->armorType == Light && attackWeaponID == 1)
+    {
+        return; // 轻甲对拳头攻击免疫
+    }
+    else if (armor->armorType == Light && attackWeaponID == 2) {
         qDebug() << "护甲";
         changeHp(-damage/2); // 受到伤害
     }

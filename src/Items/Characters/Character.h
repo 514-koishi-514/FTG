@@ -171,10 +171,10 @@ signals:
     // 发射信号：武器类型、发射位置、角色朝向
     void fireBullet(Weapon* weapon, const QPointF& firePos, bool isRight, const QString &fromCharacterName = QString(), const int &playerID = 1);
 
-    void dealMeleeDamage(int damage);
+    void dealMeleeDamage(int damage, int weaponID);
 
 public slots:
-    void takeMeleeDamage(int damage);
+    void takeMeleeDamage(int damage, int attackWeaponID);
 
     void onHealTimerTimeout();
 };
