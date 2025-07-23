@@ -82,6 +82,7 @@ public:
     bool isOnPlatform = true; // 是否在平台上
     bool isOnTheRight = true; // 是否相对在右面
     bool isCollidingWithEachOther = false; // 是否与其他角色碰撞
+    bool isAdrenaline = false; // 是否处于肾上腺素状态
 
     const QRectF collisionRect = QRectF(35, 15, 50, 105); // 碰撞矩形
     QPainterPath shape() const override;

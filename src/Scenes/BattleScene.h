@@ -90,7 +90,7 @@ private:
     void spawnRandomDrop();
 
     void showGameOverScreen();
-    void restartGame();
+    void exitGame();
     void stopAllTimers(); // 停止所有游戏相关timer
 
 

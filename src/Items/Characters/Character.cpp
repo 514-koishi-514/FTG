@@ -305,7 +305,7 @@ void Character::processInput() {
                         else {
                             setAnimationState(walkBack);
                         }
-                        velocity.setX(-slowSpeed);
+                        velocity.setX( isAdrenaline ? (-slowSpeed - 0.2) : (-slowSpeed));
                     }
                     else{
                         if(jumping){
@@ -316,7 +316,7 @@ void Character::processInput() {
                         }
                         if(!isCollidingWithEachOther)
                         {
-                            velocity.setX(-slowSpeed);
+                            velocity.setX(isAdrenaline ? (-slowSpeed - 0.2) : (-slowSpeed));
                         }
                         else{
                             velocity.setX(0); // 如果碰撞，速度为0
@@ -331,7 +331,7 @@ void Character::processInput() {
                         else {
                             setAnimationState(dashBack);
                         }
-                        velocity.setX(-fastSpeed);
+                        velocity.setX(isAdrenaline ? (-fastSpeed - 0.2) : (-fastSpeed));
                     }
                     else{
                         if(jumping){
@@ -342,7 +342,7 @@ void Character::processInput() {
                         }
                         if(!isCollidingWithEachOther)
                         {
-                            velocity.setX(-fastSpeed);
+                            velocity.setX(isAdrenaline ? (-fastSpeed - 0.2) : (-fastSpeed));
                         }
                         else{
                             velocity.setX(0); // 如果碰撞，速度为0
@@ -369,7 +369,7 @@ void Character::processInput() {
                         }
                         if(!isCollidingWithEachOther)
                         {
-                            velocity.setX(slowSpeed);
+                            velocity.setX(isAdrenaline ? (slowSpeed + 0.2) : (slowSpeed));
                         }
                         else{
                             velocity.setX(0); // 如果碰撞，速度为0
@@ -382,7 +382,7 @@ void Character::processInput() {
                         else {
                             setAnimationState(walkBack);
                         }
-                        velocity.setX(slowSpeed);
+                        velocity.setX(isAdrenaline ? (slowSpeed + 0.2) : (slowSpeed));
                     }
                 }
                 else{
@@ -395,7 +395,7 @@ void Character::processInput() {
                         }
                         if(!isCollidingWithEachOther)
                         {
-                            velocity.setX(fastSpeed);
+                            velocity.setX(isAdrenaline ? (fastSpeed + 0.2) : (fastSpeed));
                         }
                         else{
                             velocity.setX(0); // 如果碰撞，速度为0
@@ -408,7 +408,7 @@ void Character::processInput() {
                         else {
                             setAnimationState(dashBack);
                         }
-                        velocity.setX(fastSpeed);
+                        velocity.setX(isAdrenaline ? (fastSpeed + 0.2) : (fastSpeed));
                     }
 
                 }
@@ -550,6 +550,7 @@ void Character::onHealTimerTimeout(){
         remainingHealTimes--;
         qDebug() << "持续回血+" << currentHealAmount << "，剩余次数：" << remainingHealTimes;
     } else {
+        isAdrenaline = false; // 停止持续回血
         healingTimer->stop();
         qDebug() << "持续回血结束";
     }
@@ -614,6 +615,7 @@ void Character::pickupProps(Props *newProps) {
         healingTimer = new QTimer(this);
         connect(healingTimer, &QTimer::timeout, this, &Character::onHealTimerTimeout);
         healingTimer->start(1000); // 每秒触发一次
+        isAdrenaline = true; // 设置为持续回血状态
     }
     else if (newProps->cureOnce > 0 && !newProps->isLastingEffect) {
         changeHp(newProps->cureOnce);

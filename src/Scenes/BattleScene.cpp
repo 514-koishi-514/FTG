@@ -484,9 +484,10 @@ void BattleScene::processPicking() {
             spareArmor = dynamic_cast<Armor *>(pickupMountable(character_2p, mountable));
             spareWeapon = dynamic_cast<Weapon *>(pickupMountable(character_2p, mountable));
         }
-        auto props = findNearestProps(character_1p->pos(), 100.0);
+        auto props = findNearestProps(character_2p->pos(), 100.0);
         if (props != nullptr) {
-            pickupProp(character_1p, props);
+            qDebug() << " tried to pickup props";
+            pickupProp(character_2p, props);
         }
     }
 }
@@ -636,7 +637,7 @@ void BattleScene::showGameOverScreen() {
         restartButtonProxy->setZValue(10);
         restartButtonProxy->setPos(sceneRect().width()/2-60, sceneRect().height()/2);
         restartButtonProxy->resize(120, 40);
-        connect(restartButton, &QPushButton::clicked, this, &BattleScene::restartGame);
+        connect(restartButton, &QPushButton::clicked, this, &BattleScene::exitGame);
     }
     restartButtonProxy->show();
 }
@@ -649,11 +650,9 @@ void BattleScene::stopAllTimers() {
     // 如有其它要停止的东西，也可以加在这里
 }
 
-// 重启游戏
-void BattleScene::restartGame() {
+// 退出游戏
+void BattleScene::exitGame() {
     if (winnerLabelProxy) winnerLabelProxy->hide();
     if (restartButtonProxy) restartButtonProxy->hide();
-    // 推荐 emit 一个信号让主窗口重启场景
-    // emit requestRestart();
-    qApp->exit(0); // 或换成你的重启方式
+    qApp->exit(0);
 }
