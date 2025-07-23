@@ -18,6 +18,6 @@ void Weapon::mountToParent() {
 void Weapon::unmount() {
     Mountable::unmount();
     if (pixmapItem != nullptr) {
-        pixmapItem->setPos(0, 0); // TODO:后续需要确定位置
+        pixmapItem->setPos(0, 0);
     }
 }
