@@ -6,7 +6,7 @@
 #include "Armor.h"
 
 Armor::Armor(QGraphicsItem *parent, const QString &pixmapPath) : Item(parent, pixmapPath) {
-    setScale(0.8);
+    setOpacity(0.3);
 }
 
 void Armor::mountToParent() {

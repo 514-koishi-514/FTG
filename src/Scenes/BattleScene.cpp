@@ -439,10 +439,11 @@ void BattleScene::processCollision() {
             qDebug() << "道具掉落到地面，位置：" << item->pos();
         }
         else if(item->collidesWithItem(bridge)) {
-            qreal characterBottom = item->pos().y() + item->boundingRect().height();
-            if (characterBottom <= bridge->getCollisionLine().y2() + 10 && item->getVelocity().y() >= 0) {
+            qreal itemBottom = item->pos().y() + item->boundingRect().height();
+            if (itemBottom <= bridge->getCollisionLine().y2() + 10 && item->getVelocity().y() >= 0) {
                 item->setPos(item->pos().x(), bridge->getCollisionLine().y2() - item->boundingRect().height());
                 item->setVelocity(QPointF(0, 0)); // 停止下落
+                qDebug() << "道具掉落到桥上，位置：" << item->pos();
                 onGroundMountables.push_back(item);
                 floatingMountables.removeOne(item); // 从浮动列表中移除
                 qDebug() << "当前浮动道具列表大小：" << floatingMountables.size();
