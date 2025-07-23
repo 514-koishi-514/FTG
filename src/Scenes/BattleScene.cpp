@@ -92,7 +92,7 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     dropTimer = new QTimer(this);
     connect(dropTimer, &QTimer::timeout, this, &BattleScene::spawnRandomDrop);
     allTimers.append(dropTimer); // 将定时器添加到所有定时器列表中
-    dropTimer->start(1000); // 每30秒
+    dropTimer->start(10000); // 每30秒
 }
 
 // 这个函数用来处理角色输入事件
@@ -434,6 +434,9 @@ void BattleScene::processCollision() {
             item->setVelocity(QPointF(0, 0)); // 停止下落
             onGroundMountables.push_back(item);
             floatingMountables.removeOne(item); // 从浮动列表中移除
+            qDebug() << "当前浮动道具列表大小：" << floatingMountables.size();
+            qDebug() << "当前平台上道具列表大小：" << onGroundMountables.size();
+            qDebug() << "道具掉落到地面，位置：" << item->pos();
         }
         else if(item->collidesWithItem(bridge)) {
             qreal characterBottom = item->pos().y() + item->boundingRect().height();
@@ -442,6 +445,9 @@ void BattleScene::processCollision() {
                 item->setVelocity(QPointF(0, 0)); // 停止下落
                 onGroundMountables.push_back(item);
                 floatingMountables.removeOne(item); // 从浮动列表中移除
+                qDebug() << "当前浮动道具列表大小：" << floatingMountables.size();
+                qDebug() << "当前平台上道具列表大小：" << onGroundMountables.size();
+                qDebug() << "道具掉落到桥上，位置：" << item->pos();
             }
         }
         else {
@@ -457,10 +463,20 @@ void BattleScene::processPicking() {
     if (character_1p->isPicking()) {
         auto mountable = findNearestUnmountedMountable(character_1p->pos(), 100.0);
         if (mountable != nullptr) {
+            if(onGroundMountables.contains(dynamic_cast<Item *>(mountable))) {
+                onGroundMountables.removeOne(dynamic_cast<Item *>(mountable)); // 从已放置装备列表中移除
+                qDebug() << "从地面装备列表中移除，当前大小为：" << onGroundMountables.size();
+            }
             Armor *spareArmor = dynamic_cast<Armor *>(pickupMountable(character_1p, mountable));
-            spareArmor->unmount();
+            if (spareArmor != nullptr) {
+                qDebug() << "旧护甲放置位置为" << spareArmor->pos();
+                onGroundMountables.append(spareArmor); // 将旧护甲添加到已放置装备列表
+            }
             Weapon *spareWeapon = dynamic_cast<Weapon *>(pickupMountable(character_1p, mountable));
-            spareWeapon->unmount();
+            if (spareWeapon != nullptr) {
+                onGroundMountables.append(spareWeapon); // 将旧武器添加到已放置装备列表
+            }
+
         }
         Props *props = findNearestProps(character_1p->pos(), 100.0);
         if (props != nullptr) {
@@ -470,10 +486,19 @@ void BattleScene::processPicking() {
     if (character_2p->isPicking()) {
         auto mountable = findNearestUnmountedMountable(character_2p->pos(), 100.0);
         if (mountable != nullptr) {
+            if(onGroundMountables.contains(dynamic_cast<Item *>(mountable))) {
+                onGroundMountables.removeOne(dynamic_cast<Item *>(mountable)); // 从已放置装备列表中移除
+                qDebug() << "从地面装备列表中移除，当前大小为" << onGroundMountables.size();
+            }
             Armor *spareArmor = dynamic_cast<Armor *>(pickupMountable(character_2p, mountable));
-            spareArmor->unmount();
+            if (spareArmor != nullptr) {
+                qDebug() << "旧护甲放置位置为" << spareArmor->pos();
+                onGroundMountables.append(spareArmor); // 将旧护甲添加到已放置装备列表
+            }
             Weapon *spareWeapon = dynamic_cast<Weapon *>(pickupMountable(character_2p, mountable));
-            spareWeapon->unmount();
+            if (spareWeapon != nullptr) {
+                onGroundMountables.append(spareWeapon); // 将旧武器添加到已放置装备列表
+            }
         }
         auto props = findNearestProps(character_2p->pos(), 100.0);
         if (props != nullptr) {
