@@ -12,7 +12,7 @@ Armor::Armor(QGraphicsItem *parent, const QString &pixmapPath) : Item(parent, pi
 void Armor::mountToParent() {
     Mountable::mountToParent();
     setZValue(-5); // 设置Z值
-    setPos(0, 0);// TODO:这里的坐标位置死板，应该根据父节点的大小来动态计算
+    setPos(0, 0);
     if (pixmapItem != nullptr) {
         pixmapItem->setPos(0, 0);
     }

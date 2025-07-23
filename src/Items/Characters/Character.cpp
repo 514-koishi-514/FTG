@@ -569,7 +569,6 @@ Armor *Character::pickupArmor(Armor *newArmor) {
     // 移除旧护甲
     if (oldArmor != nullptr) {
         oldArmor->unmount();
-
         // 如果是DefaultArmor，直接delete，不生成掉落物
         if (oldArmor->armorType == Default) {
             delete oldArmor;
@@ -582,6 +581,7 @@ Armor *Character::pickupArmor(Armor *newArmor) {
     newArmor->setParentItem(this);
     newArmor->mountToParent();
     armor = newArmor;
+    qDebug() << "拾取后护甲的位置为" << armor->pos();
     // 如果是DefaultArmor被直接delete，这里返回nullptr
     return (oldArmor && oldArmor->armorType != Default) ? oldArmor : nullptr;
 }
@@ -592,8 +592,13 @@ Weapon *Character::pickupWeapon(Weapon *newWeapon){
     // 移除旧武器
     if (oldWeapon != nullptr) {
         oldWeapon->unmount();
-        oldWeapon->setPos(newWeapon->pos());
-        oldWeapon->setParentItem(parentItem()); // 直接移到Scene中
+
+        if(oldWeapon->weaponID == 1) {
+            delete oldWeapon; // 如果是默认武器，直接删除
+        } else if (oldWeapon->weaponID >= 3 && oldWeapon->weaponID <= 5) { // 远程武器
+            oldWeapon->setPos(newWeapon->pos());
+            oldWeapon->setParentItem(parentItem()); // 直接移到Scene中
+        }
     }
     // 装备新武器
     newWeapon->setParentItem(this);

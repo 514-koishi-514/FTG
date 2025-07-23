@@ -29,8 +29,6 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     highGrassRight = new HighGrass();
     character_1p = new Character(nullptr, "Reimu", 1);
     character_2p = new Character(nullptr, "Marisa", 2);
-    spareArmor = new class HeavyArmor(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用护甲，之后我会进行实际的修改
-    spareWeapon = new EnhancedMelee(); // TODO:这里目前是实现了一个一开始就放置在场景中的备用武器，之后我会进行实际的修改
 
     // 将地图、角色和备用护甲添加到场景中
     addItem(map);
@@ -48,10 +46,6 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     character_1p->isOnTheRight = false; // 1P角色在左边
     character_2p->isOnTheRight = true; // 2P角色在右边
 
-    addItem(spareArmor);
-    addItem(spareWeapon);
-
-
     // 设置初始位置
     map->scaleToFitScene(this);
     bridge->setPos(QPointF(390, 280));
@@ -64,14 +58,6 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     if(character_2p != nullptr){
         character_2p->setPos(QPointF(1000, 600 - character_2p->boundingRect().height()));
     }
-
-    // TODO:以下两个都需要改
-    spareArmor->unmount();
-    spareArmor->setPos(sceneRect().left() + (sceneRect().right() - sceneRect().left()) * 0.75, map->getFloorHeight() - spareArmor->boundingRect().height());
-
-    spareWeapon->unmount();
-    spareWeapon->setPos(640, map->getFloorHeight() - spareWeapon->boundingRect().height());
-    qDebug() << "空武器的位置" << spareWeapon->pos();
 
     connect(character_1p, &Character::fireBullet, this, &BattleScene::onBulletFired);
     connect(character_2p, &Character::fireBullet, this, &BattleScene::onBulletFired);
@@ -106,7 +92,7 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     dropTimer = new QTimer(this);
     connect(dropTimer, &QTimer::timeout, this, &BattleScene::spawnRandomDrop);
     allTimers.append(dropTimer); // 将定时器添加到所有定时器列表中
-    dropTimer->start(10000); // 每30秒
+    dropTimer->start(1000); // 每30秒
 }
 
 // 这个函数用来处理角色输入事件
@@ -452,6 +438,7 @@ void BattleScene::processCollision() {
         else if(item->collidesWithItem(bridge)) {
             qreal characterBottom = item->pos().y() + item->boundingRect().height();
             if (characterBottom <= bridge->getCollisionLine().y2() + 10 && item->getVelocity().y() >= 0) {
+                item->setPos(item->pos().x(), bridge->getCollisionLine().y2() - item->boundingRect().height());
                 item->setVelocity(QPointF(0, 0)); // 停止下落
                 onGroundMountables.push_back(item);
                 floatingMountables.removeOne(item); // 从浮动列表中移除
@@ -470,8 +457,10 @@ void BattleScene::processPicking() {
     if (character_1p->isPicking()) {
         auto mountable = findNearestUnmountedMountable(character_1p->pos(), 100.0);
         if (mountable != nullptr) {
-            spareArmor = dynamic_cast<Armor *>(pickupMountable(character_1p, mountable));
-            spareWeapon = dynamic_cast<Weapon *>(pickupMountable(character_1p, mountable));
+            Armor *spareArmor = dynamic_cast<Armor *>(pickupMountable(character_1p, mountable));
+            spareArmor->unmount();
+            Weapon *spareWeapon = dynamic_cast<Weapon *>(pickupMountable(character_1p, mountable));
+            spareWeapon->unmount();
         }
         Props *props = findNearestProps(character_1p->pos(), 100.0);
         if (props != nullptr) {
@@ -481,12 +470,13 @@ void BattleScene::processPicking() {
     if (character_2p->isPicking()) {
         auto mountable = findNearestUnmountedMountable(character_2p->pos(), 100.0);
         if (mountable != nullptr) {
-            spareArmor = dynamic_cast<Armor *>(pickupMountable(character_2p, mountable));
-            spareWeapon = dynamic_cast<Weapon *>(pickupMountable(character_2p, mountable));
+            Armor *spareArmor = dynamic_cast<Armor *>(pickupMountable(character_2p, mountable));
+            spareArmor->unmount();
+            Weapon *spareWeapon = dynamic_cast<Weapon *>(pickupMountable(character_2p, mountable));
+            spareWeapon->unmount();
         }
         auto props = findNearestProps(character_2p->pos(), 100.0);
         if (props != nullptr) {
-            qDebug() << " tried to pickup props";
             pickupProp(character_2p, props);
         }
     }
@@ -531,8 +521,8 @@ Props *BattleScene::findNearestProps(const QPointF &pos, qreal distance_threshol
 
 // 拾取指定的Mountable对象
 Mountable *BattleScene::pickupMountable(Character *character, Mountable *mountable) {
-    // Limitation: currently only supports armor
     if (auto armor = dynamic_cast<Armor *>(mountable)) {
+        qDebug() << "拾取的护甲位置为" << armor->pos();
         return character->pickupArmor(armor);
     }
     if (auto weapon = dynamic_cast<Weapon *>(mountable)) {
