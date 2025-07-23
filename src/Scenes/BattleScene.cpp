@@ -191,7 +191,7 @@ void BattleScene::keyPressEvent(QKeyEvent *event) {
             character_1p->setRightDown(true);
             break;
         case Qt::Key_S:
-            if(findNearestUnmountedMountable(character_1p->pos(), 100.0) != nullptr) {
+            if(findNearestUnmountedMountable(character_1p->pos(), 100.0) != nullptr || findNearestProps(character_1p->pos(), 100.0) != nullptr) {
                 character_1p->setPickDown(true);
             } else {
                 character_1p->setGuardDown(true);
@@ -216,7 +216,7 @@ void BattleScene::keyPressEvent(QKeyEvent *event) {
             character_2p->setRightDown(true);
             break;
         case Qt::Key_J:
-            if(findNearestUnmountedMountable(character_2p->pos(), 100.0) != nullptr) {
+            if(findNearestUnmountedMountable(character_2p->pos(), 100.0 ) != nullptr || findNearestProps(character_2p->pos(), 100.0) != nullptr) {
                 character_2p->setPickDown(true);
             } else {
                 character_2p->setGuardDown(true);
@@ -589,7 +589,8 @@ void BattleScene::onBulletFired(Weapon* weapon, const QPointF& firePos, bool isR
 
 
 void BattleScene::spawnRandomDrop(){
-    int type = rand() % 6;
+    int type = rand() % 9;
+    qDebug() << "生成掉落物，类型：" << type;
     Item* drop = nullptr;
     switch(type) {
     case 0: drop = new EnhancedMelee(); break;
@@ -598,9 +599,9 @@ void BattleScene::spawnRandomDrop(){
     case 3: drop = new SpellCard(); break;
     case 4: drop = new LightArmor(); break;
     case 5: drop = new HeavyArmor(); break;
-//    case 6: drop = new Bandage(); break;
-//    case 7: drop = new Medkit(); break;
-//   case 8: drop = new Adrenaline(); break;
+    case 6: drop = new Bandage(); break;
+    case 7: drop = new Medkit(); break;
+    case 8: drop = new Adrenaline(); break;
     default: return; // 如果类型不在范围内则不生成
     }
     // 2. 随机X坐标，y=0
