@@ -595,7 +595,7 @@ Weapon *Character::pickupWeapon(Weapon *newWeapon){
             delete oldWeapon; // 如果是默认武器，直接删除
         } else if (oldWeapon->weaponID >= 3 && oldWeapon->weaponID <= 5) { // 远程武器
             oldWeapon->setPos(newWeapon->pos());
-            oldWeapon->setParentItem(parentItem()); // 直接移到Scene中
+            oldWeapon->setParentItem(parentItem());
         }
     }
     // 装备新武器
@@ -603,7 +603,9 @@ Weapon *Character::pickupWeapon(Weapon *newWeapon){
     newWeapon->mountToParent();
     weapon = newWeapon;
 
-    return oldWeapon;
+    qDebug() << "拾取后武器的位置为" << weapon->pos();
+    // 如果是默认武器被直接delete，这里返回nullptr
+    return (oldWeapon && oldWeapon->weaponID != 1) ? oldWeapon : nullptr;
 }
 
 // 游戏过程：回血装备
