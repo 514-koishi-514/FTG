@@ -109,7 +109,7 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     dropTimer = new QTimer(this);
     connect(dropTimer, &QTimer::timeout, this, &BattleScene::spawnRandomDrop);
     allTimers.append(dropTimer); // 将定时器添加到所有定时器列表中
-    dropTimer->start(10000); // 每30秒
+    dropTimer->start(1000000); // TODO:这里设置一个很大的时间间隔，测试用
 }
 
 // 这个函数用来处理角色输入事件
@@ -320,6 +320,184 @@ void BattleScene::keyReleaseEvent(QKeyEvent *event) {
         default:
             Scene::keyReleaseEvent(event);
         }
+    }
+    // 以下为测试时添加的掉落物品代码，在游戏中会被注释掉
+    // 1.随机掉落
+    switch (event->key()){
+    case Qt::Key_Z:
+    {
+        Item *drop1 = new EnhancedMelee();
+        // 2. 随机X坐标，y=0
+        QRectF area = sceneRect();
+        qreal x = area.left() + rand() % (int)(area.width() - drop1->boundingRect().width());
+        drop1->setPos(x, 0);
+        addItem(drop1);
+        floatingMountables.append(drop1);
+    }
+        break;
+    case Qt::Key_X:
+    {
+        Item *drop2 = new Throw();
+        // 2. 随机X坐标，y=0
+        QRectF area2 = sceneRect();
+        qreal x2 = area2.left() + rand() % (int)(area2.width() - drop2->boundingRect().width());
+        drop2->setPos(x2, 0);
+        addItem(drop2);
+        floatingMountables.append(drop2);
+    }
+        break;
+    case Qt::Key_C:
+    {
+        Item *drop3 = new Ranged();
+        // 2. 随机X坐标，y=0
+        QRectF area3 = sceneRect();
+        qreal x3 = area3.left() + rand() % (int)(area3.width() - drop3->boundingRect().width());
+        drop3->setPos(x3, 0);
+        addItem(drop3);
+        floatingMountables.append(drop3);
+    }
+        break;
+    case Qt::Key_V:
+    {
+        Item *drop4 = new SpellCard();
+        // 2. 随机X坐标，y=0
+        QRectF area4 = sceneRect();
+        qreal x4 = area4.left() + rand() % (int)(area4.width() - drop4->boundingRect().width());
+        drop4->setPos(x4, 0);
+        addItem(drop4);
+        floatingMountables.append(drop4);
+    }
+        break;
+    case Qt::Key_B:
+    {
+        Item *drop5 = new LightArmor();
+        // 2. 随机X坐标，y=0
+        QRectF area5 = sceneRect();
+        qreal x5 = area5.left() + rand() % (int)(area5.width() - drop5->boundingRect().width());
+        drop5->setPos(x5, 0);
+        addItem(drop5);
+        floatingMountables.append(drop5);
+    }
+        break;
+    case Qt::Key_N:
+    {
+        Item *drop6 = new HeavyArmor();
+        // 2. 随机X坐标，y=0
+        QRectF area6 = sceneRect();
+        qreal x6 = area6.left() + rand() % (int)(area6.width() - drop6->boundingRect().width());
+        drop6->setPos(x6, 0);
+        addItem(drop6);
+        floatingMountables.append(drop6);
+    }
+        break;
+    case Qt::Key_M:
+    {
+        Item *drop7 = new Bandage();
+        // 2. 随机X坐标，y=0
+        QRectF area7 = sceneRect();
+        qreal x7 = area7.left() + rand() % (int)(area7.width() - drop7->boundingRect().width());
+        drop7->setPos(x7, 0);
+        addItem(drop7);
+        floatingMountables.append(drop7);
+    }
+        break;
+    case Qt::Key_Comma:
+    {
+        Item *drop8 = new Medkit();
+        // 2. 随机X坐标，y=0
+        QRectF area8 = sceneRect();
+        qreal x8 = area8.left() + rand() % (int)(area8.width() - drop8->boundingRect().width());
+        drop8->setPos(x8, 0);
+        addItem(drop8);
+        floatingMountables.append(drop8);
+    }
+        break;
+    case Qt::Key_Period:
+    {
+        Item *drop9 = new Adrenaline();
+        // 2. 随机X坐标，y=0
+        QRectF area9 = sceneRect();
+        qreal x9 = area9.left() + rand() % (int)(area9.width() - drop9->boundingRect().width());
+        drop9->setPos(x9, 0);
+        addItem(drop9);
+        floatingMountables.append(drop9);
+    }
+        break;
+    // 2.在地面中央生成
+    case Qt::Key_0:
+    {
+        Item *create1 = new EnhancedMelee();
+        create1->setPos(QPointF(sceneRect().width() / 2 - create1->boundingRect().width() / 2, map->getFloorHeight() - create1->boundingRect().height()));
+        addItem(create1);
+        onGroundMountables.append(create1);
+    }
+        break;
+    case Qt::Key_1:
+    {
+        Item *create2 = new Throw();
+        create2->setPos(QPointF(sceneRect().width() / 2 - create2->boundingRect().width() / 2, map->getFloorHeight() - create2->boundingRect().height()));
+        addItem(create2);
+        onGroundMountables.append(create2);
+    }
+        break;
+    case Qt::Key_2:
+    {
+        Item *create3 = new Ranged();
+        create3->setPos(QPointF(sceneRect().width() / 2 - create3->boundingRect().width() / 2, map->getFloorHeight() - create3->boundingRect().height()));
+        addItem(create3);
+        onGroundMountables.append(create3);
+    }
+        break;
+    case Qt::Key_3:
+    {
+        Item *create4 = new SpellCard();
+        create4->setPos(QPointF(sceneRect().width() / 2 - create4->boundingRect().width() / 2, map->getFloorHeight() - create4->boundingRect().height()));
+        addItem(create4);
+        onGroundMountables.append(create4);
+    }
+        break;
+    case Qt::Key_4:
+    {
+        Item *create5 = new LightArmor();
+        create5->setPos(QPointF(sceneRect().width() / 2 - create5->boundingRect().width() / 2, map->getFloorHeight() - create5->boundingRect().height()));
+        addItem(create5);
+        onGroundMountables.append(create5);
+    }
+        break;
+    case Qt::Key_5:
+    {
+        Item *create6 = new HeavyArmor();
+        create6->setPos(QPointF(sceneRect().width() / 2 - create6->boundingRect().width() / 2, map->getFloorHeight() - create6->boundingRect().height()));
+        addItem(create6);
+        onGroundMountables.append(create6);
+    }
+        break;
+    case Qt::Key_6:
+    {
+        Item *create7 = new Bandage();
+        create7->setPos(QPointF(sceneRect().width() / 2 - create7->boundingRect().width() / 2, map->getFloorHeight() - create7->boundingRect().height()));
+        addItem(create7);
+        onGroundMountables.append(create7);
+    }
+        break;
+    case Qt::Key_7:
+    {
+        Item *create8 = new Medkit();
+        create8->setPos(QPointF(sceneRect().width() / 2 - create8->boundingRect().width() / 2, map->getFloorHeight() - create8->boundingRect().height()));
+        addItem(create8);
+        onGroundMountables.append(create8);
+    }
+        break;
+    case Qt::Key_8:
+    {
+        Item *create9 = new Adrenaline();
+        create9->setPos(QPointF(sceneRect().width() / 2 - create9->boundingRect().width() / 2, map->getFloorHeight() - create9->boundingRect().height()));
+        addItem(create9);
+        onGroundMountables.append(create9);
+    }
+        break;
+    default:
+        break;
     }
 }
 
