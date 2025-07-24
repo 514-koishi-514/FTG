@@ -73,6 +73,7 @@ public:
     QMap<AnimationState, QVector<QPixmap>> animationFrames; // 动画帧集合
     int currentFrame = 0; // 当前帧索引
     QTimer *animationTimer; // 动画定时器
+    QTimer *hitTimer; // 受击定时器
 
     void setAnimationState(AnimationState state);
 
@@ -154,7 +155,7 @@ private:
     bool leftDown{}, rightDown{}, attackDown{}, jumpDown{}, pickDown{}, guardDown{}; // 按键状态
     bool leftLocked{}, rightLocked{}, attackLocked{}, jumpLocked{}, pickLocked{}, guardLocked{};   // 锁定状态，保证优先级
     bool lastLeftDown{}, lastRightDown{}, lastAttackDown{}, lastPickDown{}, lastGuardDown{};   // 上一按键状态
-    bool leftMoving{}, rightMoving{}, attacking{}, jumping{}, picking{}, guarding{};    // 动作状态
+    bool leftMoving{}, rightMoving{}, attacking{}, jumping{}, picking{}, guarding{}, hitting{};    // 动作状态
 
     qint64 lastLeftTime{}, lastRightTime{}; // 上一次按键按下时间
     bool isDoubleLeft{}, isDoubleRight{}; // 是否双击状态
