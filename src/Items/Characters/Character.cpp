@@ -593,7 +593,7 @@ Weapon *Character::pickupWeapon(Weapon *newWeapon){
 
         if(oldWeapon->weaponID == 1) {
             delete oldWeapon; // 如果是默认武器，直接删除
-        } else if (oldWeapon->weaponID >= 3 && oldWeapon->weaponID <= 5) { // 远程武器
+        } else if (oldWeapon->weaponID >= 2 && oldWeapon->weaponID <= 5) { // 增强近战和远程武器
             oldWeapon->setPos(newWeapon->pos());
             oldWeapon->setParentItem(parentItem());
         }
