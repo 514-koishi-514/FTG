@@ -703,7 +703,9 @@ void BattleScene::processPicking() {
 
         Props *props = findNearestProps(character_1p->pos(), 100.0);
         if (props != nullptr) {
+            onGroundMountables.removeOne(props); // 从已放置装备列表中移除
             pickupProp(character_1p, props);
+            qDebug() << "拾取道具位置为" << props->pos();
         }
     }
     if (character_2p->isPicking()) {
@@ -730,6 +732,7 @@ void BattleScene::processPicking() {
         }
         auto props = findNearestProps(character_2p->pos(), 100.0);
         if (props != nullptr) {
+            onGroundMountables.removeOne(props); // 从已放置装备列表中移除
             pickupProp(character_2p, props);
         }
     }
@@ -787,6 +790,9 @@ Mountable *BattleScene::pickupMountable(Character *character, Mountable *mountab
 void *BattleScene::pickupProp(Character *character, Props *props) {
     if (props != nullptr && character != nullptr) {
         character->pickupProps(props);
+        qDebug() << "拾取的道具位置为" << props->pos();
+        delete props; // 删除道具对象
+        qDebug() << "道具已删除";
     }
 }
 
