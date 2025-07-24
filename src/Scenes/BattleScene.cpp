@@ -109,7 +109,7 @@ BattleScene::BattleScene(QObject *parent) : Scene(parent) {// 现在只有一个
     dropTimer = new QTimer(this);
     connect(dropTimer, &QTimer::timeout, this, &BattleScene::spawnRandomDrop);
     allTimers.append(dropTimer); // 将定时器添加到所有定时器列表中
-    dropTimer->start(500000); // TODO:这里设置一个很大的时间间隔，测试用
+    dropTimer->start(20000);
 }
 
 // 这个函数用来处理角色输入事件
