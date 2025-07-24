@@ -626,6 +626,8 @@ void Character::pickupProps(Props *newProps) {
         changeHp(newProps->cureOnce);
         qDebug() << "拾取道具，立即回血：" << newProps->cureOnce;
     }
+
+    delete newProps;
 }
 
 // 游戏过程：动画渲染

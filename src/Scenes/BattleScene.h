@@ -54,7 +54,7 @@ private:
 
     static Mountable * pickupMountable(Character *character, Mountable *mountable);
 
-    static void * pickupProp(Character *character, Props *props);
+    static void pickupProp(Character *character, Props *props);
 
     Map *map;
     Character *character_1p;
