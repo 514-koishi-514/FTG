@@ -496,6 +496,16 @@ void BattleScene::keyReleaseEvent(QKeyEvent *event) {
         onGroundMountables.append(create9);
     }
         break;
+    case Qt::Key_Escape:
+    {
+        for (Item* item : onGroundMountables) {
+            removeItem(item); // 从场景移除
+            delete item;      // 释放内存
+        }
+        onGroundMountables.clear();
+        qDebug() << "已删除并清空地面道具";
+        break;
+    }
     default:
         break;
     }
